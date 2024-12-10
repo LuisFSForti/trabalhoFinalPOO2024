@@ -44,8 +44,6 @@ class PrintFile
             }
 
             if(erase) { system("clear"); }  //system("cls"); // WINDOWS 
-
-
             std::ifstream f(_fileName);
 
             if (!f.is_open()) {

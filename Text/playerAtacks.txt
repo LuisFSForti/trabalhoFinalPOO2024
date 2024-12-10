@@ -1,7 +1,7 @@
 
 ==========================================
-||  1. TACKLE                           ||
-||  2. THUNDERSHOCK                     ||
-||  3. PSYCHIC                          ||
-||  4. BODY SLAM                        ||
+||  1. Atacar                           ||
+||  2. Efeito Auxiliar                  ||
+||  3. Consumir item                    ||
+||  4. Esquivar                         ||
 ==========================================
