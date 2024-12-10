@@ -15,11 +15,15 @@
 class Controller
 {
     private:
-        Player _player;
+        std::list<Player> _party;
         //list<Enemies> enemies;
 
+        int currentPartyMember = 0;
         int round = 0;
         std::string filesPath = "Text/";
+
+        int enemyLife = 1000;   // Teste por agora
+        int playerLife = 100;   // Teste por agora
 
         // ============================
         // ========= HELPERS ==========
@@ -36,6 +40,33 @@ class Controller
             } while(elapsed < period);
         }
 
+        void Print(std::string file, bool erase)
+        {
+            PrintFile p(filesPath + file);
+            p.PrintText(erase);
+        }
+
+        void PrintEnemyLife()
+        {
+            std::cout << "==============================" << std::endl;
+            std::cout << "          " << enemyLife << "/1000           " << std::endl; 
+            std::cout << "==============================" << std::endl;
+        }
+
+        void PrintPlayerLife(int currentPartyMember)
+        {
+            std::cout << "||               " << playerLife << "/100                ||" << std::endl;
+            std::cout << "==========================================" << std::endl;
+        }
+
+        void ReloadScreen()
+        {
+            Print("monsterTest.txt", true);
+            PrintEnemyLife();        
+            Print("playerAtacks.txt", false);
+            PrintPlayerLife(0);
+        }
+
     public:
 
         // ============================
@@ -48,8 +79,10 @@ class Controller
             // Initial story text
             // Choose class
             
-            PrintFile p(filesPath + "epilogue.txt");
-            p.PrintText(true);
+            Print("gameIcon.txt", true);
+            Cooldown(2);
+            Print("epilogue.txt", false);
+            Cooldown(10);
             SetPlayer();
         }
 
@@ -64,34 +97,12 @@ class Controller
 
         void SetPlayer()
         {
-            // After is all set -> start game
-            int option = -1;
-            std::cin >> option;
+            //_party.front(Mage());
+            //_party.front(Barbarian());
+            //_party.front(Bard());
+            //_party.front(Paladin());
 
-            switch (option)
-            {
-                case 1:                 // MAGO
-                    StartBattle();
-                    break;
-
-                case 2:                 // BARBARO
-                    StartBattle();
-                    break;
-
-                case 3:                 // BARDO
-                    StartBattle();
-                    break;
-
-                case 4:                 // PALADINO
-                    StartBattle();
-                    break;
-                
-                default:
-                    std::cout << "Sorry, this option is not valid... choose another one." << std::endl;
-                    Cooldown(1);
-                    StartGame();
-                    break;
-            }
+            StartBattle();
         }
 
         // ============================
@@ -100,16 +111,18 @@ class Controller
 
         void StartBattle()
         {
-            // Erase screen
-            // Load enemy 
-            PrintFile p1(filesPath + "monsterTest.txt");
-            p1.PrintText(true);
-            PrintFile p2(filesPath + "enemyLife.txt");
-            p2.PrintText(false);
-            PrintFile p3(filesPath + "playerAtacks.txt");
-            p3.PrintText(false);
-            // Load status
-            // Set everything from scene
+            int op;
+            //Atack atk;
+            ReloadScreen();
+            std::cout << "Escolha uma das opcoes: ";
+            std::cin  >> op;
+
+            //if(op <= 4)
+                //party[currentPartyMember].Atack(atack);
+                //
+            //else      // is item
+                //party[currentPartyMember].UseItem(op-4); 
+
         }
 
         void EndBattle()

@@ -1,12 +1,9 @@
-BEM-VINDO(A) AO RPG DEFAULT!
-PREPARE-SE PARA BATALHAR COM DIVERSOS MONSTROS E GANHAR DIVERSAS RECOMPENSAS!
 
---------------------------------------------------------------------------------
+                                          Numa terra muito distante...
 
-ESCOLHA SUA CLASSE PREFERIDA:
-- [1] Mago
-- [2] Barbáro
-- [3] Bardo
-- [4] Paladino
+                            Muitos guerreiros se juntaram para conquistar tesouros.
+                            derrotar monstros, e conquistar fama... São poucos os
+                            que sobrevivem, mas sair vitorioso da DUNGEON é o único
+                            meio de subir na vida.
 
-TIP: cuidado, cada uma das classes possue atributos diferentes, então escolha com sabedoria...
+                                          O jogo começara em breve...
