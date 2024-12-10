@@ -16,7 +16,8 @@ class Controller
 {
     private:
         std::list<Player> _party;
-        //list<Enemies> enemies;
+        //list<Enemy> _enemies;
+        //Enemy enemy;
 
         bool won;
         int  round = 0;
@@ -113,8 +114,11 @@ class Controller
 
             //if(enemies.empty())
             // Won();
-            // return;  
+            // return;
 
+            // int randIndex = rand() % 4;
+            // enemy = _enemies[randIndex];
+            // _enemies.remove(enemy);
 
             round++;
             while(!_party.empty() && enemyLife > 0)
