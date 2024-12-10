@@ -1,0 +1,12 @@
+BEM-VINDO(A) AO RPG DEFAULT!
+PREPARE-SE PARA BATALHAR COM DIVERSOS MONSTROS E GANHAR DIVERSAS RECOMPENSAS!
+
+--------------------------------------------------------------------------------
+
+ESCOLHA SUA CLASSE PREFERIDA:
+- [1] Mago
+- [2] Barbáro
+- [3] Bardo
+- [4] Paladino
+
+TIP: cuidado, cada uma das classes possue atributos diferentes, então escolha com sabedoria...

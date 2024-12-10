@@ -4,7 +4,11 @@
 //  Luis (?) Forti              - 00000000                   //
 ///////////////////////////////////////////////////////////////
 
+#include "Controller/controller.hpp"
+
 int main()
 {
+    Controller c;
+    c.StartGame();
     return 0;
 }
