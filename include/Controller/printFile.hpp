@@ -35,13 +35,16 @@ class PrintFile
             _fileName = fileName;
         }
 
-        int PrintText()
+        int PrintText(bool erase = false)
         {
             if(_fileName == "")
             {
                 PrintError(0);
                 return -1;
             }
+
+            if(erase) { system("clear"); }  //system("cls"); // WINDOWS 
+
 
             std::ifstream f(_fileName);
 
