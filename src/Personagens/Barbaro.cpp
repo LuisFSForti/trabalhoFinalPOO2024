@@ -1,13 +1,13 @@
-#include "Paladino.hpp"
+#include "Barbaro.hpp"
 
-void Paladino::Atacar(std::vector<Personagem> alvos)
+void Barbaro::Atacar(std::vector<Personagem> alvos)
 {
     Personagem alvo = alvos.at(4);
     if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo._esquiva + alvo._buffEsquiva) * alvo._modificadorEsquiva + 10)
         this->CausarDano(alvo);
 }
     
-void Paladino::CausarDano(Personagem alvo)
+void Barbaro::CausarDano(Personagem alvo)
 {
     bool critico = rand() % 20 + _sorte >= 20;
     int dano = (this->_arma + this->_buffArma) * (1 + critico) - (alvo._armadura + alvo._buffArmadura + alvo._modificadorDefesa);
@@ -16,38 +16,34 @@ void Paladino::CausarDano(Personagem alvo)
         alvo.ReceberDano(dano);
 }
     
-void Paladino::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Barbaro::EfeitoAuxiliar(std::vector<Personagem> alvos)
 {
-    bool critico = rand() % 20 + _sorte >= 20;
-    int cura = (rand() % 12 + this->_ferramenta + this->_buffFerramenta) * 2 * (1 + critico);
+    alvos.at(4)._status = 3; //Provoca o inimigo
 
-    for(int i = 0; i < alvos.size() - 1; i++) //alvos.Size()-1 para não curar o monstro
-    {
-        alvos.at(i).Curar(cura);
-    }
+    this->_modificadorDefesa = this->_ferramenta + this->_buffFerramenta;
 }
 
-std::string Paladino::ImprimirDados() const
+std::string Barbaro::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
 }
 
-Paladino::Paladino()
+Barbaro::Barbaro()
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
 
-    this->_vidaMaxima = 50;
+    this->_vidaMaxima = 75;
     this->_vida = this->_vidaMaxima;
-    this->_armadura = 5;
-    this->_esquiva = 2;
+    this->_armadura = 2;
+    this->_esquiva = 1;
 
     this->_precisao = 4;
-    this->_sorte = 1;
-    this->_arma = 5;
+    this->_sorte = 2;
+    this->_arma = 7;
 
-    this->_ferramenta = 2; //Símbolo divinio
-    this->_armaduraMagica = this->_ferramenta; //Resistência divina
+    this->_ferramenta = 3; //Totens
+    this->_armaduraMagica = this->_ferramenta; //Resistência espiritual
 
     this->_buffVida = 0;
     this->_buffArma = 0;

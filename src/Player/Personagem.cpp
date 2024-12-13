@@ -7,7 +7,7 @@ void Personagem::UsarConsumivel()
 
 void Personagem::Esquivar()
 {
-    this->_modificadorEsquiva = _esquiva + _buffEsquiva;
+    this->_modificadorEsquiva = 2;
 }
 
 void Personagem::ReceberDano(int dano)
@@ -40,6 +40,10 @@ bool Personagem::CheckStatus(std::vector<Personagem> alvos)
         this->CausarDano(alvos.at(rand() % 4));
         break;
     
+    case 3: //Provocado pelo bárbaro (que sempre estará na posição 0)
+        this->CausarDano(alvos.at(0));
+        break;
+
     default: //Erro
         break;
     }
@@ -50,10 +54,10 @@ bool Personagem::CheckStatus(std::vector<Personagem> alvos)
     return false;    
 }
 
-Personagem::Personagem() {;}
-
-void Personagem::Comando(int instr, std::vector<Personagem> alvos, int idAlvo) 
+void Personagem::Comando(int instr, std::vector<Personagem> alvos) 
 {
+    this->_modificadorEsquiva = 1;
+
     //Verifica se o personagem pode agir
     if(!this->CheckStatus(alvos))
         return;
@@ -61,17 +65,14 @@ void Personagem::Comando(int instr, std::vector<Personagem> alvos, int idAlvo)
     switch (instr)
     {
     case 0:
-        this->_modificadorEsquiva = 0;
         this->Atacar(alvos);
         break;
 
     case 1:
-        this->_modificadorEsquiva = 0;
         this->EfeitoAuxiliar(alvos);
         break;
 
     case 2:
-        this->_modificadorEsquiva = 0;
         this->UsarConsumivel();
         break;
 
@@ -82,6 +83,13 @@ void Personagem::Comando(int instr, std::vector<Personagem> alvos, int idAlvo)
     default:
         break;
     }
+}
+
+void Personagem::BatalhaEncerrada()
+{
+    this->_status = 0;
+    this->_modificadorDefesa = 0;
+    this->_modificadorEsquiva = 1;
 }
 
 std::ostream& operator<<(std::ostream& out, const Personagem& p)

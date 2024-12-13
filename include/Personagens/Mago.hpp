@@ -1,5 +1,5 @@
-#ifndef Paladino_HPP
-#define Paladino_HPP
+#ifndef Mago_HPP
+#define Mago_HPP
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,8 +9,8 @@
 
 #include "Personagem.hpp"
 
-//Objetivo da classe: média entre todos, resistente, muita cura
-class Paladino : Personagem
+//Objetivo da classe: muito dano, pouca vida, algum controle do inimigo
+class Mago : Personagem
 {
     private:
         void Atacar(std::vector<Personagem> alvos);
@@ -20,7 +20,7 @@ class Paladino : Personagem
         std::string ImprimirDados() const;
 
     public:
-        Paladino();
+        Mago();
 };
 
 
