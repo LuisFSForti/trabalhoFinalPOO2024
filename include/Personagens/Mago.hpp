@@ -9,13 +9,13 @@
 
 #include "Personagem.hpp"
 
-//Objetivo da classe: muito dano, pouca vida, algum controle do inimigo
+//Objetivo da classe: muito dano, pouca vida, paraliza o inimigo
 class Mago : Personagem
 {
     private:
-        void Atacar(std::vector<Personagem> alvos);
-        void CausarDano(Personagem alvo);
-        void EfeitoAuxiliar(std::vector<Personagem> alvos);
+        void Atacar(std::vector<Personagem> alvos); //Ataca o inimigo
+        void CausarDano(Personagem alvo); //Alto dano mágico
+        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Paraliza o inimigo
 
         std::string ImprimirDados() const;
 

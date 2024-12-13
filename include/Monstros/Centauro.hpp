@@ -1,0 +1,28 @@
+#ifndef Centauro_HPP
+#define Centauro_HPP
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <iostream>
+#include <vector>
+
+#include "Personagem.hpp"
+
+//Objetivo da classe: vida e resistência médias, investida poderosa
+class Centauro : Personagem
+{
+    private:
+        void Atacar(std::vector<Personagem> alvos); //Golpeia um inimigo, priorizando a linha de frente
+        void CausarDano(Personagem alvo); //Dano físico médio-alto
+        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Dano físico altíssimo em um inimigo
+
+        std::string ImprimirDados() const;
+
+    public:
+        Centauro();
+};
+
+
+
+#endif

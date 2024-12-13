@@ -1,28 +1,46 @@
 #include "Paladino.hpp"
 
+//Ataca o inimigo
 void Paladino::Atacar(std::vector<Personagem> alvos)
 {
+    //Pega o monstro
     Personagem alvo = alvos.at(4);
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo._esquiva + alvo._buffEsquiva) * alvo._modificadorEsquiva + 10)
-        this->CausarDano(alvo);
+
+    //Para cada ataque
+    for(int i = 0; i < this->_qtdAtaques + this->_modificadorQuantidadeAtaques; i++)
+        //Calcula se o ataque acerta
+        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+            //Se sim, calcula o dano
+            this->CausarDano(alvo);
 }
-    
+
+//Dano físico médios    
 void Paladino::CausarDano(Personagem alvo)
 {
+    //Calcula o crítico
     bool critico = rand() % 20 + _sorte >= 20;
-    int dano = (this->_arma + this->_buffArma) * (1 + critico) - (alvo._armadura + alvo._buffArmadura + alvo._modificadorDefesa);
 
-    if(dano > 0)
-        alvo.ReceberDano(dano);
+    //Calcula o dano
+    //(1 + critico) = 1 ou 2
+    int dano = (rand()%10 + this->_arma + this->_buffArma) * (1 + critico);
+
+    //Alerta o alvo que recebeu dano físico
+    alvo.ReceberDanoFisico(dano);
 }
     
+//Muita cura pro time todo
 void Paladino::EfeitoAuxiliar(std::vector<Personagem> alvos)
 {
-    bool critico = rand() % 20 + _sorte >= 20;
-    int cura = (rand() % 12 + this->_ferramenta + this->_buffFerramenta) * 2 * (1 + critico);
+    //Define que já usou a habilidade auxiliar
+    this->_mana = false;
+    
+    //Calcula a cura
+    int cura = (rand() % 12 + this->_ferramenta + this->_buffFerramenta) * 2;
 
-    for(int i = 0; i < alvos.size() - 1; i++) //alvos.Size()-1 para não curar o monstro
+    //Para cada herói
+    for(int i = 0; i < alvos.size() - 1; i++)
     {
+        //Cura o alvo
         alvos.at(i).Curar(cura);
     }
 }
@@ -45,6 +63,7 @@ Paladino::Paladino()
     this->_precisao = 4;
     this->_sorte = 1;
     this->_arma = 5;
+    this->_qtdAtaques = 2;
 
     this->_ferramenta = 2; //Símbolo divinio
     this->_armaduraMagica = this->_ferramenta; //Resistência divina
@@ -59,5 +78,8 @@ Paladino::Paladino()
     this->_buffFerramenta = 0;
 
     this->_modificadorEsquiva = 1;
+    this->_modificadorDefesa = 0;
+    this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
+    _mana = true;
 }

@@ -1,28 +1,45 @@
 #include "Bardo.hpp"
 
+//Ataca o inimigo
 void Bardo::Atacar(std::vector<Personagem> alvos)
 {
+    //Pega o monstro
     Personagem alvo = alvos.at(4);
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo._esquiva + alvo._buffEsquiva) * alvo._modificadorEsquiva + 10)
+
+    //Verifica se o ataque acert
+    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+        //Se sim, calcula o dano
         this->CausarDano(alvo);
 }
     
+//Dano psicológico baixo, alta chanca de crítico
 void Bardo::CausarDano(Personagem alvo)
 {
+    //Calcula o crítico
     bool critico = rand() % 20 + _sorte >= 20;
-    int dano = (this->_arma + this->_buffArma) * (1 + critico); //Dano psicológico, não tem resistência
 
-    alvo.ReceberDano(dano);
+    //Calcula o dano
+    //(1 + critico) = 1 ou 2
+    int dano = (rand()%6 + this->_arma + this->_buffArma) * (1 + critico); //Dano psicológico, não tem resistência
+
+    //Alerta o alvo que recebeu dano psicológico e quanto
+    alvo.ReceberDanoPsicologico(dano);
 }
-    
+
+//Remove efeitos e cura um pouco o time todo    
 void Bardo::EfeitoAuxiliar(std::vector<Personagem> alvos)
 {
-    int cura = rand() % 12 + this->_ferramenta + this->_buffFerramenta; //Cura baixa
+    //Define que já usou a habilidade auxiliar
+    this->_mana = false;
+    
+    //Cura baixa
+    int cura = rand() % 12 + this->_ferramenta + this->_buffFerramenta;
 
-    for(int i = 0; i < alvos.size() - 1; i++) //alvos.Size()-1 para não afetar o monstro
+    //Para cada herói
+    for(int i = 0; i < alvos.size() - 1; i++)
     {
         alvos.at(i).Curar(cura); //Cura
-        alvos.at(i)._status = 0; //Remove qualquer status sobre ele
+        alvos.at(i).AplicarStatus(0); //Remove qualquer status sobre ele
     }
 }
 
@@ -43,7 +60,7 @@ Bardo::Bardo()
 
     this->_precisao = 3;
     this->_sorte = 5;
-    this->_arma = 2; //Dano baixo pois é psicológico
+    this->_arma = 3; //Dano baixo pois é psicológico
 
     this->_ferramenta = 2; //Instrumento
     this->_armaduraMagica = 0;
@@ -58,38 +75,52 @@ Bardo::Bardo()
     this->_buffFerramenta = 0;
 
     this->_modificadorEsquiva = 1;
+    this->_modificadorDefesa = 0;
+    this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
+    _mana = true;
 }
 
 void Bardo::Comando(int instr, std::vector<Personagem> alvos) 
 {
+    //Reinicia o modificador de esquiva
     this->_modificadorEsquiva = 1;
-    
-    //Bardo pode usar sua habilidade auxiliar em qualquer situação
-    if(instr == 1)
+
+    //Bardo pode usar sua habilidade auxiliar em qualquer estado, desde que tenha mana
+    if(instr == 1 && this->_mana)
     {
+        //Utiliza o efeito auxiliar
         this->EfeitoAuxiliar(alvos);
         return;
-    }    
+    }
 
     //Verifica se o personagem pode agir
     if(!this->CheckStatus(alvos))
+        //Se não, retorna
         return;
 
+    //Verifica qual é a instrução
     switch (instr)
     {
+    //Se ataque
     case 0:
+        //Ataca
         this->Atacar(alvos);
         break;
 
+    //Se usar item consumível
     case 2:
+        //Usa o item
         this->UsarConsumivel();
         break;
 
+    //Se esquivar
     case 3:
+        //Esquiva
         this->Esquivar();
         break;
     
+    //Erro
     default:
         break;
     }
