@@ -15,9 +15,9 @@ O jogador poderá escolher entre 4 classes principais de jogabilidade:
 ### Inimigos
 Os inimigos são dividos em seu tipo de ataque e outras características como:
 
-- Dano Físico (centauro, dragões)
-- Dano Mágico (fadas, grifos)
-- Dano psicológico (sereias, fantasmas)
+- Dano Físico (centauro, dragão,grifo)
+- Dano Mágico (fada, fantasma)
+- Dano psicológico (sereia)
 
 ### Batalha
 
