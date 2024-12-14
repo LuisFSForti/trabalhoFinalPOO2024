@@ -1,4 +1,4 @@
-#include "Sereia.hpp"
+#include "Monstros/Sereia.hpp"
 
 //Ataca todos os inimigos
 void Sereia::Atacar(std::vector<Personagem> alvos)
@@ -51,7 +51,7 @@ std::string Sereia::ImprimirDados() const
     //Necessário pegar o código da Heloísa
 }
 
-Sereia::Sereia()
+Sereia::Sereia(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -82,4 +82,6 @@ Sereia::Sereia()
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
     _mana = true;
+
+    _idFile = id;
 }

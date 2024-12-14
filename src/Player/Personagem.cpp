@@ -1,4 +1,4 @@
-#include "Personagem.hpp"
+#include "Player/Personagem.hpp"
 
 void Personagem::UsarConsumivel()
 {

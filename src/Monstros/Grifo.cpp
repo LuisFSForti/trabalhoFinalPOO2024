@@ -1,4 +1,4 @@
-#include "Grifo.hpp"
+#include "Monstros/Grifo.hpp"
 
 //Golpeia todos os inimigos, com chance de desvio
 void Grifo::Atacar(std::vector<Personagem> alvos)
@@ -47,7 +47,7 @@ std::string Grifo::ImprimirDados() const
     //Necessário pegar o código da Heloísa
 }
 
-Grifo::Grifo()
+Grifo::Grifo(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -78,4 +78,6 @@ Grifo::Grifo()
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
     _mana = true;
+
+    _idFile = id;
 }

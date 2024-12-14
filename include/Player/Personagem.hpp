@@ -17,6 +17,9 @@
 class Personagem
 {
     protected:
+
+        std::string _idFile;
+
         bool _mana; //Para definir se pode usar a habilidade auxiliar
         int _vida, _vidaMaxima, _armadura, _armaduraMagica, _esquiva, _precisao, _sorte, _arma, _ferramenta, _qtdAtaques; //Valores base
         int _buffVida, _buffArmadura, _buffArmaduraMagica, _buffEsquiva, _buffPrecisao, _buffSorte, _buffArma, _buffFerramenta; //Buffs permanentes
@@ -72,6 +75,8 @@ class Personagem
         int GetModificadorQuantidadeAtaques();
 
         int GetStatus();
+
+        std::string GetFileId() { return _idFile; }
 
         //Não há setters pois os valores devem serem alterados pelas funções
 };

@@ -1,4 +1,4 @@
-#include "Centauro.hpp"
+#include "Monstros/Centauro.hpp"
 
 //Golpeia um inimigo, priorizando a linha de frente
 void Centauro::Atacar(std::vector<Personagem> alvos)
@@ -92,7 +92,7 @@ std::string Centauro::ImprimirDados() const
     //Necessário pegar o código da Heloísa
 }
 
-Centauro::Centauro()
+Centauro::Centauro(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -123,4 +123,6 @@ Centauro::Centauro()
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
     _mana = true;
+
+    _idFile = id;
 }

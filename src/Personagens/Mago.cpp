@@ -1,4 +1,4 @@
-#include "Mago.hpp"
+#include "Personagens/Mago.hpp"
 
 //Ataca o inimigo
 void Mago::Atacar(std::vector<Personagem> alvos)

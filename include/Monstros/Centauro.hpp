@@ -7,10 +7,10 @@
 #include <iostream>
 #include <vector>
 
-#include "Personagem.hpp"
+#include "../Player/Personagem.hpp"
 
 //Objetivo da classe: vida e resistência médias, investida poderosa
-class Centauro : Personagem
+class Centauro : public Personagem
 {
     private:
         void Atacar(std::vector<Personagem> alvos); //Golpeia um inimigo, priorizando a linha de frente
@@ -20,7 +20,7 @@ class Centauro : Personagem
         std::string ImprimirDados() const;
 
     public:
-        Centauro();
+        Centauro(std::string id = "") {}
 };
 
 

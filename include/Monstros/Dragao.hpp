@@ -7,10 +7,10 @@
 #include <iostream>
 #include <vector>
 
-#include "Personagem.hpp"
+#include "../Player/Personagem.hpp"
 
 //Objetivo da classe: muita vida, muita resistência, dano alto, dano em área alto
-class Dragao : Personagem
+class Dragao : public Personagem
 {
     private:
         void Atacar(std::vector<Personagem> alvos); //Golpeia um inimigo, priorizando a linha de frente
@@ -20,7 +20,7 @@ class Dragao : Personagem
         std::string ImprimirDados() const;
 
     public:
-        Dragao();
+        Dragao(std::string id = "") {}
 };
 
 

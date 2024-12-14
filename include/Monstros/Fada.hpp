@@ -7,10 +7,10 @@
 #include <iostream>
 #include <vector>
 
-#include "Personagem.hpp"
+#include "../Player/Personagem.hpp"
 
 //Objetivo da classe: baixa vida, esquiva alta, sorte alta, múltiplos ataques mágicos, controle de inimigo
-class Fada : Personagem
+class Fada : public Personagem
 {
     private:
         void Atacar(std::vector<Personagem> alvos); //Ataca múltiplos inimigos
@@ -20,7 +20,7 @@ class Fada : Personagem
         std::string ImprimirDados() const;
 
     public:
-        Fada();
+        Fada(std::string id = "") {}
 };
 
 

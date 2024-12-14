@@ -1,4 +1,4 @@
-#include "Paladino.hpp"
+#include "Personagens/Paladino.hpp"
 
 //Ataca o inimigo
 void Paladino::Atacar(std::vector<Personagem> alvos)

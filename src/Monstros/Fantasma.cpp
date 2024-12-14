@@ -1,4 +1,4 @@
-#include "Fantasma.hpp"
+#include "Monstros/Fantasma.hpp"
 
 //Golpeia um inimigo
 void Fantasma::Atacar(std::vector<Personagem> alvos)
@@ -49,7 +49,7 @@ std::string Fantasma::ImprimirDados() const
     //Necessário pegar o código da Heloísa
 }
 
-Fantasma::Fantasma()
+Fantasma::Fantasma(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -80,4 +80,6 @@ Fantasma::Fantasma()
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
     _mana = true;
+
+    _idFile = id;
 }

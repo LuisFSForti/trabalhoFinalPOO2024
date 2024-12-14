@@ -7,10 +7,10 @@
 #include <iostream>
 #include <vector>
 
-#include "Personagem.hpp"
+#include "Player/Personagem.hpp"
 
 //Objetivo da classe: dano alto, muita vida, pouca resistência, atrai o foco do inimigo
-class Barbaro : Personagem
+class Barbaro : public Personagem
 {
     private:
         void Atacar(std::vector<Personagem> alvos); //Ataca o inimigo

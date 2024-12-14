@@ -1,4 +1,4 @@
-#include "Dragao.hpp"
+#include "Monstros/Dragao.hpp"
 
 //Golpeia um inimigo, priorizando a linha de frente
 void Dragao::Atacar(std::vector<Personagem> alvos)
@@ -72,7 +72,7 @@ std::string Dragao::ImprimirDados() const
     //Necessário pegar o código da Heloísa
 }
 
-Dragao::Dragao()
+Dragao::Dragao(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -103,4 +103,6 @@ Dragao::Dragao()
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
     _mana = true;
+
+    _idFile = id;
 }

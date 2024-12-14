@@ -1,4 +1,4 @@
-#include "Bardo.hpp"
+#include "Personagens/Bardo.hpp"
 
 //Ataca o inimigo
 void Bardo::Atacar(std::vector<Personagem> alvos)

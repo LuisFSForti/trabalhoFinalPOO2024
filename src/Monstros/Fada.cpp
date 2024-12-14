@@ -1,4 +1,4 @@
-#include "Fada.hpp"
+#include "Monstros/Fada.hpp"
 
 //Ataca múltiplos inimigos
 void Fada::Atacar(std::vector<Personagem> alvos)
@@ -59,7 +59,7 @@ std::string Fada::ImprimirDados() const
     //Necessário pegar o código da Heloísa
 }
 
-Fada::Fada()
+Fada::Fada(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -91,4 +91,6 @@ Fada::Fada()
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
     _mana = true;
+
+    _idFile = id;
 }
