@@ -28,7 +28,7 @@
 class Controller
 {
     private:
-        std::vector<Personagem> _party;                 // Membros da equipe do jogador  
+        std::vector<Personagem*> _party;                 // Membros da equipe do jogador  
         std::vector<Personagem> _enemies;               // Possíveis inimigos
 
         bool won;                                       // Se o player ganhou ou não
@@ -36,9 +36,6 @@ class Controller
         int  currentPartyMember = 0;                    // Qual membro da equipe esta atualmente jogando
         std::string filesPath = "Text/";                // Pasta de texto para arquivos em ascii
         std::string enemyPath = "Inimigos/";
-
-        int enemyLife = 1000;   // Teste por agora
-        int playerLife = 100;   // Teste por agora
 
         // ============================
         // ========= HELPERS ==========
@@ -64,13 +61,13 @@ class Controller
         void PrintEnemyLife()                           // Escrever a vida atual do inimigo
         {
             std::cout << "==============================" << std::endl;
-            std::cout << "          " << _party[_party.size()-1].GetVida() << "/" << _party[_party.size()-1].GetVidaMaxima() << std::endl; 
+            std::cout << "          " << _party[_party.size()-1]->GetVida() << "/" << _party[_party.size()-1]->GetVidaMaxima() << std::endl; 
             std::cout << "==============================" << std::endl;
         }
 
         void PrintPlayerLife(int currentPartyMember)    // Escrever a vida atual do membro da equipe
         {
-            std::cout << "||               " << _party[currentPartyMember].GetVida() << "/" << _party[currentPartyMember].GetVidaMaxima() << std::endl;
+            std::cout << "||               " << _party[currentPartyMember]->GetVida() << "/" << _party[currentPartyMember]->GetVidaMaxima() << std::endl;
             std::cout << "==========================================" << std::endl;
         }
 
@@ -83,14 +80,9 @@ class Controller
 
         void ReloadScreen()                             // Recarregar a tela com novas informacoes
         {
-            Print(_party[_party.size()-1].GetFileId(), true);
+            Print(_party[_party.size()-1]->GetFileId(), true);
             PrintEnemyLife();        
-            //Print("playerAtacks.txt", false);
-            //PrintPartyMemberItem(_party[currentPartyMember]);
-            //Print("party" + currentPartyMember, false);
-
             std::cout << _party[currentPartyMember] << std::endl;
-            //PrintPlayerLife(0);
         }
 
     public:
@@ -127,12 +119,10 @@ class Controller
         void SetPlayer()                                // Setando os membros da equipe e inimigos
         {
 
-            //_party[0] = new Barbaro();
-
-            _party.push_back(Barbaro());
-            _party.push_back(Paladino());
-            _party.push_back(Bardo());
-            _party.push_back(Mago());
+            _party[0] = new Barbaro();
+            _party[1] = new Paladino();
+            _party[2] = new Bardo();
+            _party[3] = new Mago();
 
             _enemies.push_back(Centauro(enemyPath + "centauroBasico.txt"));
             _enemies.push_back(Dragao(enemyPath +  "dragaoBasico.txt"));
@@ -159,52 +149,58 @@ class Controller
             }
 
             int randIndex = rand() % 6;                             // Sorteia algum dos inimigos
-            _party.push_back(_enemies[randIndex]);                  // Coloca como alvo
+
+            switch (randIndex)
+            {
+                case 0:
+                    _party[4] = new Centauro(enemyPath + "centauroBasico.txt");
+                    break;
+
+                case 1:
+                    _party[4] = new Dragao(enemyPath +  "dragaoBasico.txt");
+                    break;
+
+                case 2:
+                    _party[4] = new Fada(enemyPath +  "fadaBasico.txt");
+                    break;
+
+                case 3:
+                    _party[4] = new Fantasma(enemyPath +  "fantasmaBasico.txt");
+                    break;
+
+                case 4:
+                    _party[4] = new Grifo(enemyPath +  "grifoBasico.txt");
+                    break;
+
+                case 5:
+                    _party[4] = new Sereia(enemyPath +  "sereiaBasico.txt");
+                    break;
+                
+                default:
+                    break;
+            }
+            
             _enemies.erase(std::next(_enemies.begin(), randIndex)); // Apaga da lista de inimigos
 
-
             round++;
-            while(!_party.empty() && enemyLife > 0)                 // Enquanto o inimigo ou o jogador nao morrem
+            bool someOneAlive = false;
+            while(_party[_party.size()-1] > 0)                 // Enquanto o inimigo ou o jogador nao morrem
             {
-
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                 {
+                    if(_party[currentPartyMember]->GetVida() <= 0) continue;
+
                     ReloadScreen();                                 // Carrega a tela para novo membro
                     std::cout << "Escolha uma das opcoes: ";        // Espera a escolha de alguma das opcoes
                     std::cin  >> op;
 
-                    _party[currentPartyMember].Comando(op-1, _party);
+                    _party[currentPartyMember]->Comando(op-1, _party);
                     Cooldown(2);
-
-                    /*
-                    switch (op)
-                    {
-                        case 1:                                     // Atacar
-                            _party[currentPartyMember].Atacar(_party);
-                            break;
-
-                        case 2:                                     // Efeito Auxiliar
-                            _party[currentPartyMember].EfeitoAuxiliar(_party);
-                            break;
-
-                        case 3:                                     // Consumir item
-                            _party[currentPartyMember].ConsumirItem(_party);
-                            break;
-
-                        case 4:                                     // Esquivar
-                            _party[currentPartyMember].Esquivar();
-                            break;
-                        
-                        default:
-                            break;
-                    }
-
-                    */
                 }
 
                 Cooldown(2);
 
-                _party[currentPartyMember].Comando(1, _party);          // Inimigo ataca
+                _party[currentPartyMember]->Comando(1, _party);          // Inimigo ataca
                 currentPartyMember = 0;                             // Reseta party 
                 ReloadScreen();
                 std::cout << "O INIMIGO ESTÁ ATACANDO!" << std::endl;
@@ -212,13 +208,12 @@ class Controller
                 Cooldown(2);
 
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
-                {
-                    if(_party[currentPartyMember].GetVida() <= 0)   // Checa se alguem morreu
-                        _party.erase(std::next(_enemies.begin(), currentPartyMember));
-                }
+                    if(_party[currentPartyMember]->GetVida() > 0)   someOneAlive = true;
+                
+                if(!someOneAlive) break;
             }
 
-            if(!_party.empty()) won = true;                         // Se terminou e nao morreram todos os membros
+            if(someOneAlive) won = true;                         // Se terminou e nao morreram todos os membros
             EndBattle();                                            // Acabar batalha
 
         }
