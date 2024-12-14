@@ -13,9 +13,9 @@
 class Barbaro : public Personagem
 {
     private:
-        void Atacar(std::vector<Personagem> alvos); //Ataca o inimigo
+        void Atacar(std::vector<Personagem*> alvos); //Ataca o inimigo
         void CausarDano(Personagem alvo); //Dano físico alto
-        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Provoca o inimigo e aumenta a defesa
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Provoca o inimigo e aumenta a defesa
 
         std::string ImprimirDados() const;
 

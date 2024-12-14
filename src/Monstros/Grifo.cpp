@@ -1,16 +1,16 @@
 #include "Monstros/Grifo.hpp"
 
 //Golpeia todos os inimigos, com chance de desvio
-void Grifo::Atacar(std::vector<Personagem> alvos)
+void Grifo::Atacar(std::vector<Personagem*> alvos)
 {
     //Para cada herói
     for(int i = 0; i < alvos.size()-1; i++)
     {
         //Testa se o herói desvia do ataque
         //Se estiver ativamente esquivando aumenta a chance de desviar
-        if(rand()%20 + (alvos.at(i).GetSorte()) * alvos.at(i).GetModificadorEsquiva() < this->_ferramenta + this->_buffFerramenta)
+        if(rand()%20 + (alvos.at(i)->GetSorte()) * alvos.at(i)->GetModificadorEsquiva() < this->_ferramenta + this->_buffFerramenta)
             //Se não desviou, calcula o dano
-            this->CausarDano(alvos.at(i));
+            this->CausarDano(*alvos.at(i));
     }
 }
     
@@ -29,7 +29,7 @@ void Grifo::CausarDano(Personagem alvo)
 }
     
 //Paraliza todos os inimigos
-void Grifo::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Grifo::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou sua habilidade auxiliar
     this->_mana = false;
@@ -38,7 +38,7 @@ void Grifo::EfeitoAuxiliar(std::vector<Personagem> alvos)
     for(int i = 0; i < alvos.size()-1; i++)
     {
         //Paraliza o alvo atual
-        alvos.at(i).AplicarStatus(1);
+        alvos.at(i)->AplicarStatus(1);
     }
 }
 

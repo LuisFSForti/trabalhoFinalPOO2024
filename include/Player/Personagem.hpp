@@ -28,13 +28,13 @@ class Personagem
         //Item consumivel;
         std::string _enderecoFoto;
 
-        virtual void Atacar(std::vector<Personagem> alvos) { std::cout << "AQUI!\n";}; //Virtual pois cada classe usa valores diferentes e alvos diferentes
+        virtual void Atacar(std::vector<Personagem*> alvos) { std::cout << "AQUI!\n";}; //Virtual pois cada classe usa valores diferentes e alvos diferentes
         virtual void CausarDano(Personagem alvo) {}; //Virtual pois cada classe usa valores e tipos diferentes
-        virtual void EfeitoAuxiliar(std::vector<Personagem> alvos) {}; //Virtual pois toda classe tem um efeito diferente
+        virtual void EfeitoAuxiliar(std::vector<Personagem*> alvos) {}; //Virtual pois toda classe tem um efeito diferente
         void UsarConsumivel();
         void Esquivar(); //Dobra a esquiva até a próxima ação
 
-        bool CheckStatus(std::vector<Personagem> alvos); //Retorna se o usuário pode realizar ações
+        bool CheckStatus(std::vector<Personagem*> alvos); //Retorna se o usuário pode realizar ações
         virtual std::string ImprimirDados() const { return "";};
 
     public:
@@ -44,7 +44,7 @@ class Personagem
         void Curar(int cura); //Cura
         void AplicarStatus(int status); //Aplica status
 
-        virtual void Comando(int instr, std::vector<Personagem> alvos); //Recebe uma instrução e os possíveis alvos, virtual pois o bardo possui uma variação
+        virtual void Comando(int instr, std::vector<Personagem*> alvos); //Recebe uma instrução e os possíveis alvos, virtual pois o bardo possui uma variação
         void BatalhaEncerrada(); //Deve ser chamado pra todos os personagens no final de cada batalha, reinicia valores temporários
 
         friend std::ostream& operator<<(std::ostream& out, const Personagem& p); //Para imprimir os dados do personagem

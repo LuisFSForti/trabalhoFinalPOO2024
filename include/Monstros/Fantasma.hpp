@@ -13,9 +13,9 @@
 class Fantasma : public Personagem
 {
     private:
-        void Atacar(std::vector<Personagem> alvos); //Golpeia um inimigo
+        void Atacar(std::vector<Personagem*> alvos); //Golpeia um inimigo
         void CausarDano(Personagem alvo); //Dano mágico médio
-        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Amedronta os inimigos
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Amedronta os inimigos
 
         std::string ImprimirDados() const;
 

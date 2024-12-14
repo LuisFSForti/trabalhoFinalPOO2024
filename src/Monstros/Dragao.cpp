@@ -1,7 +1,7 @@
 #include "Monstros/Dragao.hpp"
 
 //Golpeia um inimigo, priorizando a linha de frente
-void Dragao::Atacar(std::vector<Personagem> alvos)
+void Dragao::Atacar(std::vector<Personagem*> alvos)
 {
     int posAlvo;
     do
@@ -25,10 +25,10 @@ void Dragao::Atacar(std::vector<Personagem> alvos)
         {
             posAlvo = 3;
         }
-    } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+    } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
     //Pega o alvo
-    Personagem alvo = alvos.at(posAlvo);
+    Personagem alvo = *alvos.at(posAlvo);
 
     //Verifica se o ataque acerta
     if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
@@ -51,7 +51,7 @@ void Dragao::CausarDano(Personagem alvo)
 }
     
 //Dano físico alto em área
-void Dragao::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Dragao::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que ele já usou sua habilidade auxiliar
     this->_mana = false;
@@ -63,7 +63,7 @@ void Dragao::EfeitoAuxiliar(std::vector<Personagem> alvos)
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         //Alerta o alvo atual que recebeu dano físico e quanto
-        alvos.at(i).ReceberDanoFisico(dano);
+        alvos.at(i)->ReceberDanoFisico(dano);
     }
 }
 

@@ -1,17 +1,17 @@
 #include "Monstros/Fantasma.hpp"
 
 //Golpeia um inimigo
-void Fantasma::Atacar(std::vector<Personagem> alvos)
+void Fantasma::Atacar(std::vector<Personagem*> alvos)
 {
     int posAlvo;
     do
     {
         //Sem prioridade de alvo
         posAlvo = rand() % 4;
-    } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+    } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
     //Pega o alvo
-    Personagem alvo = alvos.at(posAlvo);
+    Personagem alvo = *alvos.at(posAlvo);
 
     //Verifica se o ataque acerta
     if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
@@ -34,13 +34,13 @@ void Fantasma::CausarDano(Personagem alvo)
 }
 
 //Amedronta os inimigos
-void Fantasma::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Fantasma::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Para todos os heróis
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         //Amedronta o alvo atual
-        alvos.at(i).AplicarStatus(4);
+        alvos.at(i)->AplicarStatus(4);
     }
 }
 

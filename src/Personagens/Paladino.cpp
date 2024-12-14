@@ -1,11 +1,10 @@
 #include "Personagens/Paladino.hpp"
 
 //Ataca o inimigo
-void Paladino::Atacar(std::vector<Personagem> alvos)
+void Paladino::Atacar(std::vector<Personagem*> alvos)
 {
-    std::cout << "PALADINO\n";
     //Pega o monstro
-    Personagem alvo = alvos.at(4);
+    Personagem alvo = *alvos.at(4);
 
     //Para cada ataque
     for(int i = 0; i < this->_qtdAtaques + this->_modificadorQuantidadeAtaques; i++)
@@ -30,7 +29,7 @@ void Paladino::CausarDano(Personagem alvo)
 }
     
 //Muita cura pro time todo
-void Paladino::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Paladino::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou a habilidade auxiliar
     this->_mana = false;
@@ -42,7 +41,7 @@ void Paladino::EfeitoAuxiliar(std::vector<Personagem> alvos)
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         //Cura o alvo
-        alvos.at(i).Curar(cura);
+        alvos.at(i)->Curar(cura);
     }
 }
 
@@ -53,9 +52,7 @@ std::string Paladino::ImprimirDados() const
 
     r  = "======================================================\n";
     r += "                        PALADINO                      \n";
-    r += "                         " + this->_vida;
-    r += "/" + this->_vidaMaxima;
-    r += "\n";
+    r += "                         " + std::to_string(this->_vida) + "/" + std::to_string(this->_vidaMaxima) + "\n";
     r += "======================================================\n";
     r += "||  1. Atacar                 3. Consumir item      ||\n";
     r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";

@@ -13,9 +13,9 @@
 class Centauro : public Personagem
 {
     private:
-        void Atacar(std::vector<Personagem> alvos); //Golpeia um inimigo, priorizando a linha de frente
+        void Atacar(std::vector<Personagem*> alvos); //Golpeia um inimigo, priorizando a linha de frente
         void CausarDano(Personagem alvo); //Dano físico médio-alto
-        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Dano físico altíssimo em um inimigo
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Dano físico altíssimo em um inimigo
 
         std::string ImprimirDados() const;
 

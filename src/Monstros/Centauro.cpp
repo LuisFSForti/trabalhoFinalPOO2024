@@ -1,7 +1,7 @@
 #include "Monstros/Centauro.hpp"
 
 //Golpeia um inimigo, priorizando a linha de frente
-void Centauro::Atacar(std::vector<Personagem> alvos)
+void Centauro::Atacar(std::vector<Personagem*> alvos)
 {
     int posAlvo;
     do
@@ -25,10 +25,10 @@ void Centauro::Atacar(std::vector<Personagem> alvos)
         {
             posAlvo = 3;
         }
-    } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+    } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
     //Pega o alvo
-    Personagem alvo = alvos.at(posAlvo);
+    Personagem alvo = *alvos.at(posAlvo);
 
     //Verifica se o ataque acerta
     if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
@@ -50,7 +50,7 @@ void Centauro::CausarDano(Personagem alvo)
 }
     
 //Dano físico altíssimo em um inimigo
-void Centauro::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Centauro::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Marca que usou sua habilidade auxiliar
     this->_mana = false;
@@ -77,14 +77,14 @@ void Centauro::EfeitoAuxiliar(std::vector<Personagem> alvos)
         {
             posAlvo = 3;
         }
-    } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+    } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
     //Calcula o dano
     //Sem crítico, pois poderia ser massivo demais e injusto
     int dano = (rand() % 12 + this->_arma + this->_buffArma) * 2;
 
     //Alerta o alvo que ele recebeu dano físico e quanto
-    alvos.at(posAlvo).ReceberDanoFisico(dano);
+    alvos.at(posAlvo)->ReceberDanoFisico(dano);
 }
 
 std::string Centauro::ImprimirDados() const

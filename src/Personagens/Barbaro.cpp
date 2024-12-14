@@ -1,11 +1,10 @@
 #include "Personagens/Barbaro.hpp"
 
 //Ataca o inimigo
-void Barbaro::Atacar(std::vector<Personagem> alvos)
+void Barbaro::Atacar(std::vector<Personagem*> alvos)
 {
-    std::cout << "BARBARO\n";
     //Pega o monstro
-    Personagem alvo = alvos.at(4);
+    Personagem alvo = *alvos.at(4);
     
     //Para cada ataque
     for(int i = 0; i < this->_qtdAtaques + this->_modificadorQuantidadeAtaques; i++)
@@ -30,13 +29,13 @@ void Barbaro::CausarDano(Personagem alvo)
 }
     
 //Provoca o inimigo e aumenta a defesa
-void Barbaro::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Barbaro::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que usou a habilidade auxiliar
     this->_mana = false;
     
     //Provoca o monstro
-    alvos.at(4).AplicarStatus(3);
+    alvos.at(4)->AplicarStatus(3);
 
     //Altera o modificador de defesa
     this->_modificadorDefesa = this->_ferramenta + this->_buffFerramenta;
@@ -47,14 +46,11 @@ std::string Barbaro::ImprimirDados() const
     //Necessário pegar o código da Heloísa
     //return "";
 
-    
     std::string r;
 
     r  = "======================================================\n";
     r += "                         BÁRBARO                      \n";
-    r += "                         " + this->_vida;
-    r += "/" + this->_vidaMaxima;
-    r += "\n";
+    r += "                         " + std::to_string(this->_vida) +  "/" + std::to_string(this->_vidaMaxima) + "\n";
     r += "======================================================\n";
     r += "||  1. Atacar                 3. Consumir item      ||\n";
     r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";

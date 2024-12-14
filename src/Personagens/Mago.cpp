@@ -1,12 +1,10 @@
 #include "Personagens/Mago.hpp"
 
 //Ataca o inimigo
-void Mago::Atacar(std::vector<Personagem> alvos)
+void Mago::Atacar(std::vector<Personagem*> alvos)
 {
-    std::cout << "MAGO\n";
-
     //Pega o monstro
-    Personagem alvo = alvos.at(4);
+    Personagem alvo = *alvos.at(4);
 
     //Calcula se acertou
     if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
@@ -29,13 +27,13 @@ void Mago::CausarDano(Personagem alvo)
 }
     
 //Paraliza o inimigo
-void Mago::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Mago::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou a habilidade auxiliar
     this->_mana = false;
     
     //Paraliza o inimigo
-    alvos.at(4).AplicarStatus(1);
+    alvos.at(4)->AplicarStatus(1);
 }
 
 std::string Mago::ImprimirDados() const
@@ -45,9 +43,7 @@ std::string Mago::ImprimirDados() const
 
     r  = "======================================================\n";
     r += "                           MAGO                       \n";
-    r += "                         " + this->_vida;
-    r += "/" + this->_vidaMaxima;
-    r += "\n";
+    r += "                         " + std::to_string(this->_vida) + "/" + std::to_string(this->_vidaMaxima) + "\n";
     r += "======================================================\n";
     r += "||  1. Atacar                 3. Consumir item      ||\n";
     r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";

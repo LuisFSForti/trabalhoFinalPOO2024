@@ -13,9 +13,9 @@
 class Paladino : public Personagem
 {
     private:
-        void Atacar(std::vector<Personagem> alvos); //Ataca o inimigo
+        void Atacar(std::vector<Personagem*> alvos); //Ataca o inimigo
         void CausarDano(Personagem alvo); //Dano físico médio
-        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Muita cura pro time todo
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Muita cura pro time todo
 
         std::string ImprimirDados() const;
 

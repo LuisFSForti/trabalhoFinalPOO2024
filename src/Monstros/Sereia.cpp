@@ -1,13 +1,13 @@
 #include "Monstros/Sereia.hpp"
 
 //Ataca todos os inimigos
-void Sereia::Atacar(std::vector<Personagem> alvos)
+void Sereia::Atacar(std::vector<Personagem*> alvos)
 {
     //Para cada herói
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         //Pega o alvo
-        Personagem alvo = alvos.at(i);
+        Personagem alvo = *alvos.at(i);
 
         //Verifica se o ataque acerta
         if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
@@ -31,7 +31,7 @@ void Sereia::CausarDano(Personagem alvo)
 }
     
 //Encanta um inimigo aleatório
-void Sereia::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Sereia::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou a habilidade auxiliar
     this->_mana = false;
@@ -41,9 +41,9 @@ void Sereia::EfeitoAuxiliar(std::vector<Personagem> alvos)
     {
         //Sem prioridade de alvo
         posAlvo = rand() % 4;
-    } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+    } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
-    alvos.at(posAlvo).AplicarStatus(2); //Encanta o alvo
+    alvos.at(posAlvo)->AplicarStatus(2); //Encanta o alvo
 }
 
 std::string Sereia::ImprimirDados() const

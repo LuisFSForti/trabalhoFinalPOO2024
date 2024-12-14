@@ -1,7 +1,7 @@
 #include "Monstros/Fada.hpp"
 
 //Ataca múltiplos inimigos
-void Fada::Atacar(std::vector<Personagem> alvos)
+void Fada::Atacar(std::vector<Personagem*> alvos)
 {
     //Para cada ataque
     for(int i = 0; i < this->_qtdAtaques + this->_modificadorQuantidadeAtaques; i++) //Ataca múltiplas vezes
@@ -11,10 +11,10 @@ void Fada::Atacar(std::vector<Personagem> alvos)
         {
             //Sem prioridade de alvo
             posAlvo = rand() % 4;
-        } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+        } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
         //Pega o alvo atual
-        Personagem alvo = alvos.at(posAlvo);
+        Personagem alvo = *alvos.at(posAlvo);
 
         //Verifica se o ataque acerta
         if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
@@ -38,7 +38,7 @@ void Fada::CausarDano(Personagem alvo)
 }
     
 //Paraliza um inimigo
-void Fada::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Fada::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou sua habilidade auxiliar
     this->_mana = false;
@@ -48,10 +48,10 @@ void Fada::EfeitoAuxiliar(std::vector<Personagem> alvos)
     {
         //Sem prioridade de alvo
         posAlvo = rand() % 4;
-    } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+    } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
     //Paraliza o alvo
-    alvos.at(posAlvo).AplicarStatus(1);
+    alvos.at(posAlvo)->AplicarStatus(1);
 }
 
 std::string Fada::ImprimirDados() const

@@ -82,7 +82,7 @@ class Controller
         {
             Print(_party[_party.size()-1]->GetFileId(), true);
             PrintEnemyLife();        
-            std::cout << _party[currentPartyMember] << std::endl;
+            std::cout << *_party[currentPartyMember] << std::endl;
         }
 
     public:
@@ -93,10 +93,10 @@ class Controller
 
         void StartGame()                                // Inicializar jogo
         {   
-            Print("gameIcon.txt", true);
-            Cooldown(2);
-            Print("epilogue.txt", false);
-            Cooldown(2);
+            //Print("gameIcon.txt", true);
+            //Cooldown(2);
+            //Print("epilogue.txt", false);
+            //Cooldown(2);
             SetPlayer();
         }
 
@@ -118,7 +118,7 @@ class Controller
 
         void SetPlayer()                                // Setando os membros da equipe e inimigos
         {
-
+            _party.resize(5);
             _party[0] = new Barbaro();
             _party[1] = new Paladino();
             _party[2] = new Bardo();
@@ -184,7 +184,7 @@ class Controller
 
             round++;
             bool someOneAlive = false;
-            while(_party[_party.size()-1] > 0)                 // Enquanto o inimigo ou o jogador nao morrem
+            while(_party[_party.size()-1]->GetVida() > 0)                 // Enquanto o inimigo ou o jogador nao morrem
             {
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                 {
