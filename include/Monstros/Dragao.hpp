@@ -20,7 +20,7 @@ class Dragao : public Personagem
         std::string ImprimirDados() const;
 
     public:
-        Dragao(std::string id = "") {}
+        Dragao(std::string id);
 };
 
 

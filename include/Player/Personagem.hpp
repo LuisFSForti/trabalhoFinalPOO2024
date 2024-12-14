@@ -28,14 +28,14 @@ class Personagem
         //Item consumivel;
         std::string _enderecoFoto;
 
-        virtual void Atacar(std::vector<Personagem> alvos); //Virtual pois cada classe usa valores diferentes e alvos diferentes
-        virtual void CausarDano(Personagem alvo); //Virtual pois cada classe usa valores e tipos diferentes
-        virtual void EfeitoAuxiliar(std::vector<Personagem> alvos); //Virtual pois toda classe tem um efeito diferente
+        virtual void Atacar(std::vector<Personagem> alvos) { std::cout << "AQUI!\n";}; //Virtual pois cada classe usa valores diferentes e alvos diferentes
+        virtual void CausarDano(Personagem alvo) {}; //Virtual pois cada classe usa valores e tipos diferentes
+        virtual void EfeitoAuxiliar(std::vector<Personagem> alvos) {}; //Virtual pois toda classe tem um efeito diferente
         void UsarConsumivel();
         void Esquivar(); //Dobra a esquiva até a próxima ação
 
         bool CheckStatus(std::vector<Personagem> alvos); //Retorna se o usuário pode realizar ações
-        virtual std::string ImprimirDados() const;
+        virtual std::string ImprimirDados() const { return "";};
 
     public:
         void ReceberDanoFisico(int dano); //Diminui o dano usando armadura

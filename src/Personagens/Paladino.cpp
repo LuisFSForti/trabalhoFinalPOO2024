@@ -3,6 +3,7 @@
 //Ataca o inimigo
 void Paladino::Atacar(std::vector<Personagem> alvos)
 {
+    std::cout << "PALADINO\n";
     //Pega o monstro
     Personagem alvo = alvos.at(4);
 
@@ -48,6 +49,19 @@ void Paladino::EfeitoAuxiliar(std::vector<Personagem> alvos)
 std::string Paladino::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+        std::string r;
+
+    r  = "======================================================\n";
+    r += "                        PALADINO                      \n";
+    r += "                         " + this->_vida;
+    r += "/" + this->_vidaMaxima;
+    r += "\n";
+    r += "======================================================\n";
+    r += "||  1. Atacar                 3. Consumir item      ||\n";
+    r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
+    r += "======================================================\n";
+
+    return r;
 }
 
 Paladino::Paladino()

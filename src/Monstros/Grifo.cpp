@@ -45,6 +45,7 @@ void Grifo::EfeitoAuxiliar(std::vector<Personagem> alvos)
 std::string Grifo::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    return "";
 }
 
 Grifo::Grifo(std::string id)

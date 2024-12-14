@@ -20,7 +20,7 @@ class Centauro : public Personagem
         std::string ImprimirDados() const;
 
     public:
-        Centauro(std::string id = "") {}
+        Centauro(std::string id);
 };
 
 

@@ -20,7 +20,7 @@ class Fada : public Personagem
         std::string ImprimirDados() const;
 
     public:
-        Fada(std::string id = "") {}
+        Fada(std::string id = "");
 };
 
 

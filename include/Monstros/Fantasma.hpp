@@ -20,7 +20,7 @@ class Fantasma : public Personagem
         std::string ImprimirDados() const;
 
     public:
-        Fantasma(std::string id = "") {}
+        Fantasma(std::string id = "");
 };
 
 

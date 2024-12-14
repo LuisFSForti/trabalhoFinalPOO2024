@@ -57,6 +57,7 @@ void Fada::EfeitoAuxiliar(std::vector<Personagem> alvos)
 std::string Fada::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    return "";
 }
 
 Fada::Fada(std::string id)

@@ -70,6 +70,7 @@ void Dragao::EfeitoAuxiliar(std::vector<Personagem> alvos)
 std::string Dragao::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    return "";
 }
 
 Dragao::Dragao(std::string id)

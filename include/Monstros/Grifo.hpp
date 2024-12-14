@@ -20,7 +20,7 @@ class Grifo : public Personagem
         std::string ImprimirDados() const;
 
     public:
-        Grifo(std::string id = "") {}
+        Grifo(std::string id = "");
 };
 
 

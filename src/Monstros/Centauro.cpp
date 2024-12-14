@@ -90,6 +90,7 @@ void Centauro::EfeitoAuxiliar(std::vector<Personagem> alvos)
 std::string Centauro::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    return "";
 }
 
 Centauro::Centauro(std::string id)

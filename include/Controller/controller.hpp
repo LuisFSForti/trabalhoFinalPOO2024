@@ -35,6 +35,7 @@ class Controller
         int  round = 0;                                 // Qual a rodada presente
         int  currentPartyMember = 0;                    // Qual membro da equipe esta atualmente jogando
         std::string filesPath = "Text/";                // Pasta de texto para arquivos em ascii
+        std::string enemyPath = "Inimigos/";
 
         int enemyLife = 1000;   // Teste por agora
         int playerLife = 100;   // Teste por agora
@@ -63,13 +64,13 @@ class Controller
         void PrintEnemyLife()                           // Escrever a vida atual do inimigo
         {
             std::cout << "==============================" << std::endl;
-            std::cout << "          " << _party[_party.size()-1].GetVida() << "/1000" << std::endl; 
+            std::cout << "          " << _party[_party.size()-1].GetVida() << "/" << _party[_party.size()-1].GetVidaMaxima() << std::endl; 
             std::cout << "==============================" << std::endl;
         }
 
         void PrintPlayerLife(int currentPartyMember)    // Escrever a vida atual do membro da equipe
         {
-            std::cout << "||               " << _party[currentPartyMember].GetVida() << "/100" << std::endl;
+            std::cout << "||               " << _party[currentPartyMember].GetVida() << "/" << _party[currentPartyMember].GetVidaMaxima() << std::endl;
             std::cout << "==========================================" << std::endl;
         }
 
@@ -84,10 +85,12 @@ class Controller
         {
             Print(_party[_party.size()-1].GetFileId(), true);
             PrintEnemyLife();        
-            Print("playerAtacks.txt", false);
-            PrintPartyMemberItem(_party[currentPartyMember]);
+            //Print("playerAtacks.txt", false);
+            //PrintPartyMemberItem(_party[currentPartyMember]);
             //Print("party" + currentPartyMember, false);
-            PrintPlayerLife(0);
+
+            std::cout << _party[currentPartyMember] << std::endl;
+            //PrintPlayerLife(0);
         }
 
     public:
@@ -101,7 +104,7 @@ class Controller
             Print("gameIcon.txt", true);
             Cooldown(2);
             Print("epilogue.txt", false);
-            Cooldown(10);
+            Cooldown(2);
             SetPlayer();
         }
 
@@ -123,13 +126,15 @@ class Controller
 
         void SetPlayer()                                // Setando os membros da equipe e inimigos
         {
-            std::string enemyPath = "Inimigos";
+
+            //_party[0] = new Barbaro();
+
             _party.push_back(Barbaro());
             _party.push_back(Paladino());
             _party.push_back(Bardo());
             _party.push_back(Mago());
 
-            _enemies.push_back(Centauro(enemyPath + "IcentauroBasico.txt"));
+            _enemies.push_back(Centauro(enemyPath + "centauroBasico.txt"));
             _enemies.push_back(Dragao(enemyPath +  "dragaoBasico.txt"));
             _enemies.push_back(Fada(enemyPath +  "fadaBasico.txt"));
             _enemies.push_back(Fantasma(enemyPath +  "fantasmaBasico.txt"));
@@ -168,6 +173,10 @@ class Controller
                     std::cout << "Escolha uma das opcoes: ";        // Espera a escolha de alguma das opcoes
                     std::cin  >> op;
 
+                    _party[currentPartyMember].Comando(op-1, _party);
+                    Cooldown(2);
+
+                    /*
                     switch (op)
                     {
                         case 1:                                     // Atacar
@@ -190,12 +199,17 @@ class Controller
                             break;
                     }
 
+                    */
                 }
 
-                std::cout << "O INIMIGO ESTÁ ATACANDO!" << std::endl;
-                _party[currentPartyMember].Atacar(_party);          // Inimigo ataca
+                Cooldown(2);
+
+                _party[currentPartyMember].Comando(1, _party);          // Inimigo ataca
                 currentPartyMember = 0;                             // Reseta party 
                 ReloadScreen();
+                std::cout << "O INIMIGO ESTÁ ATACANDO!" << std::endl;
+
+                Cooldown(2);
 
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                 {

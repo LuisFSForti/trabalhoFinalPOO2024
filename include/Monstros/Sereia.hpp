@@ -20,7 +20,7 @@ class Sereia : public Personagem
         std::string ImprimirDados() const;
 
     public:
-        Sereia(std::string id = "") {}
+        Sereia(std::string id = "");
 };
 
 

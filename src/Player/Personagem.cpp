@@ -199,6 +199,7 @@ void Personagem::BatalhaEncerrada()
 std::ostream& operator<<(std::ostream& out, const Personagem& p)
 {
     out << p.ImprimirDados();
+    return out;
 }
 
 //Para acessar os valores

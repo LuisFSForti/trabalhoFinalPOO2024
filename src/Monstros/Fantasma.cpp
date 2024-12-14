@@ -47,6 +47,7 @@ void Fantasma::EfeitoAuxiliar(std::vector<Personagem> alvos)
 std::string Fantasma::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    return "";
 }
 
 Fantasma::Fantasma(std::string id)

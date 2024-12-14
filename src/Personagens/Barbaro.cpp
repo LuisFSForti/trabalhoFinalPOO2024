@@ -3,6 +3,7 @@
 //Ataca o inimigo
 void Barbaro::Atacar(std::vector<Personagem> alvos)
 {
+    std::cout << "BARBARO\n";
     //Pega o monstro
     Personagem alvo = alvos.at(4);
     
@@ -44,6 +45,23 @@ void Barbaro::EfeitoAuxiliar(std::vector<Personagem> alvos)
 std::string Barbaro::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    //return "";
+
+    
+    std::string r;
+
+    r  = "======================================================\n";
+    r += "                         BÁRBARO                      \n";
+    r += "                         " + this->_vida;
+    r += "/" + this->_vidaMaxima;
+    r += "\n";
+    r += "======================================================\n";
+    r += "||  1. Atacar                 3. Consumir item      ||\n";
+    r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
+    r += "======================================================\n";
+
+    return r;
+   
 }
 
 Barbaro::Barbaro()
