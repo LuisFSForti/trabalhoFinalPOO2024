@@ -14,7 +14,7 @@ class Mago : public Personagem
 {
     private:
         void Atacar(std::vector<Personagem*> alvos); //Ataca o inimigo
-        void CausarDano(Personagem alvo); //Alto dano mágico
+        void CausarDano(Personagem* alvo); //Alto dano mágico
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paraliza o inimigo
 
         std::string ImprimirDados() const;

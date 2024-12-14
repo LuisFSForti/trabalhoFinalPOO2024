@@ -7,17 +7,17 @@ void Sereia::Atacar(std::vector<Personagem*> alvos)
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         //Pega o alvo
-        Personagem alvo = *alvos.at(i);
+        Personagem* alvo = alvos.at(i);
 
         //Verifica se o ataque acerta
-        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
             //Se sim, calcula o dano
             this->CausarDano(alvo);
     }
 }
     
 //Dano psicológico baixo
-void Sereia::CausarDano(Personagem alvo)
+void Sereia::CausarDano(Personagem* alvo)
 {
     //Calcula o crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -27,7 +27,7 @@ void Sereia::CausarDano(Personagem alvo)
     int dano = (rand() % 4 + this->_arma + this->_buffArma) * (1 + critico);
 
     //Avisa o alvo que recebeu dano psicológico
-    alvo.ReceberDanoPsicologico(dano);
+    alvo->ReceberDanoPsicologico(dano);
 }
     
 //Encanta um inimigo aleatório

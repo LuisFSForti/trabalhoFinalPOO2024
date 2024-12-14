@@ -10,12 +10,12 @@ void Grifo::Atacar(std::vector<Personagem*> alvos)
         //Se estiver ativamente esquivando aumenta a chance de desviar
         if(rand()%20 + (alvos.at(i)->GetSorte()) * alvos.at(i)->GetModificadorEsquiva() < this->_ferramenta + this->_buffFerramenta)
             //Se não desviou, calcula o dano
-            this->CausarDano(*alvos.at(i));
+            this->CausarDano(alvos.at(i));
     }
 }
     
 //Dano físico médio-baixo
-void Grifo::CausarDano(Personagem alvo)
+void Grifo::CausarDano(Personagem* alvo)
 {
     //Calcula se é crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -25,7 +25,7 @@ void Grifo::CausarDano(Personagem alvo)
     int dano = (rand() % 8 + this->_arma + this->_buffArma) * (1 + critico);
 
     //Avisa o alvo que ele recebeu dano físico e quanto
-    alvo.ReceberDanoFisico(dano);
+    alvo->ReceberDanoFisico(dano);
 }
     
 //Paraliza todos os inimigos

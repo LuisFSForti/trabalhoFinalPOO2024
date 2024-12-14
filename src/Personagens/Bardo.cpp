@@ -4,16 +4,16 @@
 void Bardo::Atacar(std::vector<Personagem*> alvos)
 {
     //Pega o monstro
-    Personagem alvo = *alvos.at(4);
+    Personagem* alvo = alvos.at(4);
 
     //Verifica se o ataque acert
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
         //Se sim, calcula o dano
         this->CausarDano(alvo);
 }
     
 //Dano psicológico baixo, alta chanca de crítico
-void Bardo::CausarDano(Personagem alvo)
+void Bardo::CausarDano(Personagem* alvo)
 {
     //Calcula o crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -23,7 +23,7 @@ void Bardo::CausarDano(Personagem alvo)
     int dano = (rand()%6 + this->_arma + this->_buffArma) * (1 + critico); //Dano psicológico, não tem resistência
 
     //Alerta o alvo que recebeu dano psicológico e quanto
-    alvo.ReceberDanoPsicologico(dano);
+    alvo->ReceberDanoPsicologico(dano);
 }
 
 //Remove efeitos e cura um pouco o time todo    
@@ -55,6 +55,8 @@ std::string Bardo::ImprimirDados() const
     r += "||  1. Atacar                 3. Consumir item      ||\n";
     r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
     r += "======================================================\n";
+    r += "    Item Disponível: \n";
+    r += "======================================================";
 
     return r;
 }

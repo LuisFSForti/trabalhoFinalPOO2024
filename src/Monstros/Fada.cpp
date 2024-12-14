@@ -14,17 +14,17 @@ void Fada::Atacar(std::vector<Personagem*> alvos)
         } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
         //Pega o alvo atual
-        Personagem alvo = *alvos.at(posAlvo);
+        Personagem* alvo = alvos.at(posAlvo);
 
         //Verifica se o ataque acerta
-        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
             //Calcula o dano
             this->CausarDano(alvo);
     }
 }
     
 //Dano mágico médio com alta chance de crítico
-void Fada::CausarDano(Personagem alvo)
+void Fada::CausarDano(Personagem* alvo)
 {
     //Calcula se é crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -34,7 +34,7 @@ void Fada::CausarDano(Personagem alvo)
     int dano = (rand() % 6 + this->_arma + this->_buffArma) * (1 + critico);
 
     //Alerta o alvo que ele recebeu dano mágico e quanto
-    alvo.ReceberDanoMagico(dano);
+    alvo->ReceberDanoMagico(dano);
 }
     
 //Paraliza um inimigo

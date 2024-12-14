@@ -65,19 +65,6 @@ class Controller
             std::cout << "==============================" << std::endl;
         }
 
-        void PrintPlayerLife(int currentPartyMember)    // Escrever a vida atual do membro da equipe
-        {
-            std::cout << "||               " << _party[currentPartyMember]->GetVida() << "/" << _party[currentPartyMember]->GetVidaMaxima() << std::endl;
-            std::cout << "==========================================" << std::endl;
-        }
-
-        void PrintPartyMemberItem(Personagem member)    // Escrever o item disponivel daquele membro da equipe
-        {
-            std::cout << "Item Disponível:" << std::endl;
-            //std::cout << "Item Disponível:" << member.GetItem().nome() << std::endl;
-            std::cout << "==========================================" << std::endl;
-        }
-
         void ReloadScreen()                             // Recarregar a tela com novas informacoes
         {
             Print(_party[_party.size()-1]->GetFileId(), true);

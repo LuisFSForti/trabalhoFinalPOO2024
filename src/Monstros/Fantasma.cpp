@@ -11,16 +11,16 @@ void Fantasma::Atacar(std::vector<Personagem*> alvos)
     } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
     //Pega o alvo
-    Personagem alvo = *alvos.at(posAlvo);
+    Personagem* alvo = alvos.at(posAlvo);
 
     //Verifica se o ataque acerta
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
         //Se sim, calcula o dano
         this->CausarDano(alvo);
 }
     
 //Dano mágico médio
-void Fantasma::CausarDano(Personagem alvo)
+void Fantasma::CausarDano(Personagem* alvo)
 {
     //Calcula a chance de crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -30,7 +30,7 @@ void Fantasma::CausarDano(Personagem alvo)
     int dano = (rand() % 6 + this->_arma + this->_buffArma) * (1 + critico);
 
     //Alerta o alvo que ele recebeu dano mágico e quanto
-    alvo.ReceberDanoMagico(dano);
+    alvo->ReceberDanoMagico(dano);
 }
 
 //Amedronta os inimigos

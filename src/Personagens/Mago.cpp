@@ -4,16 +4,16 @@
 void Mago::Atacar(std::vector<Personagem*> alvos)
 {
     //Pega o monstro
-    Personagem alvo = *alvos.at(4);
+    Personagem* alvo = alvos.at(4);
 
     //Calcula se acertou
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
         //Calcula o dano
         this->CausarDano(alvo);
 }
     
 //Alto dano mágico
-void Mago::CausarDano(Personagem alvo)
+void Mago::CausarDano(Personagem* alvo)
 {
     //Calcula o critico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -23,7 +23,7 @@ void Mago::CausarDano(Personagem alvo)
     int dano = (rand()%12 + this->_arma + this->_buffArma + this->_ferramenta + this->_buffFerramenta) * (1 + critico);
 
     //Alerta o alvo que recebeu dano mágico e quanto
-    alvo.ReceberDanoMagico(dano);
+    alvo->ReceberDanoMagico(dano);
 }
     
 //Paraliza o inimigo
@@ -48,6 +48,8 @@ std::string Mago::ImprimirDados() const
     r += "||  1. Atacar                 3. Consumir item      ||\n";
     r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
     r += "======================================================\n";
+    r += "    Item Disponível: \n";
+    r += "======================================================";
 
     return r;
 }

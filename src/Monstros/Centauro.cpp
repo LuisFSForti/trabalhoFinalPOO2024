@@ -28,16 +28,16 @@ void Centauro::Atacar(std::vector<Personagem*> alvos)
     } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
     //Pega o alvo
-    Personagem alvo = *alvos.at(posAlvo);
+    Personagem* alvo = alvos.at(posAlvo);
 
     //Verifica se o ataque acerta
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
         //Se sim, causa dano ao alvo
         this->CausarDano(alvo);
 }
 
 //Dano físico médio-alto    
-void Centauro::CausarDano(Personagem alvo)
+void Centauro::CausarDano(Personagem* alvo)
 {
     //Calcula se é um crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -46,7 +46,7 @@ void Centauro::CausarDano(Personagem alvo)
     int dano = (rand() % 8 + this->_arma + this->_buffArma) * (1 + critico);
 
     //Alerta o alvo que ele recebeu dano físico e fala quanto
-    alvo.ReceberDanoFisico(dano);
+    alvo->ReceberDanoFisico(dano);
 }
     
 //Dano físico altíssimo em um inimigo

@@ -31,7 +31,7 @@ bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
             posAlvo = rand() % 4;
         } while(alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
-        this->CausarDano(*alvos.at(posAlvo));
+        this->CausarDano(alvos.at(posAlvo));
 
         break;
     
@@ -39,7 +39,7 @@ bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
         if(alvos.at(0)->GetVida() <= 0) //Se o bárbaro estiver morto
             podeAgir = true; //Então pode agir normalmente
         else //Se ele estiver vivo
-            this->CausarDano(*alvos.at(0)); //Ataca o bárbaro
+            this->CausarDano(alvos.at(0)); //Ataca o bárbaro
         break;
 
     case 4: //Amedrontado

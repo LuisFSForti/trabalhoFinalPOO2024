@@ -14,7 +14,7 @@ class Dragao : public Personagem
 {
     private:
         void Atacar(std::vector<Personagem*> alvos); //Golpeia um inimigo, priorizando a linha de frente
-        void CausarDano(Personagem alvo); //Dano físico alto
+        void CausarDano(Personagem* alvo); //Dano físico alto
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Dano físico alto em área
 
         std::string ImprimirDados() const;
