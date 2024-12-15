@@ -249,6 +249,12 @@ class Controller
 
             std::cin >> op;
 
+            if(op == 5)
+            {
+                StartBattle();
+                return;
+            }
+
             if(_party[op-1]->HasItem())
             {
                 std::cout << "Parece que esse membro ja tem um item... Escolha outro." << std::endl;
