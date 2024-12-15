@@ -24,14 +24,14 @@ class Personagem
         int _vida, _vidaMaxima, _armadura, _armaduraMagica, _esquiva, _precisao, _sorte, _arma, _ferramenta, _qtdAtaques; //Valores base
         int _buffVida, _buffArmadura, _buffArmaduraMagica, _buffEsquiva, _buffPrecisao, _buffSorte, _buffArma, _buffFerramenta; //Buffs permanentes
         int _modificadorEsquiva, _modificadorDefesa, _modificadorQuantidadeAtaques; //Modificadores temporários
-        int _status; //Para definir se está paralizado, encantado, provocado ou amedrontado
+        int _status; //Para definir se está paralisado, encantado, provocado ou amedrontado
         //Item consumivel;
         std::string _enderecoFoto;
 
         virtual void Atacar(std::vector<Personagem*> alvos) { std::cout << "AQUI!\n";}; //Virtual pois cada classe usa valores diferentes e alvos diferentes
         virtual void CausarDano(Personagem *alvo) {}; //Virtual pois cada classe usa valores e tipos diferentes
         virtual void EfeitoAuxiliar(std::vector<Personagem*> alvos) {}; //Virtual pois toda classe tem um efeito diferente
-        void UsarConsumivel();
+        void UsarConsumivel(const Item item); //Aplica um item ao personagem
         void Esquivar(); //Dobra a esquiva até a próxima ação
 
         bool CheckStatus(std::vector<Personagem*> alvos); //Retorna se o usuário pode realizar ações

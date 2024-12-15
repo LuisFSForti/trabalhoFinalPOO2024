@@ -1,8 +1,22 @@
+#include "Item/Item.hpp"
 #include "Player/Personagem.hpp"
 
-void Personagem::UsarConsumivel()
+void Personagem::UsarConsumivel(Item item)
 {
-    //programar para chamar o item
+    this->_vida+= item.GetCura();
+    if(this->_vida > this->_vidaMaxima) this->_vida = this->_vidaMaxima;
+
+    if(!this->_mana && item.GetMana()) this->_mana = true;
+
+    this->_buffArma+= item.GetBuffAtaque();
+    this->_buffArmadura += item.GetBuffArmadura();
+    this->_buffFerramenta += item.GetBuffFerramenta();
+    
+    this->_buffSorte += item.GetBuffSorte();
+
+    this->_esquiva += item.GetBuffEsquiva();
+
+    if(this->_vida == 0 && item.Revive()) this->_vida = this->_vidaMaxima;
 }
 
 //Dobra a esquiva até a próxima ação
@@ -171,7 +185,7 @@ void Personagem::Comando(int instr, std::vector<Personagem*> alvos)
     //Se usar item consumível
     case 2:
         //Usa o item
-        this->UsarConsumivel();
+        this->UsarConsumivel(/*botar item aqui*/);
         break;
 
     //Se esquivar
