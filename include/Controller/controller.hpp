@@ -116,10 +116,10 @@ class Controller
 
         void StartGame()                                // Inicializar jogo
         {   
-            //Print("gameIcon.txt", true);
-            //Cooldown(2);
-            //Print("epilogue.txt", false);
-            //Cooldown(2);
+            Print("gameIcon.txt", true);
+            Cooldown(2);
+            Print("epilogue.txt", false);
+            Cooldown(4);
             SetPlayer();
         }
 
