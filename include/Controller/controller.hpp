@@ -60,9 +60,9 @@ class Controller
 
         void PrintEnemyLife()                           // Escrever a vida atual do inimigo
         {
-            std::cout << "==============================" << std::endl;
-            std::cout << "          " << _party[_party.size()-1]->GetVida() << "/" << _party[_party.size()-1]->GetVidaMaxima() << std::endl; 
-            std::cout << "==============================" << std::endl;
+            std::cout << "      ==============================" << std::endl;
+            std::cout << "                " << _party[_party.size()-1]->GetVida() << "/" << _party[_party.size()-1]->GetVidaMaxima() << std::endl; 
+            std::cout << "      ==============================" << std::endl;
         }
 
         void ReloadScreen()                             // Recarregar a tela com novas informacoes
@@ -93,7 +93,7 @@ class Controller
             char op;
             std::cin >> op;
 
-            if(op == 'S')
+            if(op == 's')
                 StartGame();
             else
                 exit(0);
@@ -117,7 +117,7 @@ class Controller
             _enemies.push_back(Fantasma(enemyPath +  "fantasmaBasico.txt"));
             _enemies.push_back(Grifo(enemyPath +  "grifoBasico.txt"));
             _enemies.push_back(Sereia(enemyPath +  "sereiaBasico.txt"));
-
+ 
             StartBattle();
         }
 
@@ -135,7 +135,7 @@ class Controller
                 return;
             }
 
-            int randIndex = rand() % 6;                             // Sorteia algum dos inimigos
+            int randIndex = rand() % 2;                             // Sorteia algum dos inimigos
 
             switch (randIndex)
             {
@@ -182,13 +182,15 @@ class Controller
                     std::cin  >> op;
 
                     _party[currentPartyMember]->Comando(op-1, _party);
+
+                    if(_party[_party.size()-1]->GetVida() <= 0) break;
                     Cooldown(2);
                 }
 
                 Cooldown(2);
 
-                _party[currentPartyMember]->Comando(1, _party);          // Inimigo ataca
-                currentPartyMember = 0;                             // Reseta party 
+                _party[currentPartyMember]->Comando(1, _party);             // Inimigo ataca
+                currentPartyMember = 0;                                     // Reseta party 
                 ReloadScreen();
                 std::cout << "O INIMIGO ESTÁ ATACANDO!" << std::endl;
 

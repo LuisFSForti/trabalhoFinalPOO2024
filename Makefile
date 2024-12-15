@@ -2,6 +2,7 @@ all: lib main
 
 lib:
 	g++ -c ./src/Controller/controller.cpp -I ./include -o ./obj/controller.o
+	g++ -c ./src/Controller/printFile.cpp -I ./include -o ./obj/printFile.o
 	g++ -c ./src/Player/Personagem.cpp -I ./include -o ./obj/personagem.o
 	g++ -c ./src/Personagens/Barbaro.cpp -I ./include -o ./obj/barbaro.o
 	g++ -c ./src/Personagens/Bardo.cpp -I ./include -o ./obj/bardo.o
