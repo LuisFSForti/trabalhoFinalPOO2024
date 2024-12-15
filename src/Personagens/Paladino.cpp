@@ -1,21 +1,21 @@
-#include "Paladino.hpp"
+#include "Personagens/Paladino.hpp"
 
 //Ataca o inimigo
-void Paladino::Atacar(std::vector<Personagem> alvos)
+void Paladino::Atacar(std::vector<Personagem*> alvos)
 {
     //Pega o monstro
-    Personagem alvo = alvos.at(4);
+    Personagem* alvo = alvos.at(4);
 
     //Para cada ataque
     for(int i = 0; i < this->_qtdAtaques + this->_modificadorQuantidadeAtaques; i++)
         //Calcula se o ataque acerta
-        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
             //Se sim, calcula o dano
             this->CausarDano(alvo);
 }
 
 //Dano físico médios    
-void Paladino::CausarDano(Personagem alvo)
+void Paladino::CausarDano(Personagem* alvo)
 {
     //Calcula o crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -25,11 +25,11 @@ void Paladino::CausarDano(Personagem alvo)
     int dano = (rand()%10 + this->_arma + this->_buffArma) * (1 + critico);
 
     //Alerta o alvo que recebeu dano físico
-    alvo.ReceberDanoFisico(dano);
+    alvo->ReceberDanoFisico(dano);
 }
     
 //Muita cura pro time todo
-void Paladino::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Paladino::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou a habilidade auxiliar
     this->_mana = false;
@@ -41,13 +41,26 @@ void Paladino::EfeitoAuxiliar(std::vector<Personagem> alvos)
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         //Cura o alvo
-        alvos.at(i).Curar(cura);
+        alvos.at(i)->Curar(cura);
     }
 }
 
 std::string Paladino::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+        std::string r;
+
+    r  = "======================================================\n";
+    r += "                        PALADINO                      \n";
+    r += "                         " + std::to_string(this->_vida) + "/" + std::to_string(this->_vidaMaxima) + "\n";
+    r += "======================================================\n";
+    r += "||  1. Atacar                 3. Consumir item      ||\n";
+    r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
+    r += "======================================================\n";
+    r += "    Item Disponível: \n";
+    r += "======================================================";
+
+    return r;
 }
 
 Paladino::Paladino()

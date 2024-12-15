@@ -1,21 +1,21 @@
-#include "Barbaro.hpp"
+#include "Personagens/Barbaro.hpp"
 
 //Ataca o inimigo
-void Barbaro::Atacar(std::vector<Personagem> alvos)
+void Barbaro::Atacar(std::vector<Personagem*> alvos)
 {
     //Pega o monstro
-    Personagem alvo = alvos.at(4);
+    Personagem* alvo = alvos.at(4);
     
     //Para cada ataque
     for(int i = 0; i < this->_qtdAtaques + this->_modificadorQuantidadeAtaques; i++)
         //Verifica se o ataque acerta
-        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
             //Se sim, calcula o dano
             this->CausarDano(alvo);
 }
 
 //Dano físico alto    
-void Barbaro::CausarDano(Personagem alvo)
+void Barbaro::CausarDano(Personagem* alvo)
 {
     //Calcula o crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -25,17 +25,17 @@ void Barbaro::CausarDano(Personagem alvo)
     int dano = (rand()%102+ this->_arma + this->_buffArma) * (1 + critico);
 
     //Alerta o alvo que recebeu dano físico e quanto
-    alvo.ReceberDanoFisico(dano);
+    alvo->ReceberDanoFisico(dano);
 }
     
 //Provoca o inimigo e aumenta a defesa
-void Barbaro::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Barbaro::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que usou a habilidade auxiliar
     this->_mana = false;
     
     //Provoca o monstro
-    alvos.at(4).AplicarStatus(3);
+    alvos.at(4)->AplicarStatus(3);
 
     //Altera o modificador de defesa
     this->_modificadorDefesa = this->_ferramenta + this->_buffFerramenta;
@@ -44,6 +44,22 @@ void Barbaro::EfeitoAuxiliar(std::vector<Personagem> alvos)
 std::string Barbaro::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    //return "";
+
+    std::string r;
+
+    r  = "======================================================\n";
+    r += "                         BÁRBARO                      \n";
+    r += "                         " + std::to_string(this->_vida) +  "/" + std::to_string(this->_vidaMaxima) + "\n";
+    r += "======================================================\n";
+    r += "||  1. Atacar                 3. Consumir item      ||\n";
+    r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
+    r += "======================================================\n";
+    r += "    Item Disponível: \n";
+    r += "======================================================";
+
+    return r;
+   
 }
 
 Barbaro::Barbaro()

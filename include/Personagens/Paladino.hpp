@@ -7,15 +7,15 @@
 #include <iostream>
 #include <vector>
 
-#include "Personagem.hpp"
+#include "Player/Personagem.hpp"
 
 //Objetivo da classe: média entre todos, resistente, muita cura
-class Paladino : Personagem
+class Paladino : public Personagem
 {
     private:
-        void Atacar(std::vector<Personagem> alvos); //Ataca o inimigo
-        void CausarDano(Personagem alvo); //Dano físico médio
-        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Muita cura pro time todo
+        void Atacar(std::vector<Personagem*> alvos); //Ataca o inimigo
+        void CausarDano(Personagem* alvo); //Dano físico médio
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Muita cura pro time todo
 
         std::string ImprimirDados() const;
 

@@ -7,20 +7,20 @@
 #include <iostream>
 #include <vector>
 
-#include "Personagem.hpp"
+#include "../Player/Personagem.hpp"
 
 //Objetivo da classe: baixíssima vida, altíssima esquiva, dano mágico baixo
-class Fantasma : Personagem
+class Fantasma : public Personagem
 {
     private:
-        void Atacar(std::vector<Personagem> alvos); //Golpeia um inimigo
-        void CausarDano(Personagem alvo); //Dano mágico médio
-        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Amedronta os inimigos
+        void Atacar(std::vector<Personagem*> alvos); //Golpeia um inimigo
+        void CausarDano(Personagem* alvo); //Dano mágico médio
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Amedronta os inimigos
 
         std::string ImprimirDados() const;
 
     public:
-        Fantasma();
+        Fantasma(std::string id = "");
 };
 
 

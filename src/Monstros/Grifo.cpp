@@ -1,21 +1,21 @@
-#include "Grifo.hpp"
+#include "Monstros/Grifo.hpp"
 
 //Golpeia todos os inimigos, com chance de desvio
-void Grifo::Atacar(std::vector<Personagem> alvos)
+void Grifo::Atacar(std::vector<Personagem*> alvos)
 {
     //Para cada herói
     for(int i = 0; i < alvos.size()-1; i++)
     {
         //Testa se o herói desvia do ataque
         //Se estiver ativamente esquivando aumenta a chance de desviar
-        if(rand()%20 + (alvos.at(i).GetSorte()) * alvos.at(i).GetModificadorEsquiva() < this->_ferramenta + this->_buffFerramenta)
+        if(rand()%20 + (alvos.at(i)->GetSorte()) * alvos.at(i)->GetModificadorEsquiva() < this->_ferramenta + this->_buffFerramenta)
             //Se não desviou, calcula o dano
             this->CausarDano(alvos.at(i));
     }
 }
     
 //Dano físico médio-baixo
-void Grifo::CausarDano(Personagem alvo)
+void Grifo::CausarDano(Personagem* alvo)
 {
     //Calcula se é crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -25,11 +25,11 @@ void Grifo::CausarDano(Personagem alvo)
     int dano = (rand() % 8 + this->_arma + this->_buffArma) * (1 + critico);
 
     //Avisa o alvo que ele recebeu dano físico e quanto
-    alvo.ReceberDanoFisico(dano);
+    alvo->ReceberDanoFisico(dano);
 }
     
 //Paraliza todos os inimigos
-void Grifo::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Grifo::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou sua habilidade auxiliar
     this->_mana = false;
@@ -38,16 +38,17 @@ void Grifo::EfeitoAuxiliar(std::vector<Personagem> alvos)
     for(int i = 0; i < alvos.size()-1; i++)
     {
         //Paraliza o alvo atual
-        alvos.at(i).AplicarStatus(1);
+        alvos.at(i)->AplicarStatus(1);
     }
 }
 
 std::string Grifo::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    return "";
 }
 
-Grifo::Grifo()
+Grifo::Grifo(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -78,4 +79,6 @@ Grifo::Grifo()
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
     _mana = true;
+
+    _idFile = id;
 }

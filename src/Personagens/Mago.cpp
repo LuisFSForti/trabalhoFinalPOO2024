@@ -1,19 +1,19 @@
-#include "Mago.hpp"
+#include "Personagens/Mago.hpp"
 
 //Ataca o inimigo
-void Mago::Atacar(std::vector<Personagem> alvos)
+void Mago::Atacar(std::vector<Personagem*> alvos)
 {
     //Pega o monstro
-    Personagem alvo = alvos.at(4);
+    Personagem* alvo = alvos.at(4);
 
     //Calcula se acertou
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
         //Calcula o dano
         this->CausarDano(alvo);
 }
     
 //Alto dano mágico
-void Mago::CausarDano(Personagem alvo)
+void Mago::CausarDano(Personagem* alvo)
 {
     //Calcula o critico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -23,22 +23,35 @@ void Mago::CausarDano(Personagem alvo)
     int dano = (rand()%12 + this->_arma + this->_buffArma + this->_ferramenta + this->_buffFerramenta) * (1 + critico);
 
     //Alerta o alvo que recebeu dano mágico e quanto
-    alvo.ReceberDanoMagico(dano);
+    alvo->ReceberDanoMagico(dano);
 }
     
 //Paraliza o inimigo
-void Mago::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Mago::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou a habilidade auxiliar
     this->_mana = false;
     
     //Paraliza o inimigo
-    alvos.at(4).AplicarStatus(1);
+    alvos.at(4)->AplicarStatus(1);
 }
 
 std::string Mago::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    std::string r;
+
+    r  = "======================================================\n";
+    r += "                           MAGO                       \n";
+    r += "                         " + std::to_string(this->_vida) + "/" + std::to_string(this->_vidaMaxima) + "\n";
+    r += "======================================================\n";
+    r += "||  1. Atacar                 3. Consumir item      ||\n";
+    r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
+    r += "======================================================\n";
+    r += "    Item Disponível: \n";
+    r += "======================================================";
+
+    return r;
 }
 
 Mago::Mago()

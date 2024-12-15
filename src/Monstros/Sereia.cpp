@@ -1,23 +1,23 @@
-#include "Sereia.hpp"
+#include "Monstros/Sereia.hpp"
 
 //Ataca todos os inimigos
-void Sereia::Atacar(std::vector<Personagem> alvos)
+void Sereia::Atacar(std::vector<Personagem*> alvos)
 {
     //Para cada herói
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         //Pega o alvo
-        Personagem alvo = alvos.at(i);
+        Personagem* alvo = alvos.at(i);
 
         //Verifica se o ataque acerta
-        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
             //Se sim, calcula o dano
             this->CausarDano(alvo);
     }
 }
     
 //Dano psicológico baixo
-void Sereia::CausarDano(Personagem alvo)
+void Sereia::CausarDano(Personagem* alvo)
 {
     //Calcula o crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -27,11 +27,11 @@ void Sereia::CausarDano(Personagem alvo)
     int dano = (rand() % 4 + this->_arma + this->_buffArma) * (1 + critico);
 
     //Avisa o alvo que recebeu dano psicológico
-    alvo.ReceberDanoPsicologico(dano);
+    alvo->ReceberDanoPsicologico(dano);
 }
     
 //Encanta um inimigo aleatório
-void Sereia::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Sereia::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou a habilidade auxiliar
     this->_mana = false;
@@ -41,17 +41,18 @@ void Sereia::EfeitoAuxiliar(std::vector<Personagem> alvos)
     {
         //Sem prioridade de alvo
         posAlvo = rand() % 4;
-    } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+    } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
-    alvos.at(posAlvo).AplicarStatus(2); //Encanta o alvo
+    alvos.at(posAlvo)->AplicarStatus(2); //Encanta o alvo
 }
 
 std::string Sereia::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    return "";
 }
 
-Sereia::Sereia()
+Sereia::Sereia(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -82,4 +83,6 @@ Sereia::Sereia()
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = 0;
     _mana = true;
+
+    _idFile = id;
 }

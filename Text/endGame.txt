@@ -1,0 +1,2 @@
+                Pressione [S] para jogar novamente.
+                     Pressione [N] para sair.    

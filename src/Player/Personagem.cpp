@@ -1,5 +1,5 @@
-#include "Personagem.hpp"
-#include "Item.hpp"
+#include "Item/Item.hpp"
+#include "Player/Personagem.hpp"
 
 void Personagem::UsarConsumivel(Item item)
 {
@@ -26,7 +26,7 @@ void Personagem::Esquivar()
 }
 
 //Retorna se o usuário pode realizar ações
-bool Personagem::CheckStatus(std::vector<Personagem> alvos)
+bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
 {
     bool podeAgir = false; //Pro caso de ele estar sobre um efeito, mas ainda puder agir
     switch (this->_status)
@@ -43,14 +43,14 @@ bool Personagem::CheckStatus(std::vector<Personagem> alvos)
         do
         {
             posAlvo = rand() % 4;
-        } while(alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+        } while(alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
         this->CausarDano(alvos.at(posAlvo));
 
         break;
     
     case 3: //Provocado pelo bárbaro (que sempre estará na posição 0)
-        if(alvos.at(0).GetVida() <= 0) //Se o bárbaro estiver morto
+        if(alvos.at(0)->GetVida() <= 0) //Se o bárbaro estiver morto
             podeAgir = true; //Então pode agir normalmente
         else //Se ele estiver vivo
             this->CausarDano(alvos.at(0)); //Ataca o bárbaro
@@ -154,7 +154,7 @@ void Personagem::AplicarStatus(int status)
 }
 
 //Recebe uma instrução e os possíveis alvos
-void Personagem::Comando(int instr, std::vector<Personagem> alvos) 
+void Personagem::Comando(int instr, std::vector<Personagem*> alvos) 
 {
     //Reinicia o modificador de esquiva
     this->_modificadorEsquiva = 1;
@@ -213,6 +213,7 @@ void Personagem::BatalhaEncerrada()
 std::ostream& operator<<(std::ostream& out, const Personagem& p)
 {
     out << p.ImprimirDados();
+    return out;
 }
 
 //Para acessar os valores

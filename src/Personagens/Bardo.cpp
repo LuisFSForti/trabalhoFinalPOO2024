@@ -1,19 +1,19 @@
-#include "Bardo.hpp"
+#include "Personagens/Bardo.hpp"
 
 //Ataca o inimigo
-void Bardo::Atacar(std::vector<Personagem> alvos)
+void Bardo::Atacar(std::vector<Personagem*> alvos)
 {
     //Pega o monstro
-    Personagem alvo = alvos.at(4);
+    Personagem* alvo = alvos.at(4);
 
     //Verifica se o ataque acert
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
         //Se sim, calcula o dano
         this->CausarDano(alvo);
 }
     
 //Dano psicológico baixo, alta chanca de crítico
-void Bardo::CausarDano(Personagem alvo)
+void Bardo::CausarDano(Personagem* alvo)
 {
     //Calcula o crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -23,11 +23,11 @@ void Bardo::CausarDano(Personagem alvo)
     int dano = (rand()%6 + this->_arma + this->_buffArma) * (1 + critico); //Dano psicológico, não tem resistência
 
     //Alerta o alvo que recebeu dano psicológico e quanto
-    alvo.ReceberDanoPsicologico(dano);
+    alvo->ReceberDanoPsicologico(dano);
 }
 
 //Remove efeitos e cura um pouco o time todo    
-void Bardo::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Bardo::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou a habilidade auxiliar
     this->_mana = false;
@@ -38,14 +38,27 @@ void Bardo::EfeitoAuxiliar(std::vector<Personagem> alvos)
     //Para cada herói
     for(int i = 0; i < alvos.size() - 1; i++)
     {
-        alvos.at(i).Curar(cura); //Cura
-        alvos.at(i).AplicarStatus(0); //Remove qualquer status sobre ele
+        alvos.at(i)->Curar(cura); //Cura
+        alvos.at(i)->AplicarStatus(0); //Remove qualquer status sobre ele
     }
 }
 
 std::string Bardo::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
+    std::string r;
+
+    r  = "======================================================\n";
+    r += "                          BARDO                       \n";
+    r += "                         " + std::to_string(this->_vida) + "/" + std::to_string(this->_vidaMaxima) + "\n";
+    r += "======================================================\n";
+    r += "||  1. Atacar                 3. Consumir item      ||\n";
+    r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
+    r += "======================================================\n";
+    r += "    Item Disponível: \n";
+    r += "======================================================";
+
+    return r;
 }
 
 Bardo::Bardo()
@@ -81,7 +94,7 @@ Bardo::Bardo()
     _mana = true;
 }
 
-void Bardo::Comando(int instr, std::vector<Personagem> alvos) 
+void Bardo::Comando(int instr, std::vector<Personagem*> alvos) 
 {
     //Reinicia o modificador de esquiva
     this->_modificadorEsquiva = 1;

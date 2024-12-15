@@ -17,6 +17,9 @@
 class Personagem
 {
     protected:
+
+        std::string _idFile;
+
         bool _mana; //Para definir se pode usar a habilidade auxiliar
         int _vida, _vidaMaxima, _armadura, _armaduraMagica, _esquiva, _precisao, _sorte, _arma, _ferramenta, _qtdAtaques; //Valores base
         int _buffVida, _buffArmadura, _buffArmaduraMagica, _buffEsquiva, _buffPrecisao, _buffSorte, _buffArma, _buffFerramenta; //Buffs permanentes
@@ -25,14 +28,14 @@ class Personagem
         //Item consumivel;
         std::string _enderecoFoto;
 
-        virtual void Atacar(std::vector<Personagem> alvos); //Virtual pois cada classe usa valores diferentes e alvos diferentes
-        virtual void CausarDano(Personagem alvo); //Virtual pois cada classe usa valores e tipos diferentes
-        virtual void EfeitoAuxiliar(std::vector<Personagem> alvos); //Virtual pois toda classe tem um efeito diferente
+        virtual void Atacar(std::vector<Personagem*> alvos) { std::cout << "AQUI!\n";}; //Virtual pois cada classe usa valores diferentes e alvos diferentes
+        virtual void CausarDano(Personagem *alvo) {}; //Virtual pois cada classe usa valores e tipos diferentes
+        virtual void EfeitoAuxiliar(std::vector<Personagem*> alvos) {}; //Virtual pois toda classe tem um efeito diferente
         void UsarConsumivel(const Item item); //Aplica um item ao personagem
         void Esquivar(); //Dobra a esquiva até a próxima ação
 
-        bool CheckStatus(std::vector<Personagem> alvos); //Retorna se o usuário pode realizar ações
-        virtual std::string ImprimirDados() const;
+        bool CheckStatus(std::vector<Personagem*> alvos); //Retorna se o usuário pode realizar ações
+        virtual std::string ImprimirDados() const { return "";};
 
     public:
         void ReceberDanoFisico(int dano); //Diminui o dano usando armadura
@@ -41,7 +44,7 @@ class Personagem
         void Curar(int cura); //Cura
         void AplicarStatus(int status); //Aplica status
 
-        virtual void Comando(int instr, std::vector<Personagem> alvos); //Recebe uma instrução e os possíveis alvos, virtual pois o bardo possui uma variação
+        virtual void Comando(int instr, std::vector<Personagem*> alvos); //Recebe uma instrução e os possíveis alvos, virtual pois o bardo possui uma variação
         void BatalhaEncerrada(); //Deve ser chamado pra todos os personagens no final de cada batalha, reinicia valores temporários
 
         friend std::ostream& operator<<(std::ostream& out, const Personagem& p); //Para imprimir os dados do personagem
@@ -72,6 +75,8 @@ class Personagem
         int GetModificadorQuantidadeAtaques();
 
         int GetStatus();
+
+        std::string GetFileId() { return _idFile; }
 
         //Não há setters pois os valores devem serem alterados pelas funções
 };
