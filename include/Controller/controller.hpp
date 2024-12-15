@@ -185,7 +185,11 @@ class Controller
 
             round++;
             bool someOneAlive = false;
-            while(_party[_party.size()-1]->GetVida() > 0)                 // Enquanto o inimigo ou o jogador nao morrem
+
+            EnemyPlay(1);                                           // Inimigo usa efeito auxiliar
+            Cooldown(2);
+
+            while(_party[_party.size()-1]->GetVida() > 0)           // Enquanto o inimigo ou o jogador nao morrem
             {
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                 {
@@ -201,13 +205,7 @@ class Controller
                     Cooldown(2);
                 }
 
-                Cooldown(2);
-
-                _party[currentPartyMember]->Comando(1, _party);             // Inimigo ataca
-                currentPartyMember = 0;                                     // Reseta party 
-                ReloadScreen();
-                std::cout << "O INIMIGO ESTÁ ATACANDO!" << std::endl;
-
+                EnemyPlay(1);                                       // Inimigo ataca
                 Cooldown(2);
 
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
@@ -216,9 +214,23 @@ class Controller
                 if(!someOneAlive) break;
             }
 
-            if(someOneAlive) won = true;                         // Se terminou e nao morreram todos os membros
+            if(someOneAlive) won = true;                            // Se terminou e nao morreram todos os membros
             EndBattle();                                            // Acabar batalha
 
+        }
+
+        void EnemyPlay(int op)
+        {
+            _party[currentPartyMember]->Comando(op, _party);        // Inimigo ataca
+            
+            Print(_party[_party.size()-1]->GetFileId(), true);
+            PrintEnemyLife();       
+
+            std::cout << "==============================================" << std::endl;
+            std::cout << "                ATAQUE INIMIGO                " << std::endl;
+            std::cout << "==============================================" << std::endl;
+
+            std::cout << _party[_party.size()-1] << std::endl;
         }
 
         void EndBattle()
@@ -258,6 +270,7 @@ class Controller
             if(_party[op-1]->HasItem())
             {
                 std::cout << "Parece que esse membro ja tem um item... Escolha outro." << std::endl;
+                Cooldown(2);
                 LoadPrizeScreen(prize);
             }
             else

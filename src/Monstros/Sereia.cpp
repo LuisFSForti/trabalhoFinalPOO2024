@@ -49,7 +49,14 @@ void Sereia::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 std::string Sereia::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
-    return "";
+    std::string r;
+
+    r  = "==============================================\n";
+    r += "        Causando dano psicologico...\n";
+    r += "==============================================\n";
+    r += "                  STATUS                      \n";
+    r += "  MANA: sim                   DANO:           \n";
+    r += "";
 }
 
 Sereia::Sereia(std::string id)
