@@ -33,7 +33,7 @@ class Controller
         std::vector<Personagem> _enemies;               // Possíveis inimigos
         std::vector<Item> _items;
 
-        bool won;                                       // Se o player ganhou ou não
+        bool won = false;                               // Se o player ganhou ou não
         int  round = 0;                                 // Qual a rodada presente
         int  currentPartyMember = 0;                    // Qual membro da equipe esta atualmente jogando
         std::string filesPath = "Text/";                // Pasta de texto para arquivos em ascii
@@ -218,6 +218,7 @@ class Controller
             _enemies.erase(std::next(_enemies.begin(), randIndex)); // Apaga da lista de inimigos
 
             round++;
+            won = false;
             bool someOneAlive = false;
 
             EnemyPlay(1);                                           // Inimigo usa efeito auxiliar
@@ -251,8 +252,9 @@ class Controller
 
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                     if(_party[currentPartyMember]->GetVida() > 0)   someOneAlive = true;
-                
+
                 if(!someOneAlive) break;
+                Cooldown(5);
             }
 
             if(someOneAlive) won = true;                            // Se terminou e nao morreram todos os membros
@@ -279,9 +281,9 @@ class Controller
                 Print(_party[_party.size()-1]->GetFileId(), true);
                 PrintEnemyLife();       
 
-                std::cout << "==============================================" << std::endl;
+                std::cout << "=============================================================================" << std::endl;
                 std::cout << " O inimigo está " << Status(_party[_party.size()-1]) << ", por isso não pode atacar..." << std::endl;
-                std::cout << "==============================================" << std::endl;
+                std::cout << "=============================================================================" << std::endl;
 
             }
         }
