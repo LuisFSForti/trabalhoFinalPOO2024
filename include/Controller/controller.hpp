@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Controller/printFile.hpp"
+#include "Item/Item.hpp"
 
 #include "Player/Personagem.hpp"
 #include "Personagens/Barbaro.hpp"
@@ -30,6 +31,7 @@ class Controller
     private:
         std::vector<Personagem*> _party;                 // Membros da equipe do jogador  
         std::vector<Personagem> _enemies;               // Possíveis inimigos
+        std::vector<Item> _items;
 
         bool won;                                       // Se o player ganhou ou não
         int  round = 0;                                 // Qual a rodada presente
@@ -60,9 +62,9 @@ class Controller
 
         void PrintEnemyLife()                           // Escrever a vida atual do inimigo
         {
-            std::cout << "==============================" << std::endl;
-            std::cout << "          " << _party[_party.size()-1]->GetVida() << "/" << _party[_party.size()-1]->GetVidaMaxima() << std::endl; 
-            std::cout << "==============================" << std::endl;
+            std::cout << "      ==============================" << std::endl;
+            std::cout << "                " << _party[_party.size()-1]->GetVida() << "/" << _party[_party.size()-1]->GetVidaMaxima() << std::endl; 
+            std::cout << "      ==============================" << std::endl;
         }
 
         void ReloadScreen()                             // Recarregar a tela com novas informacoes
@@ -93,7 +95,7 @@ class Controller
             char op;
             std::cin >> op;
 
-            if(op == 'S')
+            if(op == 's')
                 StartGame();
             else
                 exit(0);
@@ -118,6 +120,18 @@ class Controller
             _enemies.push_back(Grifo(enemyPath +  "grifoBasico.txt"));
             _enemies.push_back(Sereia(enemyPath +  "sereiaBasico.txt"));
 
+            _items.push_back(Item(0,true,0,0,0,true,0,0,0, "Pocao da Vida", "Ressuscita um personagem morto."));
+            _items.push_back(Item(20,false,0,0,0,false,0,0,0, "Hidromel", "Cura a vida do alvo em 20 pontos."));
+            _items.push_back(Item(9999,false,0,0,0,false,0,0,0, "Ambrosia", "Restaura a vida maxima do alvo."));
+            _items.push_back(Item(0,true,0,0,0,false,0,0,0, "Licor", "Restaura a mana do alvo."));
+            _items.push_back(Item(0,false,rand()%5,0,0,false,0,0,0, "Pocao de Furia", "Aumenta o dano de arma."));
+            _items.push_back(Item(0,false,0,0,0,false,0,0,rand()%4, "Terco", "Aumenta a protecao por meios divinos."));
+            _items.push_back(Item(0,false,rand()%5,0,0,false,0,0,rand()%4, "Biblia", "Aumenta dano de arma e armadura pelo poder da palavra."));
+            _items.push_back(Item(0,false,rand()%5,0,0,false,rand()%3,0,rand()%4, "Alcool", "Aumenta dano de arma e armadura totalmente."));
+            _items.push_back(Item(0,false,0,rand()%20,0,false,0,0,0, "Granada", "Causa dano ao inimigo."));
+            _items.push_back(Item(0,false,0,0,rand()%3,false,0,0,0, "Ferradura", "Aumenta a sorte do alvo."));
+            _items.push_back(Item(0,false,0,0,0,false,0,rand()%3,0, "Pocao de Agilidade", "Aumenta a agilidade do alvo."));
+            _items.push_back(Item(0,false,0,0,0,false,rand()%3,0,0, "Bigorna", "Aumenta o buff de ferramenta."));
             StartBattle();
         }
 
@@ -171,7 +185,11 @@ class Controller
 
             round++;
             bool someOneAlive = false;
-            while(_party[_party.size()-1]->GetVida() > 0)                 // Enquanto o inimigo ou o jogador nao morrem
+
+            EnemyPlay(1);                                           // Inimigo usa efeito auxiliar
+            Cooldown(2);
+
+            while(_party[_party.size()-1]->GetVida() > 0)           // Enquanto o inimigo ou o jogador nao morrem
             {
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                 {
@@ -182,16 +200,12 @@ class Controller
                     std::cin  >> op;
 
                     _party[currentPartyMember]->Comando(op-1, _party);
+
+                    if(_party[_party.size()-1]->GetVida() <= 0) break;
                     Cooldown(2);
                 }
 
-                Cooldown(2);
-
-                _party[currentPartyMember]->Comando(1, _party);          // Inimigo ataca
-                currentPartyMember = 0;                             // Reseta party 
-                ReloadScreen();
-                std::cout << "O INIMIGO ESTÁ ATACANDO!" << std::endl;
-
+                EnemyPlay(1);                                       // Inimigo ataca
                 Cooldown(2);
 
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
@@ -200,25 +214,69 @@ class Controller
                 if(!someOneAlive) break;
             }
 
-            if(someOneAlive) won = true;                         // Se terminou e nao morreram todos os membros
+            if(someOneAlive) won = true;                            // Se terminou e nao morreram todos os membros
             EndBattle();                                            // Acabar batalha
 
+        }
+
+        void EnemyPlay(int op)
+        {
+            _party[currentPartyMember]->Comando(op, _party);        // Inimigo ataca
+            
+            Print(_party[_party.size()-1]->GetFileId(), true);
+            PrintEnemyLife();       
+
+            std::cout << "==============================================" << std::endl;
+            std::cout << "                ATAQUE INIMIGO                " << std::endl;
+            std::cout << "==============================================" << std::endl;
+
+            std::cout << _party[_party.size()-1] << std::endl;
         }
 
         void EndBattle()
         {
             if(won)
-            {
                 GivePrize();                                        // Recebe um item
-                StartBattle();                                      // Inicia proxima batalha
-            }
             else
                 Lose();                                             // Perde
         }
 
         void GivePrize()
         {
-            // Party pode escolher entre itens
+            int randIndex = rand() % 12;
+            Item prize = _items[randIndex]; 
+
+            LoadPrizeScreen(prize);
+            
+        }
+
+        void LoadPrizeScreen(Item prize)
+        {
+            int op;
+            Print("grantPrize.txt", true);
+
+            std::cout << "  Item Encontrado: " << prize.GetNome() << std::endl;
+            std::cout << "  Descricao: " << prize.GetDesc() << std::endl;
+            std::cout << "======================================================" << std::endl;
+
+            std::cin >> op;
+
+            if(op == 5)
+            {
+                StartBattle();
+                return;
+            }
+
+            if(_party[op-1]->HasItem())
+            {
+                std::cout << "Parece que esse membro ja tem um item... Escolha outro." << std::endl;
+                Cooldown(2);
+                LoadPrizeScreen(prize);
+            }
+            else
+                _party[op-1]->SetItem(prize);
+
+            StartBattle();                                      // Inicia proxima batalha
         }
 
         void Won()
@@ -232,8 +290,6 @@ class Controller
             Print("loseScreen.txt", true);
             EndGame();
         }
-
-        
 
 };
 

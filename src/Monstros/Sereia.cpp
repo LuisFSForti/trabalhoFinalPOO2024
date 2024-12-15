@@ -48,7 +48,7 @@ void Sereia::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Sereia::ImprimirDados(std::ostream& out) const
 {
-    
+
 }
 
 Sereia::Sereia(std::string id)

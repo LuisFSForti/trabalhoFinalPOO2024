@@ -47,6 +47,8 @@ void Paladino::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Paladino::ImprimirDados(std::ostream& out) const
 {
+    Item consumivel = this->_consumivel;
+
     out  << "======================================================\n";
     out << "                         PALADINO                      \n";
     out << "                         " << std::to_string(this->_vida) <<  "/" + std::to_string(this->_vidaMaxima) << "\n";
@@ -57,8 +59,14 @@ void Paladino::ImprimirDados(std::ostream& out) const
     else //Se não tiver, escreve em vermelho
         out << "||  " << "\033[31m2. Cura divina    \033[0m" << "        4. Esquivar           ||\n"; //\033m[xm define a cor do std::cout, 33 sendo vermelho e 0 é padrão
     out << "======================================================\n";
-    out << "    Item Disponível: \n";
-    out << "======================================================";  
+   
+    if(this->_hasItem)
+    {
+        out << "    Item Disponível: " << consumivel.GetNome() << "\n" ;
+        out << "    Descricao: " << consumivel.GetDesc() << "\n";
+        out << "======================================================";
+
+    }  
 }
 
 Paladino::Paladino()

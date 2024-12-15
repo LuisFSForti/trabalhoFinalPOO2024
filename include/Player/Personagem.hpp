@@ -7,6 +7,8 @@
 #include <iostream>
 #include <vector>
 
+#include "Item/Item.hpp"
+
 //Classe base para todos os heróis e monstros
 //Para a padronização do código, o vetor de alvos (std::vector<Personagem> alvos) deve ser organizado:
 //0 = bárbaro
@@ -22,18 +24,18 @@ class Personagem
     protected:
         std::string _idFile;
 
-        bool _mana; //Para definir se pode usar a habilidade auxiliar
+        bool _mana, _hasItem; //Para definir se pode usar a habilidade auxiliar
         int _vida, _vidaMaxima, _armadura, _armaduraMagica, _esquiva, _precisao, _sorte, _arma, _ferramenta, _qtdAtaques; //Valores base
         int _buffVida, _buffArmadura, _buffArmaduraMagica, _buffEsquiva, _buffPrecisao, _buffSorte, _buffArma, _buffFerramenta; //Buffs permanentes
         int _modificadorEsquiva, _modificadorDefesa, _modificadorQuantidadeAtaques; //Modificadores temporários
         Estados _status; //Para definir se está paralizado, encantado, provocado ou amedrontado
-        //Item consumivel;
+        Item _consumivel;
         std::string _enderecoFoto;
 
         virtual void Atacar(std::vector<Personagem*> alvos) { std::cout << "AQUI!\n";}; //Virtual pois cada classe usa valores diferentes e alvos diferentes
         virtual void CausarDano(Personagem *alvo) {}; //Virtual pois cada classe usa valores e tipos diferentes
         virtual void EfeitoAuxiliar(std::vector<Personagem*> alvos) {}; //Virtual pois toda classe tem um efeito diferente
-        void UsarConsumivel();
+        void UsarConsumivel(); //Aplica um item ao personagem
         void Esquivar(); //Dobra a esquiva até a próxima ação
 
         bool CheckStatus(std::vector<Personagem*> alvos); //Retorna se o usuário pode realizar ações
@@ -77,6 +79,10 @@ class Personagem
         int GetModificadorQuantidadeAtaques();
 
         Estados GetStatus();
+
+        Item GetItem();
+        void SetItem(Item consumivel);
+        bool HasItem();
 
         std::string GetFileId() { return _idFile; }
 

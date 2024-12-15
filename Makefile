@@ -2,6 +2,7 @@ all: lib main
 
 lib:
 	g++ -c ./src/Controller/controller.cpp -I ./include -o ./obj/controller.o
+	g++ -c ./src/Controller/printFile.cpp -I ./include -o ./obj/printFile.o
 	g++ -c ./src/Player/Personagem.cpp -I ./include -o ./obj/personagem.o
 	g++ -c ./src/Personagens/Barbaro.cpp -I ./include -o ./obj/barbaro.o
 	g++ -c ./src/Personagens/Bardo.cpp -I ./include -o ./obj/bardo.o
@@ -14,6 +15,8 @@ lib:
 	g++ -c ./src/Monstros/Fantasma.cpp -I ./include -o ./obj/fantasma.o
 	g++ -c ./src/Monstros/Grifo.cpp -I ./include -o ./obj/grifo.o
 	g++ -c ./src/Monstros/Sereia.cpp -I ./include -o ./obj/sereia.o
+
+	g++ -c ./src/Item/Item.cpp -I ./include -o ./obj/item.o
 
 main:
 	g++ ./main.cpp ./obj/*.o -I ./include -o ./bin/programa

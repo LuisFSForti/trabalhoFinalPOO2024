@@ -2,7 +2,30 @@
 
 void Personagem::UsarConsumivel()
 {
-    //programar para chamar o item
+    Item item = this->GetItem();
+
+    if(!this->_hasItem)
+    {
+        std::cout << "Parece que voce nao tem itens para usar..." << std::endl;
+        return;
+    }
+
+    this->_vida+= item.GetCura();
+    if(this->_vida > this->_vidaMaxima) this->_vida = this->_vidaMaxima;
+
+    if(!this->_mana && item.GetMana()) this->_mana = true;
+
+    this->_buffArma+= item.GetBuffAtaque();
+    this->_buffArmadura += item.GetBuffArmadura();
+    this->_buffFerramenta += item.GetBuffFerramenta();
+    
+    this->_buffSorte += item.GetBuffSorte();
+
+    this->_esquiva += item.GetBuffEsquiva();
+
+    if(this->_vida == 0 && item.Revive()) this->_vida = this->_vidaMaxima;
+
+    this->_hasItem = false;
 }
 
 //Dobra a esquiva até a próxima ação
@@ -171,7 +194,7 @@ void Personagem::Comando(int instr, std::vector<Personagem*> alvos)
     //Se usar item consumível
     case 2:
         //Usa o item
-        this->UsarConsumivel();
+        this->UsarConsumivel(/*botar item aqui*/);
         break;
 
     //Se esquivar
@@ -312,3 +335,19 @@ Estados Personagem::GetStatus()
 {
     return this->_status;
 }
+
+Item Personagem::GetItem()
+{
+    if(this->_hasItem)
+        return this->_consumivel;
+    else
+        return Item();
+}
+
+void Personagem::SetItem(Item consumivel)
+{
+    this->_consumivel = consumivel;
+    this->_hasItem = true;
+}
+
+bool Personagem::HasItem() { return this->_hasItem;}
