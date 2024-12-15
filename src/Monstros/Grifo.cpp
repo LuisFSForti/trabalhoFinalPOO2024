@@ -44,7 +44,8 @@ void Grifo::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Grifo::ImprimirDados(std::ostream& out) const
 {
-    
+    out << "O Grifo balança sua cauda fortemente\n Seus amigos podem ter sido atingidos\n";
+    out << "==============================================\n";
 }
 
 Grifo::Grifo(std::string id)

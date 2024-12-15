@@ -69,7 +69,8 @@ void Dragao::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Dragao::ImprimirDados(std::ostream& out) const
 {
-    
+    out << "O dragao cospe um fogo alarmante!\nAlgum de vocês pode ter sido atingido...\n";
+    out << "==============================================\n";
 }
 
 Dragao::Dragao(std::string id)

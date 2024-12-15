@@ -38,10 +38,10 @@ class Personagem
         void UsarConsumivel(); //Aplica um item ao personagem
         void Esquivar(); //Dobra a esquiva até a próxima ação
 
-        bool CheckStatus(std::vector<Personagem*> alvos); //Retorna se o usuário pode realizar ações
         virtual void ImprimirDados(std::ostream& out) const {};
 
     public:
+        bool CheckStatus(std::vector<Personagem*> alvos); //Retorna se o usuário pode realizar ações
         void ReceberDanoFisico(int dano); //Diminui o dano usando armadura
         void ReceberDanoMagico(int dano); //Diminui o dano usando armadura mágica
         void ReceberDanoPsicologico(int dano); //Recebe o dano todo

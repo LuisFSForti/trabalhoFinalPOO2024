@@ -40,27 +40,26 @@ void Mago::ImprimirDados(std::ostream& out) const
 {
     Item consumivel = this->_consumivel;
 
-    out  << "======================================================\n";
-    out << "                         MAGO                      \n";
-    out << "                         " << std::to_string(this->_vida) <<  "/" + std::to_string(this->_vidaMaxima) << "\n";
-    out << "======================================================\n";
+    out  << "============================================================================================================\n";
+    out << "                         MAGO                     " << std::to_string(this->_vida) <<  "/" + std::to_string(this->_vidaMaxima) << "                     STATUS\n";
+    out << "============================================================================================================\n";
 
     if(this->_hasItem)
-        out << "||  1. Bola de Fogo               3. Consumir item  ||\n";
+        out << "||  1. Bola de Fogo               3. Consumir item  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva << "\n";
     else
-        out << "||  1. Bola de Fogo               \033[31m3. Consumir item\033[0m  ||\n";
+        out << "||  1. Bola de Fogo               \033[31m3. Consumir item\033[0m  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva << "\n";
 
     if(this->_mana) //Se tiver mana, escreve normalmente
-        out << "||  2. Paralizar                  4. Esquivar       ||\n";
+        out << "||  2. Paralizar                  4. Esquivar       ||  Arma: " << this->_arma << "                       Armadura: " << this->_armadura << "\n";
     else //Se não tiver, escreve em vermelho
-        out << "||  \033[31m2. Paralizar\033[0m                  4. Esquivar       ||\n"; //\033m[xm define a cor do std::cout, 33 sendo vermelho e 0 é padrão
-    out << "======================================================\n";
+        out << "||  \033[31m2. Paralizar\033[0m                  4. Esquivar       ||  Arma: " << this->_arma << "                       Armadura: " << this->_armadura << "\n";
+    out << "============================================================================================================\n";
     
     if(this->_hasItem)
     {
         out << "    Item Disponível: " << consumivel.GetNome() << "\n" ;
         out << "    Descricao: " << consumivel.GetDesc() << "\n";
-        out << "======================================================";
+        out << "============================================================================================================";
 
     }  
 }

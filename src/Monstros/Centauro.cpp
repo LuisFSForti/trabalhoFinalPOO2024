@@ -89,7 +89,8 @@ void Centauro::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Centauro::ImprimirDados(std::ostream& out) const
 {
-    
+    out << "O centauro está galopando furiosamente... \nIsso te da dano fisico...\n";
+    out << "==============================================\n";
 }
 
 Centauro::Centauro(std::string id)

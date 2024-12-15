@@ -48,6 +48,8 @@ void Sereia::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Sereia::ImprimirDados(std::ostream& out) const
 {
+    out << "Quem poderia resistir aos encantos da Sereia?\nO psicológico de seus membros foi atacado\n";
+    out << "==============================================\n";
 
 }
 

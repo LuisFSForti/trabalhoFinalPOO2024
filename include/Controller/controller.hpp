@@ -74,6 +74,40 @@ class Controller
             std::cout << *_party[currentPartyMember] << std::endl;
         }
 
+        std::string Status(Personagem* target)
+        {
+            int r = target->GetStatus();
+            std::string status;
+
+            switch (r)
+            {
+                case 0:
+                    status = "estavel";
+                    break;
+
+                case 1:
+                    status = "paralisado";
+                    break;
+
+                case 2:
+                    status = "encantado";
+                    break;
+
+                case 3:
+                    status = "provocado";
+                    break;
+
+                case 4:
+                    status = "amedrontado";
+                    break;
+                
+                default:
+                    status = "whaaaat ??????????";
+                    break;
+            }
+
+            return status;
+        }
     public:
 
         // ============================
@@ -187,13 +221,20 @@ class Controller
             bool someOneAlive = false;
 
             EnemyPlay(1);                                           // Inimigo usa efeito auxiliar
-            Cooldown(2);
+            Cooldown(3);
 
             while(_party[_party.size()-1]->GetVida() > 0)           // Enquanto o inimigo ou o jogador nao morrem
             {
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                 {
                     if(_party[currentPartyMember]->GetVida() <= 0) continue;
+                    if(!_party[currentPartyMember]->CheckStatus(_party))
+                    {
+                        ReloadScreen();
+                        std::cout << "Esse membro está " << Status(_party[currentPartyMember]) << " entao nao pode atacar...\n";
+                        Cooldown(3);
+                        continue;
+                    }
 
                     ReloadScreen();                                 // Carrega a tela para novo membro
                     std::cout << "Escolha uma das opcoes: ";        // Espera a escolha de alguma das opcoes
@@ -206,7 +247,7 @@ class Controller
                 }
 
                 EnemyPlay(1);                                       // Inimigo ataca
-                Cooldown(2);
+                Cooldown(3);
 
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                     if(_party[currentPartyMember]->GetVida() > 0)   someOneAlive = true;
@@ -221,16 +262,28 @@ class Controller
 
         void EnemyPlay(int op)
         {
-            _party[currentPartyMember]->Comando(op, _party);        // Inimigo ataca
-            
-            Print(_party[_party.size()-1]->GetFileId(), true);
-            PrintEnemyLife();       
+            if(_party[currentPartyMember]->CheckStatus(_party))     // Se o inimigo pode atacar
+            {
+                _party[currentPartyMember]->Comando(op, _party);
+                Print(_party[_party.size()-1]->GetFileId(), true);
+                PrintEnemyLife();       
 
-            std::cout << "==============================================" << std::endl;
-            std::cout << "                ATAQUE INIMIGO                " << std::endl;
-            std::cout << "==============================================" << std::endl;
+                std::cout << "==============================================" << std::endl;
+                std::cout << "                ATAQUE INIMIGO                " << std::endl;
+                std::cout << "==============================================" << std::endl;
 
-            std::cout << _party[_party.size()-1] << std::endl;
+                std::cout << *_party[_party.size()-1] << std::endl;
+            }
+            else
+            {
+                Print(_party[_party.size()-1]->GetFileId(), true);
+                PrintEnemyLife();       
+
+                std::cout << "==============================================" << std::endl;
+                std::cout << " O inimigo está " << Status(_party[_party.size()-1]) << ", por isso não pode atacar..." << std::endl;
+                std::cout << "==============================================" << std::endl;
+
+            }
         }
 
         void EndBattle()

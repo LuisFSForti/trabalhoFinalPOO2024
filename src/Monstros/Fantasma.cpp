@@ -46,7 +46,8 @@ void Fantasma::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Fantasma::ImprimirDados(std::ostream& out) const
 {
-    
+    out << "Fantasmas podem ser assustadores!\nCuidado com sua mágica poderosa\n";
+    out << "==============================================\n";
 }
 
 Fantasma::Fantasma(std::string id)

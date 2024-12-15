@@ -56,7 +56,8 @@ void Fada::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Fada::ImprimirDados(std::ostream& out) const
 {
-    
+    out << "A fada docemente sorri enquanto te ataca,\num forte dano mágico pode ter te atingido.\n";
+    out << "==============================================\n";
 }
 
 Fada::Fada(std::string id)
