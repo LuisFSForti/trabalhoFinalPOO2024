@@ -33,32 +33,31 @@ void Mago::EfeitoAuxiliar(std::vector<Personagem*> alvos)
     this->_mana = false;
     
     //Paraliza o inimigo
-    alvos.at(4)->AplicarStatus(1);
+    alvos.at(4)->AplicarStatus(paralizado);
 }
 
-std::string Mago::ImprimirDados() const
+void Mago::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
-    std::string r;
     Item consumivel = this->_consumivel;
 
-    r  = "======================================================\n";
-    r += "                         MAGO                         \n";
-    r += "                         " + std::to_string(this->_vida) + "/" + std::to_string(this->_vidaMaxima) + "\n";
-    r += "======================================================\n";
-    r += "||  1. Atacar                 3. Consumir item      ||\n";
-    r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
-    r += "======================================================\n";
-
+    out  << "======================================================\n";
+    out << "                         MAGO                      \n";
+    out << "                         " << std::to_string(this->_vida) <<  "/" + std::to_string(this->_vidaMaxima) << "\n";
+    out << "======================================================\n";
+    out << "||  1. Bola de fogo           3. Consumir item      ||\n";
+    if(this->_mana) //Se tiver mana, escreve normalmente
+        out << "||  " << "2. Paralizar      " << "        4. Esquivar           ||\n";
+    else //Se não tiver, escreve em vermelho
+        out << "||  " << "\033[31m2. Paralizar      \033[0m" << "        4. Esquivar           ||\n"; //\033m[xm define a cor do std::cout, 33 sendo vermelho e 0 é padrão
+    out << "======================================================\n";
+    
     if(this->_hasItem)
     {
-        r += "    Item Disponível: " + consumivel.GetNome() + "\n" ;
-        r += "    Descricao: " + consumivel.GetDesc() + "\n";
-        r += "======================================================";
+        out << "    Item Disponível: " << consumivel.GetNome() << "\n" ;
+        out << "    Descricao: " << consumivel.GetDesc() << "\n";
+        out << "======================================================";
 
-    }
-
-    return r;
+    }  
 }
 
 Mago::Mago()
@@ -90,6 +89,6 @@ Mago::Mago()
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
 }

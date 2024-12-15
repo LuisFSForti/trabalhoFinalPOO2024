@@ -17,7 +17,7 @@ class Mago : public Personagem
         void CausarDano(Personagem* alvo); //Alto dano mágico
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paraliza o inimigo
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Mago();

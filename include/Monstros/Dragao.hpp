@@ -17,7 +17,7 @@ class Dragao : public Personagem
         void CausarDano(Personagem* alvo); //Dano físico alto
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Dano físico alto em área
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Dragao(std::string id);

@@ -17,7 +17,7 @@ class Fada : public Personagem
         void CausarDano(Personagem* alvo); //Dano mágico médio com alta chance de crítico
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paraliza um inimigo
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Fada(std::string id = "");

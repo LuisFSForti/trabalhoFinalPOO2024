@@ -17,7 +17,7 @@ class Paladino : public Personagem
         void CausarDano(Personagem* alvo); //Dano físico médio
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Muita cura pro time todo
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Paladino();

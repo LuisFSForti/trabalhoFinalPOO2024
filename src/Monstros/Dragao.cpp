@@ -67,10 +67,9 @@ void Dragao::EfeitoAuxiliar(std::vector<Personagem*> alvos)
     }
 }
 
-std::string Dragao::ImprimirDados() const
+void Dragao::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
-    return "";
+    
 }
 
 Dragao::Dragao(std::string id)
@@ -102,7 +101,7 @@ Dragao::Dragao(std::string id)
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
 
     _idFile = id;

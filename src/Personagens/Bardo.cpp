@@ -39,33 +39,32 @@ void Bardo::EfeitoAuxiliar(std::vector<Personagem*> alvos)
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         alvos.at(i)->Curar(cura); //Cura
-        alvos.at(i)->AplicarStatus(0); //Remove qualquer status sobre ele
+        alvos.at(i)->AplicarStatus(estavel); //Remove qualquer status sobre ele
     }
 }
 
-std::string Bardo::ImprimirDados() const
+void Bardo::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
-    std::string r;
     Item consumivel = this->_consumivel;
 
-    r  = "======================================================\n";
-    r += "                         BARDO                        \n";
-    r += "                         " + std::to_string(this->_vida) + "/" + std::to_string(this->_vidaMaxima) + "\n";
-    r += "======================================================\n";
-    r += "||  1. Atacar                 3. Consumir item      ||\n";
-    r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
-    r += "======================================================\n";
+    out  << "======================================================\n";
+    out << "                         BARDO                      \n";
+    out << "                         " << std::to_string(this->_vida) <<  "/" + std::to_string(this->_vidaMaxima) << "\n";
+    out << "======================================================\n";
+    out << "||  1. Zombar                 3. Consumir item      ||\n";
+    if(this->_mana) //Se tiver mana, escreve normalmente
+        out << "||  " << "2. Canção de restauração" << "  4. Esquivar           ||\n";
+    else //Se não tiver, escreve em vermelho
+        out << "||  " << "\033[31m2. Canção de restauração\033[0m" << "  4. Esquivar           ||\n"; //\033m[xm define a cor do std::cout, 33 sendo vermelho e 0 é padrão
+    out << "======================================================\n";
 
     if(this->_hasItem)
     {
-        r += "    Item Disponível: " + consumivel.GetNome() + "\n" ;
-        r += "    Descricao: " + consumivel.GetDesc() + "\n";
-        r += "======================================================";
+        out << "    Item Disponível: " << consumivel.GetNome() << "\n" ;
+        out << "    Descricao: " << consumivel.GetDesc() << "\n";
+        out << "======================================================";
 
-    }
-
-    return r;
+    }  
 }
 
 Bardo::Bardo()
@@ -97,7 +96,7 @@ Bardo::Bardo()
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
 }
 

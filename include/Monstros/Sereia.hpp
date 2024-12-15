@@ -17,7 +17,7 @@ class Sereia : public Personagem
         void CausarDano(Personagem* alvo); //Dano psicológico baixo
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Encanta um inimigo aleatório
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Sereia(std::string id = "");

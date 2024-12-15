@@ -51,13 +51,12 @@ void Fada::EfeitoAuxiliar(std::vector<Personagem*> alvos)
     } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
     //Paraliza o alvo
-    alvos.at(posAlvo)->AplicarStatus(1);
+    alvos.at(posAlvo)->AplicarStatus(paralizado);
 }
 
-std::string Fada::ImprimirDados() const
+void Fada::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
-    return "";
+    
 }
 
 Fada::Fada(std::string id)
@@ -90,7 +89,7 @@ Fada::Fada(std::string id)
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
 
     _idFile = id;

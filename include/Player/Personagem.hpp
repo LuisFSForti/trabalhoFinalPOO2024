@@ -16,17 +16,19 @@
 //2 = bardo
 //3 = mago
 //4 = monstro
+
+enum Estados {estavel, paralizado, encantado, provocado, amedrontado, statusInvalido};
+
 class Personagem
 {
     protected:
-
         std::string _idFile;
 
         bool _mana, _hasItem; //Para definir se pode usar a habilidade auxiliar
         int _vida, _vidaMaxima, _armadura, _armaduraMagica, _esquiva, _precisao, _sorte, _arma, _ferramenta, _qtdAtaques; //Valores base
         int _buffVida, _buffArmadura, _buffArmaduraMagica, _buffEsquiva, _buffPrecisao, _buffSorte, _buffArma, _buffFerramenta; //Buffs permanentes
         int _modificadorEsquiva, _modificadorDefesa, _modificadorQuantidadeAtaques; //Modificadores temporários
-        int _status; //Para definir se está paralisado, encantado, provocado ou amedrontado
+        Estados _status; //Para definir se está paralizado, encantado, provocado ou amedrontado
         Item _consumivel;
         std::string _enderecoFoto;
 
@@ -37,14 +39,14 @@ class Personagem
         void Esquivar(); //Dobra a esquiva até a próxima ação
 
         bool CheckStatus(std::vector<Personagem*> alvos); //Retorna se o usuário pode realizar ações
-        virtual std::string ImprimirDados() const { return "";};
+        virtual void ImprimirDados(std::ostream& out) const {};
 
     public:
         void ReceberDanoFisico(int dano); //Diminui o dano usando armadura
         void ReceberDanoMagico(int dano); //Diminui o dano usando armadura mágica
         void ReceberDanoPsicologico(int dano); //Recebe o dano todo
         void Curar(int cura); //Cura
-        void AplicarStatus(int status); //Aplica status
+        void AplicarStatus(Estados status); //Aplica status
 
         virtual void Comando(int instr, std::vector<Personagem*> alvos); //Recebe uma instrução e os possíveis alvos, virtual pois o bardo possui uma variação
         void BatalhaEncerrada(); //Deve ser chamado pra todos os personagens no final de cada batalha, reinicia valores temporários
@@ -76,7 +78,7 @@ class Personagem
         int GetModificadorDefesa();
         int GetModificadorQuantidadeAtaques();
 
-        int GetStatus();
+        Estados GetStatus();
 
         Item GetItem();
         void SetItem(Item consumivel);

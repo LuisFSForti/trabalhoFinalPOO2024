@@ -43,20 +43,12 @@ void Sereia::EfeitoAuxiliar(std::vector<Personagem*> alvos)
         posAlvo = rand() % 4;
     } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
-    alvos.at(posAlvo)->AplicarStatus(2); //Encanta o alvo
+    alvos.at(posAlvo)->AplicarStatus(encantado); //Encanta o alvo
 }
 
-std::string Sereia::ImprimirDados() const
+void Sereia::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
-    std::string r;
 
-    r  = "==============================================\n";
-    r += "        Causando dano psicologico...\n";
-    r += "==============================================\n";
-    r += "                  STATUS                      \n";
-    r += "  MANA: sim                   DANO:           \n";
-    r += "";
 }
 
 Sereia::Sereia(std::string id)
@@ -88,7 +80,7 @@ Sereia::Sereia(std::string id)
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
 
     _idFile = id;

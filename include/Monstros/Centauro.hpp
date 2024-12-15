@@ -17,7 +17,7 @@ class Centauro : public Personagem
         void CausarDano(Personagem* alvo); //Dano físico médio-alto
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Dano físico altíssimo em um inimigo
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Centauro(std::string id);
