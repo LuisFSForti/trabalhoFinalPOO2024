@@ -16,8 +16,10 @@ class Item
         int _buffFerramenta;    // aumenta ferramenta
         int _buffEsquiva;       // aumenta a esquiva
         int _buffArmadura;      // aumenta o buff de armadura
+        std::string _nome;      // nome do item
+        std::string _desc;      // descricao do item
     public:
-        Item(int cura=0, bool mana=false, int buffAtaque=0, int dano=0, float buffSorte=0, bool revive=false, int buffFerramenta=0, int buffEsquiva=0, int buffArmadura=0)
+        Item(int cura=0, bool mana=false, int buffAtaque=0, int dano=0, float buffSorte=0, bool revive=false, int buffFerramenta=0, int buffEsquiva=0, int buffArmadura=0, std::string nome="default", std::string desc = "nada")
         {
             _cura = cura;
             _mana = mana;
@@ -28,6 +30,8 @@ class Item
             _buffFerramenta = buffFerramenta;
             _buffEsquiva = buffEsquiva;
             _buffArmadura = buffArmadura;
+            _nome = nome;
+            _desc = desc;
         }
 
         int GetCura(){return _cura;}
@@ -39,5 +43,8 @@ class Item
         int GetBuffArmadura() {return _buffArmadura;}
         int GetBuffEsquiva() {return _buffEsquiva;}
         int GetBuffFerramenta() {return _buffFerramenta;}
+
+        std::string GetNome() {return _nome;}
+        std::string GetDesc() {return _desc;}
 };
 #endif  

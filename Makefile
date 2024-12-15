@@ -16,6 +16,8 @@ lib:
 	g++ -c ./src/Monstros/Grifo.cpp -I ./include -o ./obj/grifo.o
 	g++ -c ./src/Monstros/Sereia.cpp -I ./include -o ./obj/sereia.o
 
+	g++ -c ./src/Item/Item.cpp -I ./include -o ./obj/item.o
+
 main:
 	g++ ./main.cpp ./obj/*.o -I ./include -o ./bin/programa
 

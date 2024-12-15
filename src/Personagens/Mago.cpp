@@ -40,16 +40,23 @@ std::string Mago::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
     std::string r;
+    Item consumivel = this->_consumivel;
 
     r  = "======================================================\n";
-    r += "                           MAGO                       \n";
+    r += "                         MAGO                         \n";
     r += "                         " + std::to_string(this->_vida) + "/" + std::to_string(this->_vidaMaxima) + "\n";
     r += "======================================================\n";
     r += "||  1. Atacar                 3. Consumir item      ||\n";
     r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
     r += "======================================================\n";
-    r += "    Item Disponível: \n";
-    r += "======================================================";
+
+    if(this->_hasItem)
+    {
+        r += "    Item Disponível: " + consumivel.GetNome() + "\n" ;
+        r += "    Descricao: " + consumivel.GetDesc() + "\n";
+        r += "======================================================";
+
+    }
 
     return r;
 }

@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Controller/printFile.hpp"
+#include "Item/Item.hpp"
 
 #include "Player/Personagem.hpp"
 #include "Personagens/Barbaro.hpp"
@@ -30,6 +31,7 @@ class Controller
     private:
         std::vector<Personagem*> _party;                 // Membros da equipe do jogador  
         std::vector<Personagem> _enemies;               // Possíveis inimigos
+        std::vector<Item> _items;
 
         bool won;                                       // Se o player ganhou ou não
         int  round = 0;                                 // Qual a rodada presente
@@ -117,7 +119,19 @@ class Controller
             _enemies.push_back(Fantasma(enemyPath +  "fantasmaBasico.txt"));
             _enemies.push_back(Grifo(enemyPath +  "grifoBasico.txt"));
             _enemies.push_back(Sereia(enemyPath +  "sereiaBasico.txt"));
- 
+
+            _items.push_back(Item(0,true,0,0,0,true,0,0,0, "Pocao da Vida", "Ressuscita um personagem morto."));
+            _items.push_back(Item(20,false,0,0,0,false,0,0,0, "Hidromel", "Cura a vida do alvo em 20 pontos."));
+            _items.push_back(Item(9999,false,0,0,0,false,0,0,0, "Ambrosia", "Restaura a vida maxima do alvo."));
+            _items.push_back(Item(0,true,0,0,0,false,0,0,0, "Licor", "Restaura a mana do alvo."));
+            _items.push_back(Item(0,false,rand()%5,0,0,false,0,0,0, "Pocao de Furia", "Aumenta o dano de arma."));
+            _items.push_back(Item(0,false,0,0,0,false,0,0,rand()%4, "Terco", "Aumenta a protecao por meios divinos."));
+            _items.push_back(Item(0,false,rand()%5,0,0,false,0,0,rand()%4, "Biblia", "Aumenta dano de arma e armadura pelo poder da palavra."));
+            _items.push_back(Item(0,false,rand()%5,0,0,false,rand()%3,0,rand()%4, "Alcool", "Aumenta dano de arma e armadura totalmente."));
+            _items.push_back(Item(0,false,0,rand()%20,0,false,0,0,0, "Granada", "Causa dano ao inimigo."));
+            _items.push_back(Item(0,false,0,0,rand()%3,false,0,0,0, "Ferradura", "Aumenta a sorte do alvo."));
+            _items.push_back(Item(0,false,0,0,0,false,0,rand()%3,0, "Pocao de Agilidade", "Aumenta a agilidade do alvo."));
+            _items.push_back(Item(0,false,0,0,0,false,rand()%3,0,0, "Bigorna", "Aumenta o buff de ferramenta."));
             StartBattle();
         }
 
@@ -135,7 +149,7 @@ class Controller
                 return;
             }
 
-            int randIndex = rand() % 2;                             // Sorteia algum dos inimigos
+            int randIndex = rand() % 6;                             // Sorteia algum dos inimigos
 
             switch (randIndex)
             {
@@ -210,17 +224,40 @@ class Controller
         void EndBattle()
         {
             if(won)
-            {
                 GivePrize();                                        // Recebe um item
-                StartBattle();                                      // Inicia proxima batalha
-            }
             else
                 Lose();                                             // Perde
         }
 
         void GivePrize()
         {
-            // Party pode escolher entre itens
+            int randIndex = rand() % 12;
+            Item prize = _items[randIndex]; 
+
+            LoadPrizeScreen(prize);
+            
+        }
+
+        void LoadPrizeScreen(Item prize)
+        {
+            int op;
+            Print("grantPrize.txt", true);
+
+            std::cout << "  Item Encontrado: " << prize.GetNome() << std::endl;
+            std::cout << "  Descricao: " << prize.GetDesc() << std::endl;
+            std::cout << "======================================================" << std::endl;
+
+            std::cin >> op;
+
+            if(_party[op-1]->HasItem())
+            {
+                std::cout << "Parece que esse membro ja tem um item... Escolha outro." << std::endl;
+                LoadPrizeScreen(prize);
+            }
+            else
+                _party[op-1]->SetItem(prize);
+
+            StartBattle();                                      // Inicia proxima batalha
         }
 
         void Won()
@@ -234,8 +271,6 @@ class Controller
             Print("loseScreen.txt", true);
             EndGame();
         }
-
-        
 
 };
 

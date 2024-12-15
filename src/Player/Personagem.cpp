@@ -1,8 +1,15 @@
-#include "Item/Item.hpp"
 #include "Player/Personagem.hpp"
 
-void Personagem::UsarConsumivel(Item item)
+void Personagem::UsarConsumivel()
 {
+    Item item = this->GetItem();
+
+    if(!this->_hasItem)
+    {
+        std::cout << "Parece que voce nao tem itens para usar..." << std::endl;
+        return;
+    }
+
     this->_vida+= item.GetCura();
     if(this->_vida > this->_vidaMaxima) this->_vida = this->_vidaMaxima;
 
@@ -17,6 +24,8 @@ void Personagem::UsarConsumivel(Item item)
     this->_esquiva += item.GetBuffEsquiva();
 
     if(this->_vida == 0 && item.Revive()) this->_vida = this->_vidaMaxima;
+
+    this->_hasItem = false;
 }
 
 //Dobra a esquiva até a próxima ação
@@ -326,3 +335,19 @@ int Personagem::GetStatus()
 {
     return this->_status;
 }
+
+Item Personagem::GetItem()
+{
+    if(this->_hasItem)
+        return this->_consumivel;
+    else
+        return Item();
+}
+
+void Personagem::SetItem(Item consumivel)
+{
+    this->_consumivel = consumivel;
+    this->_hasItem = true;
+}
+
+bool Personagem::HasItem() { return this->_hasItem;}

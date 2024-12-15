@@ -48,7 +48,8 @@ void Paladino::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 std::string Paladino::ImprimirDados() const
 {
     //Necessário pegar o código da Heloísa
-        std::string r;
+    std::string r;
+    Item consumivel = this->_consumivel;
 
     r  = "======================================================\n";
     r += "                        PALADINO                      \n";
@@ -57,8 +58,14 @@ std::string Paladino::ImprimirDados() const
     r += "||  1. Atacar                 3. Consumir item      ||\n";
     r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
     r += "======================================================\n";
-    r += "    Item Disponível: \n";
-    r += "======================================================";
+
+    if(this->_hasItem)
+    {
+        r += "    Item Disponível: " + consumivel.GetNome() + "\n" ;
+        r += "    Descricao: " + consumivel.GetDesc() + "\n";
+        r += "======================================================";
+
+    }
 
     return r;
 }

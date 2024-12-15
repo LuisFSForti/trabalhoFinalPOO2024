@@ -47,6 +47,7 @@ std::string Barbaro::ImprimirDados() const
     //return "";
 
     std::string r;
+    Item consumivel = this->_consumivel;
 
     r  = "======================================================\n";
     r += "                         BÁRBARO                      \n";
@@ -55,8 +56,14 @@ std::string Barbaro::ImprimirDados() const
     r += "||  1. Atacar                 3. Consumir item      ||\n";
     r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
     r += "======================================================\n";
-    r += "    Item Disponível: \n";
-    r += "======================================================";
+
+    if(this->_hasItem)
+    {
+        r += "    Item Disponível: " + consumivel.GetNome() + "\n" ;
+        r += "    Descricao: " + consumivel.GetDesc() + "\n";
+        r += "======================================================";
+
+    }
 
     return r;
    
