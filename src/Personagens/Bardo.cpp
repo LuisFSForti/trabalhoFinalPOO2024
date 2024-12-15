@@ -51,11 +51,16 @@ void Bardo::ImprimirDados(std::ostream& out) const
     out << "                         BARDO                      \n";
     out << "                         " << std::to_string(this->_vida) <<  "/" + std::to_string(this->_vidaMaxima) << "\n";
     out << "======================================================\n";
-    out << "||  1. Zombar                 3. Consumir item      ||\n";
+
+    if(this->_hasItem)
+        out << "||  1. Zombar                     3. Consumir item  ||\n";
+    else
+        out << "||  1. Zombar                     \033[31m3. Consumir item\033[0m  ||\n";
+
     if(this->_mana) //Se tiver mana, escreve normalmente
-        out << "||  " << "2. Canção de restauração" << "  4. Esquivar           ||\n";
+        out << "||  2. Canção de restauração      4. Esquivar       ||\n";
     else //Se não tiver, escreve em vermelho
-        out << "||  " << "\033[31m2. Canção de restauração\033[0m" << "  4. Esquivar           ||\n"; //\033m[xm define a cor do std::cout, 33 sendo vermelho e 0 é padrão
+        out << "||  \033[31m2. Canção de restauração\033[0m      4. Esquivar       ||\n"; //\033m[xm define a cor do std::cout, 33 sendo vermelho e 0 é padrão
     out << "======================================================\n";
 
     if(this->_hasItem)
