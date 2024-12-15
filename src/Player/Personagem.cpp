@@ -17,14 +17,14 @@ bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
     bool podeAgir = false; //Pro caso de ele estar sobre um efeito, mas ainda puder agir
     switch (this->_status)
     {
-    case 0: //Estável
+    case estavel:
         return true; //Retorna que ele pode agir
         break;
 
-    case 1: //Paralizado
+    case paralizado:
         break;
 
-    case 2: //Encantado -> atinge um aliado
+    case encantado: //atinge um aliado
         int posAlvo;
         do
         {
@@ -35,14 +35,14 @@ bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
 
         break;
     
-    case 3: //Provocado pelo bárbaro (que sempre estará na posição 0)
+    case provocado: //Provocado pelo bárbaro (que sempre estará na posição 0)
         if(alvos.at(0)->GetVida() <= 0) //Se o bárbaro estiver morto
             podeAgir = true; //Então pode agir normalmente
         else //Se ele estiver vivo
             this->CausarDano(alvos.at(0)); //Ataca o bárbaro
         break;
 
-    case 4: //Amedrontado
+    case amedrontado:
         this->_modificadorQuantidadeAtaques--; //Diminui a quantidade de ataques
         if(this->_qtdAtaques + this->_modificadorQuantidadeAtaques <= 0) //Se ele não poderia mais atacar
             this->_modificadorQuantidadeAtaques = -(this->_qtdAtaques - 1); //Corrige para sobrar 1 ataque
@@ -56,12 +56,12 @@ bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
     if(rand() % 20 + this->_sorte + this->_buffSorte >= 14) //Tenta reestabilizar
     {
         //Se ele estava amedrontado
-        if(this->_status == 4)
+        if(this->_status == amedrontado)
             //Atualiza o modificador de quantidade de ataques
             this->_modificadorQuantidadeAtaques = 0;
 
         //Estabiliza
-        this->_status = 0;
+        this->_status = estavel;
     }
 
     //Retorna se ele pode agir
@@ -125,13 +125,13 @@ void Personagem::Curar(int cura)
 }
 
 //Aplica status
-void Personagem::AplicarStatus(int status)
+void Personagem::AplicarStatus(Estados status)
 {
-    if(status < 0 || status > 3) //Valida o status
+    if(status < estavel || status >= statusInvalido) //Valida o status
         return; //Retorna pois é inválido
 
     //Se estava amedrontado
-    if(this->_status == 4 && status == 0)
+    if(this->_status == amedrontado && status == estavel)
         //Reinicia o modificador de velocidade de ataque
         this->_modificadorQuantidadeAtaques = 0;
 
@@ -189,7 +189,7 @@ void Personagem::Comando(int instr, std::vector<Personagem*> alvos)
 //Deve ser chamado pra todos os personagens no final de cada batalha, reinicia valores temporários
 void Personagem::BatalhaEncerrada()
 {
-    this->_status = 0;
+    this->_status = estavel;
     this->_modificadorDefesa = 0;
     this->_modificadorEsquiva = 1;
     this->_modificadorQuantidadeAtaques = 0;
@@ -198,7 +198,7 @@ void Personagem::BatalhaEncerrada()
 //Para imprimir os dados do personagem
 std::ostream& operator<<(std::ostream& out, const Personagem& p)
 {
-    out << p.ImprimirDados();
+    p.ImprimirDados(out);
     return out;
 }
 
@@ -308,7 +308,7 @@ int Personagem::GetModificadorQuantidadeAtaques()
     return this->_modificadorQuantidadeAtaques;
 }
 
-int Personagem::GetStatus()
+Estados Personagem::GetStatus()
 {
     return this->_status;
 }

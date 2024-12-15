@@ -45,22 +45,20 @@ void Paladino::EfeitoAuxiliar(std::vector<Personagem*> alvos)
     }
 }
 
-std::string Paladino::ImprimirDados() const
+void Paladino::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
-        std::string r;
-
-    r  = "======================================================\n";
-    r += "                        PALADINO                      \n";
-    r += "                         " + std::to_string(this->_vida) + "/" + std::to_string(this->_vidaMaxima) + "\n";
-    r += "======================================================\n";
-    r += "||  1. Atacar                 3. Consumir item      ||\n";
-    r += "||  2. Efeito Auxiliar        4. Esquivar           ||\n";
-    r += "======================================================\n";
-    r += "    Item Disponível: \n";
-    r += "======================================================";
-
-    return r;
+    out  << "======================================================\n";
+    out << "                         PALADINO                      \n";
+    out << "                         " << std::to_string(this->_vida) <<  "/" + std::to_string(this->_vidaMaxima) << "\n";
+    out << "======================================================\n";
+    out << "||  1. Ataque de espada       3. Consumir item      ||\n";
+    if(this->_mana) //Se tiver mana, escreve normalmente
+        out << "||  " << "2. Cura divina    " << "        4. Esquivar           ||\n";
+    else //Se não tiver, escreve em vermelho
+        out << "||  " << "\033[31m2. Cura divina    \033[0m" << "        4. Esquivar           ||\n"; //\033m[xm define a cor do std::cout, 33 sendo vermelho e 0 é padrão
+    out << "======================================================\n";
+    out << "    Item Disponível: \n";
+    out << "======================================================";  
 }
 
 Paladino::Paladino()
@@ -93,6 +91,6 @@ Paladino::Paladino()
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
 }

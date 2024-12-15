@@ -40,14 +40,13 @@ void Fantasma::EfeitoAuxiliar(std::vector<Personagem*> alvos)
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         //Amedronta o alvo atual
-        alvos.at(i)->AplicarStatus(4);
+        alvos.at(i)->AplicarStatus(amedrontado);
     }
 }
 
-std::string Fantasma::ImprimirDados() const
+void Fantasma::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
-    return "";
+    
 }
 
 Fantasma::Fantasma(std::string id)
@@ -79,7 +78,7 @@ Fantasma::Fantasma(std::string id)
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
 
     _idFile = id;

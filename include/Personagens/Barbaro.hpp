@@ -17,7 +17,7 @@ class Barbaro : public Personagem
         void CausarDano(Personagem* alvo); //Dano físico alto
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Provoca o inimigo e aumenta a defesa
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Barbaro();

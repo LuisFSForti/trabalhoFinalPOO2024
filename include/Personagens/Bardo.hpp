@@ -17,7 +17,7 @@ class Bardo : public Personagem
         void CausarDano(Personagem* alvo); //Dano psicológico baixo, alta chanca de crítico
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Remove efeitos e cura um pouco o time todo
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Bardo();

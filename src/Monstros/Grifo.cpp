@@ -38,14 +38,13 @@ void Grifo::EfeitoAuxiliar(std::vector<Personagem*> alvos)
     for(int i = 0; i < alvos.size()-1; i++)
     {
         //Paraliza o alvo atual
-        alvos.at(i)->AplicarStatus(1);
+        alvos.at(i)->AplicarStatus(paralizado);
     }
 }
 
-std::string Grifo::ImprimirDados() const
+void Grifo::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
-    return "";
+    
 }
 
 Grifo::Grifo(std::string id)
@@ -77,7 +76,7 @@ Grifo::Grifo(std::string id)
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
 
     _idFile = id;

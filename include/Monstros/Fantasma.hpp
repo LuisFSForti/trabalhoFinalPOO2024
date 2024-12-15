@@ -17,7 +17,7 @@ class Fantasma : public Personagem
         void CausarDano(Personagem* alvo); //Dano mágico médio
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Amedronta os inimigos
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Fantasma(std::string id = "");

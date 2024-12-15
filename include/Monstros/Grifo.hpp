@@ -17,7 +17,7 @@ class Grifo : public Personagem
         void CausarDano(Personagem* alvo); //Dano físico médio-baixo
         void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paraliza todos os inimigos
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Grifo(std::string id = "");

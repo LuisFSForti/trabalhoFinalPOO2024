@@ -87,10 +87,9 @@ void Centauro::EfeitoAuxiliar(std::vector<Personagem*> alvos)
     alvos.at(posAlvo)->ReceberDanoFisico(dano);
 }
 
-std::string Centauro::ImprimirDados() const
+void Centauro::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
-    return "";
+    
 }
 
 Centauro::Centauro(std::string id)
@@ -122,7 +121,7 @@ Centauro::Centauro(std::string id)
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
 
     _idFile = id;
