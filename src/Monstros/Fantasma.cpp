@@ -1,55 +1,69 @@
-#include "Fantasma.hpp"
+#include "Monstros/Fantasma.hpp"
 
 //Golpeia um inimigo
-void Fantasma::Atacar(std::vector<Personagem> alvos)
+void Fantasma::Atacar(std::vector<Personagem*> alvos)
 {
     int posAlvo;
     do
     {
         //Sem prioridade de alvo
         posAlvo = rand() % 4;
-    } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+    } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
     //Pega o alvo
-    Personagem alvo = alvos.at(posAlvo);
+    Personagem* alvo = alvos.at(posAlvo);
 
     //Verifica se o ataque acerta
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
+    int dado = rand()%20;
+    int ataque = dado + this->_precisao + this->_buffPrecisao;
+    int esquiva = (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10;
+
+    std::cout << "Ataque: " << dado << " + " << this->_precisao << " + " << this->_buffPrecisao << " = " << ataque << std::endl;
+    std::cout << "Esquiva ("<< Nomes[posAlvo] << "): (" << alvo->GetEsquiva() << " + " << alvo->GetBuffEsquiva() << ") *" << alvo->GetModificadorEsquiva() << " + 10 = " << esquiva << std::endl;
+
+    if(ataque >= esquiva)
+    {
         //Se sim, calcula o dano
         this->CausarDano(alvo);
+    }
 }
     
 //Dano mágico médio
-void Fantasma::CausarDano(Personagem alvo)
+void Fantasma::CausarDano(Personagem* alvo)
 {
     //Calcula a chance de crítico
     bool critico = rand() % 20 + _sorte >= 20;
 
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand() % 6 + this->_arma + this->_buffArma) * (1 + critico);
+    int dano = (rand() % 10 + this->_arma + this->_buffArma) * (1 + critico);
+
+    if(critico)
+        std::cout << "Crítico!!!!" << std::endl;
+    std::cout << "Acertou por " << dano << " de dano mágico!" << std::endl << std::endl;
 
     //Alerta o alvo que ele recebeu dano mágico e quanto
-    alvo.ReceberDanoMagico(dano);
+    alvo->ReceberDanoMagico(dano);
 }
 
 //Amedronta os inimigos
-void Fantasma::EfeitoAuxiliar(std::vector<Personagem> alvos)
+void Fantasma::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Para todos os heróis
     for(int i = 0; i < alvos.size() - 1; i++)
     {
         //Amedronta o alvo atual
-        alvos.at(i).AplicarStatus(4);
+        alvos.at(i)->AplicarStatus(amedrontado);
     }
 }
 
-std::string Fantasma::ImprimirDados() const
+void Fantasma::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
+    out << "Fantasmas podem ser assustadores!\nCuidado com sua mágica poderosa\n";
+    out << "==============================================\n";
 }
 
-Fantasma::Fantasma()
+Fantasma::Fantasma(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -59,15 +73,15 @@ Fantasma::Fantasma()
     this->_armadura = 0;
     this->_esquiva = 12;
 
-    this->_precisao = 6;
+    this->_precisao = 12;
     this->_sorte = 1;
     this->_arma = 4;
 
     this->_ferramenta = 0;
-    this->_armaduraMagica = 0;
+    this->_armaduraMagica = 4;
 
     this->_buffVida = 0;
-    this->_buffArma = 0;
+    this->_buffArmadura = 0;
     this->_buffArmaduraMagica = 0;
     this->_buffEsquiva = 0;
     this->_buffPrecisao = 0;
@@ -78,6 +92,8 @@ Fantasma::Fantasma()
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
+
+    _idFile = id;
 }

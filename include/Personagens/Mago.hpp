@@ -7,17 +7,17 @@
 #include <iostream>
 #include <vector>
 
-#include "Personagem.hpp"
+#include "Player/Personagem.hpp"
 
-//Objetivo da classe: muito dano, pouca vida, paraliza o inimigo
-class Mago : Personagem
+//Objetivo da classe: muito dano, pouca vida, paralisa o inimigo
+class Mago : public Personagem
 {
     private:
-        void Atacar(std::vector<Personagem> alvos); //Ataca o inimigo
-        void CausarDano(Personagem alvo); //Alto dano mágico
-        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Paraliza o inimigo
+        void Atacar(std::vector<Personagem*> alvos); //Ataca o inimigo
+        void CausarDano(Personagem* alvo); //Alto dano mágico
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paralisa o inimigo
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
         Mago();

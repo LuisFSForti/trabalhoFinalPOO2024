@@ -1,8 +1,28 @@
-#include "Personagem.hpp"
+#include "Player/Personagem.hpp"
 
+// Funcao universal para usar o item do personagem
 void Personagem::UsarConsumivel()
 {
-    //programar para chamar o item
+    if(!this->_hasItem)                                     // Se o personagem nao tiver item para usar
+    {
+        std::cout << "Parece que voce nao tem itens para usar..." << std::endl;
+        return;
+    }
+
+    Item item = this->GetItem();                            // Seleciona o item do personagem
+    this->_vida+= item.GetCura();                           // Adiciona a quantidade de cura do item
+    if(this->_vida > this->_vidaMaxima)                     // Caso a vida passe do max 
+        this->_vida = this->_vidaMaxima;                    // Coloca na vida maxima
+
+    if(!this->_mana && item.GetMana())                      // Se o item der mana 
+        this->_mana = true;                                 // Deixa mana do personagem disponivel
+
+    this->_buffArma+= item.GetBuffAtaque();                 // Aumenta o buff da arma
+    this->_buffArmadura += item.GetBuffArmadura();          // Aumenta o buff de armadura
+    this->_buffFerramenta += item.GetBuffFerramenta();      // Aumenta o buff de ferramenta
+    this->_buffSorte += item.GetBuffSorte();                // Aumenta a sorte
+    this->_esquiva += item.GetBuffEsquiva();                // Aumenta a esquiva (agilidade)
+    this->_hasItem = false;                                 // "Remove" o item do personagem
 }
 
 //Dobra a esquiva até a próxima ação
@@ -12,37 +32,37 @@ void Personagem::Esquivar()
 }
 
 //Retorna se o usuário pode realizar ações
-bool Personagem::CheckStatus(std::vector<Personagem> alvos)
+bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
 {
     bool podeAgir = false; //Pro caso de ele estar sobre um efeito, mas ainda puder agir
     switch (this->_status)
     {
-    case 0: //Estável
+    case estavel:
         return true; //Retorna que ele pode agir
         break;
 
-    case 1: //Paralizado
+    case paralisado:
         break;
 
-    case 2: //Encantado -> atinge um aliado
+    case encantado: //atinge um aliado
         int posAlvo;
         do
         {
             posAlvo = rand() % 4;
-        } while(alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+        } while(alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
         this->CausarDano(alvos.at(posAlvo));
 
         break;
     
-    case 3: //Provocado pelo bárbaro (que sempre estará na posição 0)
-        if(alvos.at(0).GetVida() <= 0) //Se o bárbaro estiver morto
+    case provocado: //Provocado pelo bárbaro (que sempre estará na posição 0)
+        if(alvos.at(0)->GetVida() <= 0) //Se o bárbaro estiver morto
             podeAgir = true; //Então pode agir normalmente
         else //Se ele estiver vivo
             this->CausarDano(alvos.at(0)); //Ataca o bárbaro
         break;
 
-    case 4: //Amedrontado
+    case amedrontado:
         this->_modificadorQuantidadeAtaques--; //Diminui a quantidade de ataques
         if(this->_qtdAtaques + this->_modificadorQuantidadeAtaques <= 0) //Se ele não poderia mais atacar
             this->_modificadorQuantidadeAtaques = -(this->_qtdAtaques - 1); //Corrige para sobrar 1 ataque
@@ -56,12 +76,12 @@ bool Personagem::CheckStatus(std::vector<Personagem> alvos)
     if(rand() % 20 + this->_sorte + this->_buffSorte >= 14) //Tenta reestabilizar
     {
         //Se ele estava amedrontado
-        if(this->_status == 4)
+        if(this->_status == amedrontado)
             //Atualiza o modificador de quantidade de ataques
             this->_modificadorQuantidadeAtaques = 0;
 
         //Estabiliza
-        this->_status = 0;
+        this->_status = estavel;
     }
 
     //Retorna se ele pode agir
@@ -71,6 +91,7 @@ bool Personagem::CheckStatus(std::vector<Personagem> alvos)
 //Diminui o dano usando armadura
 void Personagem::ReceberDanoFisico(int dano)
 {
+
     //Diminui o dano
     dano -= this->_armadura + this->_buffArmadura + this->_modificadorDefesa;
 
@@ -81,6 +102,7 @@ void Personagem::ReceberDanoFisico(int dano)
 
     //Diminui a vida
     this->_vida -= dano;
+
     //Se ficou abaixo de 0, corrige
     if(this->_vida < 0)
         this->_vida = 0;
@@ -125,13 +147,13 @@ void Personagem::Curar(int cura)
 }
 
 //Aplica status
-void Personagem::AplicarStatus(int status)
+void Personagem::AplicarStatus(Estados status)
 {
-    if(status < 0 || status > 3) //Valida o status
+    if(status < estavel || status >= statusInvalido) //Valida o status
         return; //Retorna pois é inválido
 
     //Se estava amedrontado
-    if(this->_status == 4 && status == 0)
+    if(this->_status == amedrontado && status == estavel)
         //Reinicia o modificador de velocidade de ataque
         this->_modificadorQuantidadeAtaques = 0;
 
@@ -139,8 +161,32 @@ void Personagem::AplicarStatus(int status)
     this->_status = status;
 }
 
+std::string Personagem::Status() const
+{
+    switch (this->_status)
+    {
+        case estavel:
+            return "ESTAVEL";
+
+        case paralisado:
+            return "PARALISADO";
+
+        case encantado:
+            return "ENCANTADO";
+
+        case provocado:
+            return "PROVOCADO";
+
+        case amedrontado:
+            return "AMEDRONTADO";
+        
+        default:
+            return "ERRO";
+    }
+}
+
 //Recebe uma instrução e os possíveis alvos
-void Personagem::Comando(int instr, std::vector<Personagem> alvos) 
+void Personagem::Comando(int instr, std::vector<Personagem*> alvos) 
 {
     //Reinicia o modificador de esquiva
     this->_modificadorEsquiva = 1;
@@ -171,7 +217,7 @@ void Personagem::Comando(int instr, std::vector<Personagem> alvos)
     //Se usar item consumível
     case 2:
         //Usa o item
-        this->UsarConsumivel();
+        this->UsarConsumivel(/*botar item aqui*/);
         break;
 
     //Se esquivar
@@ -189,16 +235,21 @@ void Personagem::Comando(int instr, std::vector<Personagem> alvos)
 //Deve ser chamado pra todos os personagens no final de cada batalha, reinicia valores temporários
 void Personagem::BatalhaEncerrada()
 {
-    this->_status = 0;
+    this->_status = estavel;
     this->_modificadorDefesa = 0;
     this->_modificadorEsquiva = 1;
     this->_modificadorQuantidadeAtaques = 0;
 }
 
 //Para imprimir os dados do personagem
+bool Personagem::GetMana()
+{
+    return this->_mana;
+}
 std::ostream& operator<<(std::ostream& out, const Personagem& p)
 {
-    out << p.ImprimirDados();
+    p.ImprimirDados(out);
+    return out;
 }
 
 //Para acessar os valores
@@ -307,7 +358,26 @@ int Personagem::GetModificadorQuantidadeAtaques()
     return this->_modificadorQuantidadeAtaques;
 }
 
-int Personagem::GetStatus()
+Estados Personagem::GetStatus()
 {
     return this->_status;
+}
+
+Item Personagem::GetItem()
+{
+    if(this->_hasItem)
+        return this->_consumivel;
+    else
+        return Item();
+}
+
+void Personagem::SetItem(Item consumivel)
+{
+    this->_consumivel = consumivel;
+    this->_hasItem = true;
+}
+
+bool Personagem::HasItem() 
+{ 
+    return this->_hasItem;
 }

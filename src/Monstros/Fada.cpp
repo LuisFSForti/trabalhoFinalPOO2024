@@ -1,7 +1,7 @@
-#include "Fada.hpp"
+#include "Monstros/Fada.hpp"
 
 //Ataca múltiplos inimigos
-void Fada::Atacar(std::vector<Personagem> alvos)
+void Fada::Atacar(std::vector<Personagem*> alvos)
 {
     //Para cada ataque
     for(int i = 0; i < this->_qtdAtaques + this->_modificadorQuantidadeAtaques; i++) //Ataca múltiplas vezes
@@ -11,20 +11,29 @@ void Fada::Atacar(std::vector<Personagem> alvos)
         {
             //Sem prioridade de alvo
             posAlvo = rand() % 4;
-        } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+        } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
         //Pega o alvo atual
-        Personagem alvo = alvos.at(posAlvo);
+        Personagem* alvo = alvos.at(posAlvo);
 
         //Verifica se o ataque acerta
-        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo.GetEsquiva() + alvo.GetBuffEsquiva()) * alvo.GetModificadorEsquiva() + 10)
-            //Calcula o dano
+        int dado = rand()%20;
+        int ataque = dado + this->_precisao + this->_buffPrecisao;
+        int esquiva = (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10;
+
+        std::cout << "Ataque: " << dado << " + " << this->_precisao << " + " << this->_buffPrecisao << " = " << ataque << std::endl;
+        std::cout << "Esquiva ("<< Nomes[posAlvo] << "): (" << alvo->GetEsquiva() << " + " << alvo->GetBuffEsquiva() << ") *" << alvo->GetModificadorEsquiva() << " + 10 = " << esquiva << std::endl;
+
+        if(ataque >= esquiva)
+        {
+            //Se sim, calcula o dano
             this->CausarDano(alvo);
+        }
     }
 }
     
 //Dano mágico médio com alta chance de crítico
-void Fada::CausarDano(Personagem alvo)
+void Fada::CausarDano(Personagem* alvo)
 {
     //Calcula se é crítico
     bool critico = rand() % 20 + _sorte >= 20;
@@ -33,12 +42,16 @@ void Fada::CausarDano(Personagem alvo)
     //(1 + critico) = 1 ou 2
     int dano = (rand() % 6 + this->_arma + this->_buffArma) * (1 + critico);
 
+    if(critico)
+        std::cout << "Crítico!!!!" << std::endl;
+    std::cout << "Acertou por " << dano << " de dano mágico!" << std::endl << std::endl;
+
     //Alerta o alvo que ele recebeu dano mágico e quanto
-    alvo.ReceberDanoMagico(dano);
+    alvo->ReceberDanoMagico(dano);
 }
     
-//Paraliza um inimigo
-void Fada::EfeitoAuxiliar(std::vector<Personagem> alvos)
+//Paralisa um inimigo
+void Fada::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou sua habilidade auxiliar
     this->_mana = false;
@@ -48,18 +61,19 @@ void Fada::EfeitoAuxiliar(std::vector<Personagem> alvos)
     {
         //Sem prioridade de alvo
         posAlvo = rand() % 4;
-    } while (alvos.at(posAlvo).GetVida() <= 0); //Até achar um alvo válido
+    } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
-    //Paraliza o alvo
-    alvos.at(posAlvo).AplicarStatus(1);
+    //Paralisa o alvo
+    alvos.at(posAlvo)->AplicarStatus(paralisado);
 }
 
-std::string Fada::ImprimirDados() const
+void Fada::ImprimirDados(std::ostream& out) const
 {
-    //Necessário pegar o código da Heloísa
+    out << "A fada docemente sorri enquanto te ataca,\nacho que um de vocês caiu desacordado.\n";
+    out << "==============================================\n";
 }
 
-Fada::Fada()
+Fada::Fada(std::string id)
 {
     //Inicializa o aleatorizador
     srand(time(NULL));
@@ -69,16 +83,16 @@ Fada::Fada()
     this->_armadura = 0;
     this->_esquiva = 6;
 
-    this->_precisao = 6;
+    this->_precisao = 10;
     this->_sorte = 4;
-    this->_arma = 2;
+    this->_arma = 4;
     this->_qtdAtaques = 3;
 
     this->_ferramenta = 0;
     this->_armaduraMagica = 10; //Resistência mágica
 
     this->_buffVida = 0;
-    this->_buffArma = 0;
+    this->_buffArmadura = 0;
     this->_buffArmaduraMagica = 0;
     this->_buffEsquiva = 0;
     this->_buffPrecisao = 0;
@@ -89,6 +103,8 @@ Fada::Fada()
     this->_modificadorEsquiva = 1;
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
-    this->_status = 0;
+    this->_status = estavel;
     _mana = true;
+
+    _idFile = id;
 }

@@ -7,20 +7,20 @@
 #include <iostream>
 #include <vector>
 
-#include "Personagem.hpp"
+#include "../Player/Personagem.hpp"
 
 //Objetivo da classe: vida e resistências médias, golpe de cauda em área desviável, grito paralisante
-class Grifo : Personagem
+class Grifo : public Personagem
 {
     private:
-        void Atacar(std::vector<Personagem> alvos); //Golpeia todos os inimigos, com chance de desvio
-        void CausarDano(Personagem alvo); //Dano físico médio-baixo
-        void EfeitoAuxiliar(std::vector<Personagem> alvos); //Paraliza todos os inimigos
+        void Atacar(std::vector<Personagem*> alvos); //Golpeia todos os inimigos, com chance de desvio
+        void CausarDano(Personagem* alvo); //Dano físico médio-baixo
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paralisa todos os inimigos
 
-        std::string ImprimirDados() const;
+        void ImprimirDados(std::ostream& out) const;
 
     public:
-        Grifo();
+        Grifo(std::string id = "");
 };
 
 

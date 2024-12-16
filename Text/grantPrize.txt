@@ -1,0 +1,15 @@
+============================================================================================================
+                              Parabens por derrotar esse monstro terrivel!
+                                Voce e seus amigos encontraram um premio
+                                        guardado pelo monstro.
+
+                              Escolha qual de voces gostaria de carrega-lo:
+
+                                            [1] - Barbaro
+                                            [2] - Paladino
+                                            [3] - Bardo
+                                            [4] - Mago
+
+                                            [5] - Descartar
+
+============================================================================================================
