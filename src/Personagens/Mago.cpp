@@ -78,6 +78,7 @@ Mago::Mago()
     //Inicializa o aleatorizador
     srand(time(NULL));
 
+    this->_level = 1;
     this->_vidaMaxima = 30;
     this->_vida = this->_vidaMaxima;
     this->_armadura = 1;

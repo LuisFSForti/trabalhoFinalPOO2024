@@ -88,6 +88,7 @@ Paladino::Paladino()
     //Inicializa o aleatorizador
     srand(time(NULL));
 
+    this->_level = 1;
     this->_vidaMaxima = 50;
     this->_vida = this->_vidaMaxima;
     this->_armadura = 5;

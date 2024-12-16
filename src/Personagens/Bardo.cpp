@@ -97,6 +97,7 @@ Bardo::Bardo()
     //Inicializa o aleatorizador
     srand(time(NULL));
 
+    this->_level = 1;
     this->_vidaMaxima = 40; 
     this->_vida = this->_vidaMaxima;
     this->_armadura = 2;

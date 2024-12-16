@@ -158,30 +158,6 @@ void Personagem::AplicarStatus(Estados status)
     this->_status = status;
 }
 
-std::string Personagem::Status() const
-{
-    switch (this->_status)
-    {
-        case estavel:
-            return "ESTAVEL";
-
-        case paralisado:
-            return "PARALISADO";
-
-        case encantado:
-            return "ENCANTADO";
-
-        case provocado:
-            return "PROVOCADO";
-
-        case amedrontado:
-            return "AMEDRONTADO";
-        
-        default:
-            return "ERRO";
-    }
-}
-
 //Recebe uma instrução e os possíveis alvos
 void Personagem::Comando(int instr, std::vector<Personagem*> alvos) 
 {
@@ -243,6 +219,20 @@ bool Personagem::GetMana()
 {
     return this->_mana;
 }
+
+Personagem& Personagem::operator++(int) //Aumenta o nível do personagem
+{
+    std::cout << "SUBI DE NÍVEL!" << std::endl;
+    if(this->_vida > 0) //Se ele estiver vivo
+    {
+        this->_level++; //Aumenta o nível
+        this->Curar(this->_level); //Cura o personagem baseado no nível
+        this->_sorte++;
+    }
+
+    return *this;
+}
+
 std::ostream& operator<<(std::ostream& out, const Personagem& p)
 {
     p.ImprimirDados(out);
@@ -360,6 +350,30 @@ Estados Personagem::GetStatus()
     return this->_status;
 }
 
+std::string Personagem::Status() const
+{
+    switch (this->_status)
+    {
+        case estavel:
+            return "ESTAVEL";
+
+        case paralisado:
+            return "PARALISADO";
+
+        case encantado:
+            return "ENCANTADO";
+
+        case provocado:
+            return "PROVOCADO";
+
+        case amedrontado:
+            return "AMEDRONTADO";
+        
+        default:
+            return "ERRO";
+    }
+}
+
 Item Personagem::GetItem()
 {
     if(this->_hasItem)
@@ -374,7 +388,12 @@ void Personagem::SetItem(Item consumivel)
     this->_hasItem = true;
 }
 
-bool Personagem::HasItem() 
+bool Personagem::HasItem()
 { 
     return this->_hasItem;
+}
+
+std::string Personagem::GetFileId() 
+{ 
+    return this->_idFile; 
 }

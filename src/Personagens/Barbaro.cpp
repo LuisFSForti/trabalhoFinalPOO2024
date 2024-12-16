@@ -84,6 +84,7 @@ Barbaro::Barbaro()
     //Inicializa o aleatorizador
     srand(time(NULL));
 
+    this->_level = 1;
     this->_vidaMaxima = 65;
     this->_vida = this->_vidaMaxima;
     this->_armadura = 2;

@@ -238,7 +238,10 @@ void Controller::EnemyPlay(int op)                          // Manipula a jogada
 void Controller::EndBattle()                                // Termina a batalha
 {
     for(int i = 0; i < _party.size() - 1; i++)              // Avisa os heróis que a batalha acabou
-        _party[i]->BatalhaEncerrada();                      // Para controlar as variáveis temporárias
+    {
+        _party[i]->BatalhaEncerrada();                      // Para controlar as variáveis temporárias   
+        (*_party[i])++;                                     // Sobe o nível do herói
+    }
 
     if(won)                                                 // Se venceu
         GivePrize();                                        // Recebe um item

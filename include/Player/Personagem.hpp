@@ -27,6 +27,7 @@ class Personagem
         std::string _idFile;
 
         bool _mana, _hasItem; //Para definir se pode usar a habilidade auxiliar
+        int _level; //Controla o nível do personagem
         int _vida, _vidaMaxima, _armadura, _armaduraMagica, _esquiva, _precisao, _sorte, _arma, _ferramenta, _qtdAtaques; //Valores base
         int _buffVida, _buffArmadura, _buffArmaduraMagica, _buffEsquiva, _buffPrecisao, _buffSorte, _buffArma, _buffFerramenta; //Buffs permanentes
         int _modificadorEsquiva, _modificadorDefesa, _modificadorQuantidadeAtaques; //Modificadores temporários
@@ -54,6 +55,7 @@ class Personagem
         virtual void Comando(int instr, std::vector<Personagem*> alvos); //Recebe uma instrução e os possíveis alvos, virtual pois o bardo possui uma variação
         void BatalhaEncerrada(); //Deve ser chamado pra todos os personagens no final de cada batalha, reinicia valores temporários
 
+        Personagem& operator++(int); //Aumenta o nível do personagem
         friend std::ostream& operator<<(std::ostream& out, const Personagem& p); //Para imprimir os dados do personagem
 
         //Para acessar os valores
@@ -89,7 +91,7 @@ class Personagem
         void SetItem(Item consumivel);
         bool HasItem();
 
-        std::string GetFileId() { return _idFile; }
+        std::string GetFileId();
 
         //Não há setters fora o do item pois os valores devem serem alterados pelas funções
 };
