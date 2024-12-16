@@ -150,7 +150,7 @@ class Controller
                 return;
             }
 
-            int randIndex = 4;                             // Sorteia algum dos inimigos
+            int randIndex = rand() % 6;                             // Sorteia algum dos inimigos
 
             switch (randIndex)
             {
@@ -212,7 +212,7 @@ class Controller
                             std::cout << "Esse membro está " << estadoS << " entao nao pode escolher o que fazer...\n";
 
                             _party[currentPartyMember]->Comando(0, _party); //Comando aleatório pra chamar as funções de controle de estado
-
+                            
                             Cooldown(3);
                             continue;
                         }
