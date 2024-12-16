@@ -33,5 +33,7 @@ class Item
         int GetBuffFerramenta();
         std::string GetNome();
         std::string GetDesc();
+
+        friend std::ostream& operator<<(std::ostream& out, const Item& p); //Para imprimir os dados do item
 };
 #endif  

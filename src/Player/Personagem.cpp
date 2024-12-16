@@ -1,31 +1,28 @@
 #include "Player/Personagem.hpp"
 
+// Funcao universal para usar o item do personagem
 void Personagem::UsarConsumivel()
 {
-    Item item = this->GetItem();
-
-    if(!this->_hasItem)
+    if(!this->_hasItem)                                     // Se o personagem nao tiver item para usar
     {
         std::cout << "Parece que voce nao tem itens para usar..." << std::endl;
         return;
     }
 
-    this->_vida+= item.GetCura();
-    if(this->_vida > this->_vidaMaxima) 
-        this->_vida = this->_vidaMaxima;
+    Item item = this->GetItem();                            // Seleciona o item do personagem
+    this->_vida+= item.GetCura();                           // Adiciona a quantidade de cura do item
+    if(this->_vida > this->_vidaMaxima)                     // Caso a vida passe do max 
+        this->_vida = this->_vidaMaxima;                    // Coloca na vida maxima
 
-    if(!this->_mana && item.GetMana()) 
-        this->_mana = true;
+    if(!this->_mana && item.GetMana())                      // Se o item der mana 
+        this->_mana = true;                                 // Deixa mana do personagem disponivel
 
-    this->_buffArma+= item.GetBuffAtaque();
-    this->_buffArmadura += item.GetBuffArmadura();
-    this->_buffFerramenta += item.GetBuffFerramenta();
-    
-    this->_buffSorte += item.GetBuffSorte();
-
-    this->_esquiva += item.GetBuffEsquiva();
-
-    this->_hasItem = false;
+    this->_buffArma+= item.GetBuffAtaque();                 // Aumenta o buff da arma
+    this->_buffArmadura += item.GetBuffArmadura();          // Aumenta o buff de armadura
+    this->_buffFerramenta += item.GetBuffFerramenta();      // Aumenta o buff de ferramenta
+    this->_buffSorte += item.GetBuffSorte();                // Aumenta a sorte
+    this->_esquiva += item.GetBuffEsquiva();                // Aumenta a esquiva (agilidade)
+    this->_hasItem = false;                                 // "Remove" o item do personagem
 }
 
 //Dobra a esquiva até a próxima ação
