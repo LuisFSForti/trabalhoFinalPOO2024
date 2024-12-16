@@ -7,58 +7,15 @@
 
 class PrintFile
 {
-    std::string _fileName;
+    std::string _fileName; //Endereço do arquivo
 
     private:
+        void PrintError(int typeError = -1);         //Se houve um erro na impressão
         
-        void PrintError(int typeError = -1) 
-        { 
-            switch (typeError)
-            {
-                case 0:
-                    std::cout << "Invalid File Name: " << _fileName << std::endl;
-                    break;
-
-                case 1:
-                    std::cout << "Error when opening " << _fileName << std::endl;
-            
-                default:
-                    std::cout << "Unknow error." << std::endl;
-                    break;
-            }
-        }
-
     public:
-
-        PrintFile(std::string fileName = "") 
-        {
-            _fileName = fileName;
-        }
-
-        int PrintText(bool erase = false)
-        {
-            if(_fileName == "")
-            {
-                PrintError(0);
-                return -1;
-            }
-
-            if(erase) { system("clear"); }  //system("cls"); // WINDOWS 
-            std::ifstream f(_fileName);
-
-            if (!f.is_open()) {
-                PrintError(1);
-                return -1;
-            }
-
-            std::string s;
-            while (getline(f, s))
-                std::cout << s << std::endl;
-
-            f.close();   
-            return 0;         
-        }
-
+        PrintFile(std::string fileName = "");        //Construtor com endereço do arquivo
+        
+        int PrintText(bool erase = false);           //Imprime o texto, apagando a tela se necessário
 };
 
 #endif

@@ -8,10 +8,21 @@ void Barbaro::Atacar(std::vector<Personagem*> alvos)
     
     //Para cada ataque
     for(int i = 0; i < this->_qtdAtaques + this->_modificadorQuantidadeAtaques; i++)
+    {
         //Verifica se o ataque acerta
-        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
+        int dado = rand()%20;
+        int ataque = dado + this->_precisao + this->_buffPrecisao;
+        int esquiva = (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10;
+
+        std::cout << "Ataque: " << dado << " + " << this->_precisao << " + " << this->_buffPrecisao << " = " << ataque << std::endl;
+        std::cout << "Esquiva: (" << alvo->GetEsquiva() << " + " << alvo->GetBuffEsquiva() << ") *" << alvo->GetModificadorEsquiva() << " + 10 = " << esquiva << std::endl;
+
+        if(ataque >= esquiva)
+        {
             //Se sim, calcula o dano
             this->CausarDano(alvo);
+        }
+    }
 }
 
 //Dano físico alto    
@@ -22,7 +33,11 @@ void Barbaro::CausarDano(Personagem* alvo)
 
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand()%102+ this->_arma + this->_buffArma) * (1 + critico);
+    int dano = (rand()%10+ this->_arma + this->_buffArma) * (1 + critico);
+
+    if(critico)
+        std::cout << "Crítico!!!!" << std::endl;
+    std::cout << "Acertou por " << dano << " de dano físico!" << std::endl << std::endl;
 
     //Alerta o alvo que recebeu dano físico e quanto
     alvo->ReceberDanoFisico(dano);
@@ -46,17 +61,18 @@ void Barbaro::ImprimirDados(std::ostream& out) const
     Item consumivel = this->_consumivel;
     out  << "============================================================================================================\n";
     out << "                         BÁRBARO                   " << std::to_string(this->_vida) <<  "/" + std::to_string(this->_vidaMaxima) << "                     STATUS\n";
+    out << std::string(50 - this->Status().length()/2, ' ') << this->Status() << "\n";
     out << "============================================================================================================\n";
 
     if(this->_hasItem)
-        out << "||  1. Ataque de machado          3. Consumir item  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva << "\n";
+        out << "||  1. Ataque de machado          3. Consumir item  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva + this->_buffEsquiva << "\n";
     else
-        out << "||  1. Ataque de machado          \033[31m3. Consumir item\033[0m  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva << "\n";
+        out << "||  1. Ataque de machado          \033[31m3. Consumir item\033[0m  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva + this->_buffEsquiva << "\n";
 
     if(this->_mana) //Se tiver mana, escreve normalmente
-        out << "||  2. Provocar                   4. Esquivar       ||  Arma: " << this->_arma << "                       Armadura: " << this->_armadura << "\n";
+        out << "||  2. Provocar                   4. Esquivar       ||  Arma: " << this->_arma + this->_buffArma << "                       Armadura: " << this->_armadura + this->_buffArmadura + this->_modificadorDefesa << "\n";
     else //Se não tiver, escreve em vermelho
-        out << "||  \033[31m2. Provocar\033[0m                   4. Esquivar       ||  Arma: " << this->_arma << "                       Armadura: " << this->_armadura << "\n"; //\033m[xm define a cor do std::cout, 33 sendo vermelho e 0 é padrão
+        out << "||  \033[31m2. Provocar\033[0m                   4. Esquivar       ||  Arma: " << this->_arma + this->_buffArma << "                       Armadura: " << this->_armadura + this->_buffArmadura + this->_modificadorDefesa << "\n"; //\033m[xm define a cor do std::cout, 33 sendo vermelho e 0 é padrão
     out << "============================================================================================================\n";
     
     if(this->_hasItem)
@@ -73,21 +89,21 @@ Barbaro::Barbaro()
     //Inicializa o aleatorizador
     srand(time(NULL));
 
-    this->_vidaMaxima = 75;
+    this->_vidaMaxima = 65;
     this->_vida = this->_vidaMaxima;
     this->_armadura = 2;
-    this->_esquiva = 1;
+    this->_esquiva = 4;
 
-    this->_precisao = 4;
+    this->_precisao = 7;
     this->_sorte = 2;
-    this->_arma = 7;
+    this->_arma = 6;
     this->_qtdAtaques = 3;
 
     this->_ferramenta = 3; //Totens
     this->_armaduraMagica = this->_ferramenta; //Resistência espiritual
 
     this->_buffVida = 0;
-    this->_buffArma = 0;
+    this->_buffArmadura = 0;
     this->_buffArmaduraMagica = 0;
     this->_buffEsquiva = 0;
     this->_buffPrecisao = 0;
@@ -99,5 +115,6 @@ Barbaro::Barbaro()
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = estavel;
-    _mana = true;
+    this->_mana = true;
+    this->_hasItem = false;
 }

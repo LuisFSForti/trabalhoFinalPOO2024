@@ -15,7 +15,7 @@ class Fada : public Personagem
     private:
         void Atacar(std::vector<Personagem*> alvos); //Ataca múltiplos inimigos
         void CausarDano(Personagem* alvo); //Dano mágico médio com alta chance de crítico
-        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paraliza um inimigo
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paralisa um inimigo
 
         void ImprimirDados(std::ostream& out) const;
 

@@ -15,7 +15,7 @@ class Grifo : public Personagem
     private:
         void Atacar(std::vector<Personagem*> alvos); //Golpeia todos os inimigos, com chance de desvio
         void CausarDano(Personagem* alvo); //Dano físico médio-baixo
-        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paraliza todos os inimigos
+        void EfeitoAuxiliar(std::vector<Personagem*> alvos); //Paralisa todos os inimigos
 
         void ImprimirDados(std::ostream& out) const;
 

@@ -31,9 +31,18 @@ void Centauro::Atacar(std::vector<Personagem*> alvos)
     Personagem* alvo = alvos.at(posAlvo);
 
     //Verifica se o ataque acerta
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
-        //Se sim, causa dano ao alvo
+    int dado = rand()%20;
+    int ataque = dado + this->_precisao + this->_buffPrecisao;
+    int esquiva = (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10;
+
+    std::cout << "Ataque: " << dado << " + " << this->_precisao << " + " << this->_buffPrecisao << " = " << ataque << std::endl;
+    std::cout << "Esquiva ("<< Nomes[posAlvo] << "): (" << alvo->GetEsquiva() << " + " << alvo->GetBuffEsquiva() << ") *" << alvo->GetModificadorEsquiva() << " + 10 = " << esquiva << std::endl;
+
+    if(ataque >= esquiva)
+    {
+        //Se sim, calcula o dano
         this->CausarDano(alvo);
+    }
 }
 
 //Dano físico médio-alto    
@@ -43,7 +52,10 @@ void Centauro::CausarDano(Personagem* alvo)
     bool critico = rand() % 20 + _sorte >= 20;
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand() % 8 + this->_arma + this->_buffArma) * (1 + critico);
+    int dano = (rand() % 10 + this->_arma + this->_buffArma) * (1 + critico);
+    if(critico)
+        std::cout << "Crítico!!!!" << std::endl;
+    std::cout << "Acertou por " << dano << " de dano físico!" << std::endl << std::endl;
 
     //Alerta o alvo que ele recebeu dano físico e fala quanto
     alvo->ReceberDanoFisico(dano);
@@ -89,7 +101,7 @@ void Centauro::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Centauro::ImprimirDados(std::ostream& out) const
 {
-    out << "O centauro está galopando furiosamente... \nIsso te da dano fisico...\n";
+    out << "O centauro está galopando furiosamente... \nSe prepare para uma pancada...\n";
     out << "==============================================\n";
 }
 
@@ -103,15 +115,15 @@ Centauro::Centauro(std::string id)
     this->_armadura = 3;
     this->_esquiva = 4;
 
-    this->_precisao = 4;
+    this->_precisao = 10;
     this->_sorte = 1;
-    this->_arma = 6;
+    this->_arma = 10;
 
     this->_ferramenta = 0;
-    this->_armaduraMagica = this->_ferramenta;
+    this->_armaduraMagica = 0;
 
     this->_buffVida = 0;
-    this->_buffArma = 0;
+    this->_buffArmadura = 0;
     this->_buffArmaduraMagica = 0;
     this->_buffEsquiva = 0;
     this->_buffPrecisao = 0;
@@ -123,7 +135,7 @@ Centauro::Centauro(std::string id)
     this->_modificadorDefesa = 0;
     this->_modificadorQuantidadeAtaques = 0;
     this->_status = estavel;
-    _mana = true;
+    this->_mana = true;
 
     _idFile = id;
 }

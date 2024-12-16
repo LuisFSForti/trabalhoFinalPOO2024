@@ -14,9 +14,18 @@ void Fantasma::Atacar(std::vector<Personagem*> alvos)
     Personagem* alvo = alvos.at(posAlvo);
 
     //Verifica se o ataque acerta
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
+    int dado = rand()%20;
+    int ataque = dado + this->_precisao + this->_buffPrecisao;
+    int esquiva = (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10;
+
+    std::cout << "Ataque: " << dado << " + " << this->_precisao << " + " << this->_buffPrecisao << " = " << ataque << std::endl;
+    std::cout << "Esquiva ("<< Nomes[posAlvo] << "): (" << alvo->GetEsquiva() << " + " << alvo->GetBuffEsquiva() << ") *" << alvo->GetModificadorEsquiva() << " + 10 = " << esquiva << std::endl;
+
+    if(ataque >= esquiva)
+    {
         //Se sim, calcula o dano
         this->CausarDano(alvo);
+    }
 }
     
 //Dano mágico médio
@@ -27,7 +36,11 @@ void Fantasma::CausarDano(Personagem* alvo)
 
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand() % 6 + this->_arma + this->_buffArma) * (1 + critico);
+    int dano = (rand() % 10 + this->_arma + this->_buffArma) * (1 + critico);
+
+    if(critico)
+        std::cout << "Crítico!!!!" << std::endl;
+    std::cout << "Acertou por " << dano << " de dano mágico!" << std::endl << std::endl;
 
     //Alerta o alvo que ele recebeu dano mágico e quanto
     alvo->ReceberDanoMagico(dano);
@@ -60,15 +73,15 @@ Fantasma::Fantasma(std::string id)
     this->_armadura = 0;
     this->_esquiva = 12;
 
-    this->_precisao = 6;
+    this->_precisao = 12;
     this->_sorte = 1;
     this->_arma = 4;
 
     this->_ferramenta = 0;
-    this->_armaduraMagica = 0;
+    this->_armaduraMagica = 4;
 
     this->_buffVida = 0;
-    this->_buffArma = 0;
+    this->_buffArmadura = 0;
     this->_buffArmaduraMagica = 0;
     this->_buffEsquiva = 0;
     this->_buffPrecisao = 0;
