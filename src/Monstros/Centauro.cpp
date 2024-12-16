@@ -52,7 +52,7 @@ void Centauro::CausarDano(Personagem* alvo)
     bool critico = rand() % 20 + _sorte >= 20;
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand() % 8 + this->_arma + this->_buffArma) * (1 + critico);
+    int dano = (rand() % 10 + this->_arma + this->_buffArma) * (1 + critico);
     if(critico)
         std::cout << "Crítico!!!!" << std::endl;
     std::cout << "Acertou por " << dano << " de dano físico!" << std::endl << std::endl;
@@ -117,10 +117,10 @@ Centauro::Centauro(std::string id)
 
     this->_precisao = 10;
     this->_sorte = 1;
-    this->_arma = 6;
+    this->_arma = 10;
 
     this->_ferramenta = 0;
-    this->_armaduraMagica = this->_ferramenta;
+    this->_armaduraMagica = 0;
 
     this->_buffVida = 0;
     this->_buffArmadura = 0;

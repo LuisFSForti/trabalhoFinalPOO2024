@@ -33,7 +33,7 @@ void Barbaro::CausarDano(Personagem* alvo)
 
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand()%12+ this->_arma + this->_buffArma) * (1 + critico);
+    int dano = (rand()%10+ this->_arma + this->_buffArma) * (1 + critico);
 
     if(critico)
         std::cout << "Crítico!!!!" << std::endl;
@@ -89,14 +89,14 @@ Barbaro::Barbaro()
     //Inicializa o aleatorizador
     srand(time(NULL));
 
-    this->_vidaMaxima = 75;
+    this->_vidaMaxima = 65;
     this->_vida = this->_vidaMaxima;
     this->_armadura = 2;
-    this->_esquiva = 2;
+    this->_esquiva = 4;
 
     this->_precisao = 7;
     this->_sorte = 2;
-    this->_arma = 7;
+    this->_arma = 6;
     this->_qtdAtaques = 3;
 
     this->_ferramenta = 3; //Totens

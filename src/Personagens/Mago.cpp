@@ -29,7 +29,7 @@ void Mago::CausarDano(Personagem* alvo)
 
     //Calcula o dano, usando tanto a arma quanto a ferramenta
     //(1 + critico) = 1 ou 2
-    int dano = (rand()%12 + this->_arma + this->_buffArma + this->_ferramenta + this->_buffFerramenta) * (1 + critico);
+    int dano = ((rand()%12) * 2 + this->_arma + this->_buffArma + this->_ferramenta + this->_buffFerramenta) * (1 + critico);
 
     if(critico)
         std::cout << "Crítico!!!!" << std::endl;
@@ -83,10 +83,10 @@ Mago::Mago()
     //Inicializa o aleatorizador
     srand(time(NULL));
 
-    this->_vidaMaxima = 20;
+    this->_vidaMaxima = 30;
     this->_vida = this->_vidaMaxima;
     this->_armadura = 1;
-    this->_esquiva = 0;
+    this->_esquiva = 2;
 
     this->_precisao = 10;
     this->_sorte = 2;

@@ -33,7 +33,7 @@ void Paladino::CausarDano(Personagem* alvo)
 
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand()%10 + this->_arma + this->_buffArma) * (1 + critico);
+    int dano = (rand()%12 + this->_arma + this->_buffArma) * (1 + critico);
 
     if(critico)
         std::cout << "Crítico!!!!" << std::endl;
@@ -96,7 +96,7 @@ Paladino::Paladino()
     this->_vidaMaxima = 50;
     this->_vida = this->_vidaMaxima;
     this->_armadura = 5;
-    this->_esquiva = 1;
+    this->_esquiva = 3;
 
     this->_precisao = 6;
     this->_sorte = 1;

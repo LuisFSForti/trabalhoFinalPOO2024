@@ -31,7 +31,7 @@ class Controller
 {
     private:
         std::vector<Personagem*> _party;                 // Membros da equipe do jogador  
-        std::vector<Personagem> _enemies;               // Possíveis inimigos
+        std::vector<Personagem*> _enemies;               // Possíveis inimigos
         std::vector<Item> _items;
 
         bool won = false;                               // Se o player ganhou ou não
@@ -53,6 +53,14 @@ class Controller
             do {
                 elapsed = clock() - start;
             } while(elapsed < period);
+        }
+
+        void Esperar()
+        {
+            std::cout << "\n\nPressione [Enter] para continuar\n";
+
+            std::cin.clear();
+            std::cin.ignore(1000000, '\n'); //Limpa o buffer de entrada
         }
 
         void Print(std::string file, bool erase)        // Escrever algum arquivo .txt na tela
@@ -87,6 +95,7 @@ class Controller
             Cooldown(2);
             Print("epilogue.txt", false);
             Cooldown(4);
+            Esperar();
             SetPlayer();
         }
 
@@ -95,6 +104,7 @@ class Controller
             Print("endGame.txt", false);
             char op;
             std::cin >> op;
+            std::cin.ignore(1000000, '\n'); //Limpa o buffer de entrada
 
             if(op == 's')
                 StartGame();
@@ -114,25 +124,23 @@ class Controller
             _party[2] = new Bardo();
             _party[3] = new Mago();
 
-            _enemies.push_back(Centauro(enemyPath + "centauroBasico.txt"));
-            _enemies.push_back(Dragao(enemyPath +  "dragaoBasico.txt"));
-            _enemies.push_back(Fada(enemyPath +  "fadaBasico.txt"));
-            _enemies.push_back(Fantasma(enemyPath +  "fantasmaBasico.txt"));
-            _enemies.push_back(Grifo(enemyPath +  "grifoBasico.txt"));
-            _enemies.push_back(Sereia(enemyPath +  "sereiaBasico.txt"));
+            _enemies.push_back(new Centauro(enemyPath + "centauroBasico.txt"));
+            _enemies.push_back(new Dragao(enemyPath +  "dragaoBasico.txt"));
+            _enemies.push_back(new Fada(enemyPath +  "fadaBasico.txt"));
+            _enemies.push_back(new Fantasma(enemyPath +  "fantasmaBasico.txt"));
+            _enemies.push_back(new Grifo(enemyPath +  "grifoBasico.txt"));
+            _enemies.push_back(new Sereia(enemyPath +  "sereiaBasico.txt"));
 
-            _items.push_back(Item(0,true,0,0,0,true,0,0,0, "Pocao da Vida", "Ressuscita um personagem morto."));
-            _items.push_back(Item(20,false,0,0,0,false,0,0,0, "Hidromel", "Cura a vida do alvo em 20 pontos."));
-            _items.push_back(Item(9999,false,0,0,0,false,0,0,0, "Ambrosia", "Restaura a vida maxima do alvo."));
-            _items.push_back(Item(0,true,0,0,0,false,0,0,0, "Licor", "Restaura a mana do alvo."));
-            _items.push_back(Item(0,false,rand()%5,0,0,false,0,0,0, "Pocao de Furia", "Aumenta o dano de arma."));
-            _items.push_back(Item(0,false,0,0,0,false,0,0,rand()%4, "Terco", "Aumenta a protecao por meios divinos."));
-            _items.push_back(Item(0,false,rand()%5,0,0,false,0,0,rand()%4, "Biblia", "Aumenta dano de arma e armadura pelo poder da palavra."));
-            _items.push_back(Item(0,false,rand()%5,0,0,false,rand()%3,0,rand()%4, "Alcool", "Aumenta dano de arma e armadura totalmente."));
-            _items.push_back(Item(0,false,0,rand()%20,0,false,0,0,0, "Granada", "Causa dano ao inimigo."));
-            _items.push_back(Item(0,false,0,0,rand()%3,false,0,0,0, "Ferradura", "Aumenta a sorte do alvo."));
-            _items.push_back(Item(0,false,0,0,0,false,0,rand()%3,0, "Pocao de Agilidade", "Aumenta a agilidade do alvo."));
-            _items.push_back(Item(0,false,0,0,0,false,rand()%3,0,0, "Bigorna", "Aumenta o buff de ferramenta."));
+            _items.push_back(Item(20,false,0,0,0,0,0, "Hidromel", "Cura a vida do alvo em 20 pontos."));
+            _items.push_back(Item(9999,false,0,0,0,0,0, "Ambrosia", "Restaura a vida maxima do alvo."));
+            _items.push_back(Item(0,true,0,0,0,0,0, "Licor", "Restaura a mana do alvo."));
+            _items.push_back(Item(0,false,1+rand()%5,0,0,0,0, "Pocao de Furia", "Aumenta o dano de arma."));
+            _items.push_back(Item(0,false,0,0,0,0,1+rand()%4, "Terco", "Aumenta a protecao por meios divinos."));
+            _items.push_back(Item(0,false,1+rand()%5,0,0,0,1+rand()%4, "Biblia", "Aumenta dano de arma e armadura pelo poder da palavra."));
+            _items.push_back(Item(0,false,1+rand()%5,0,1+rand()%3,0,1+rand()%4, "Alcool", "Aumenta dano de arma e armadura totalmente."));
+            _items.push_back(Item(0,false,0,1+rand()%3,0,0,0, "Ferradura", "Aumenta a sorte do alvo."));
+            _items.push_back(Item(0,false,0,0,0,1+rand()%3,0, "Pocao de Agilidade", "Aumenta a agilidade do alvo."));
+            _items.push_back(Item(0,false,0,0,1+rand()%3,0,0, "Bigorna", "Aumenta o buff de ferramenta."));
             StartBattle();
         }
 
@@ -150,38 +158,8 @@ class Controller
                 return;
             }
 
-            int randIndex = rand() % 6;                             // Sorteia algum dos inimigos
-
-            switch (randIndex)
-            {
-                case 0:
-                    _party[4] = new Centauro(enemyPath + "centauroBasico.txt");
-                    break;
-
-                case 1:
-                    _party[4] = new Dragao(enemyPath +  "dragaoBasico.txt");
-                    break;
-
-                case 2:
-                    _party[4] = new Fada(enemyPath +  "fadaBasico.txt");
-                    break;
-
-                case 3:
-                    _party[4] = new Fantasma(enemyPath +  "fantasmaBasico.txt");
-                    break;
-
-                case 4:
-                    _party[4] = new Grifo(enemyPath +  "grifoBasico.txt");
-                    break;
-
-                case 5:
-                    _party[4] = new Sereia(enemyPath +  "sereiaBasico.txt");
-                    break;
-                
-                default:
-                    break;
-            }
-            
+            int randIndex = rand() % _enemies.size();                             // Sorteia algum dos inimigos
+            _party[4] = _enemies[randIndex];
             _enemies.erase(std::next(_enemies.begin(), randIndex)); // Apaga da lista de inimigos
 
             round++;
@@ -190,7 +168,8 @@ class Controller
 
             currentPartyMember = _party.size()-1;
             EnemyPlay(1);                                           // Inimigo usa efeito auxiliar
-            Cooldown(3);
+            //Cooldown(3);
+            Esperar();
 
             while(_party[_party.size()-1]->GetVida() > 0)           // Enquanto o inimigo ou o jogador nao morrem
             {
@@ -213,7 +192,8 @@ class Controller
 
                             _party[currentPartyMember]->Comando(0, _party); //Comando aleatório pra chamar as funções de controle de estado
                             
-                            Cooldown(3);
+                            //Cooldown(3);
+                            Esperar();
                             continue;
                         }
                     }
@@ -221,20 +201,23 @@ class Controller
                     ReloadScreen();                                 // Carrega a tela para novo membro
                     std::cout << "Escolha uma das opcoes: ";        // Espera a escolha de alguma das opcoes
                     std::cin  >> op;
+                    std::cin.ignore(1000000, '\n'); //Limpa o buffer de entrada
 
                     _party[currentPartyMember]->Comando(op-1, _party);
 
                     if(_party[_party.size()-1]->GetVida() <= 0) //Se o inimigo morreu
                         break;
-                    Cooldown(8);
+                    //Cooldown(8);
+                    Esperar();
                 }
 
                 if(_party[_party.size()-1]->GetVida() > 0) //Se o inimigo não morreu
                 {
                     EnemyPlay(0);                                       // Inimigo ataca
-                    Cooldown(3);
+                    //Cooldown(1);
                 }
 
+                someOneAlive = false;
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                 {
                     if(_party[currentPartyMember]->GetVida() > 0)
@@ -247,7 +230,8 @@ class Controller
                 if(!someOneAlive)
                     break;
 
-                Cooldown(5);
+                //Cooldown(5);
+                Esperar();
             }
 
             if(someOneAlive)
@@ -291,6 +275,9 @@ class Controller
 
         void EndBattle()
         {
+            for(int i = 0; i < _party.size() - 1; i++) //Avisa os heróis que a batalha acabou
+                _party[i]->BatalhaEncerrada();
+
             if(won)
                 GivePrize();                                        // Recebe um item
             else
@@ -299,8 +286,9 @@ class Controller
 
         void GivePrize()
         {
-            int randIndex = rand() % 12;
+            int randIndex = rand() % _items.size(); //Seleciona um item aleatório
             Item prize = _items[randIndex]; 
+            _items.erase(_items.begin() + randIndex); //Remove o item
 
             LoadPrizeScreen(prize);
         }
@@ -315,6 +303,7 @@ class Controller
             std::cout << "======================================================" << std::endl;
 
             std::cin >> op;
+            std::cin.ignore(1000000, '\n'); //Limpa o buffer de entrada
 
             if(op == 5)
             {
@@ -325,7 +314,8 @@ class Controller
             if(_party[op-1]->HasItem())
             {
                 std::cout << "Parece que esse membro ja tem um item... Escolha outro." << std::endl;
-                Cooldown(2);
+                //Cooldown(2);
+                Esperar();
                 LoadPrizeScreen(prize);
             }
             else

@@ -25,9 +25,6 @@ void Personagem::UsarConsumivel()
 
     this->_esquiva += item.GetBuffEsquiva();
 
-    if(this->_vida == 0 && item.Revive()) 
-        this->_vida = this->_vidaMaxima;
-
     this->_hasItem = false;
 }
 

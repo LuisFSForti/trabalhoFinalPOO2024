@@ -85,7 +85,7 @@ Fada::Fada(std::string id)
 
     this->_precisao = 10;
     this->_sorte = 4;
-    this->_arma = 2;
+    this->_arma = 4;
     this->_qtdAtaques = 3;
 
     this->_ferramenta = 0;

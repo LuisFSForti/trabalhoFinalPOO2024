@@ -9,6 +9,9 @@ void Sereia::Atacar(std::vector<Personagem*> alvos)
         //Pega o alvo
         Personagem* alvo = alvos.at(i);
 
+        if(alvo->GetVida() <= 0)
+            continue;
+
         //Verifica se o ataque acerta
         int dado = rand()%20;
         int ataque = dado + this->_precisao + this->_buffPrecisao;

@@ -36,7 +36,7 @@ void Fantasma::CausarDano(Personagem* alvo)
 
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand() % 6 + this->_arma + this->_buffArma) * (1 + critico);
+    int dano = (rand() % 10 + this->_arma + this->_buffArma) * (1 + critico);
 
     if(critico)
         std::cout << "Crítico!!!!" << std::endl;
@@ -78,7 +78,7 @@ Fantasma::Fantasma(std::string id)
     this->_arma = 4;
 
     this->_ferramenta = 0;
-    this->_armaduraMagica = 0;
+    this->_armaduraMagica = 4;
 
     this->_buffVida = 0;
     this->_buffArmadura = 0;

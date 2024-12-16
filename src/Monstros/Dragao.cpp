@@ -53,7 +53,7 @@ void Dragao::CausarDano(Personagem* alvo)
 
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand() % 10 + this->_arma + this->_buffArma) * (1 + critico);
+    int dano = (rand() % 12 + this->_arma + this->_buffArma) * (1 + critico);
 
     if(critico)
         std::cout << "Crítico!!!!" << std::endl;
@@ -98,7 +98,7 @@ Dragao::Dragao(std::string id)
 
     this->_precisao = 8;
     this->_sorte = 1;
-    this->_arma = 8;
+    this->_arma = 12;
 
     this->_ferramenta = 10; //Calor interno
     this->_armaduraMagica = this->_ferramenta; //Resistência mágica

@@ -9,6 +9,9 @@ void Grifo::Atacar(std::vector<Personagem*> alvos)
         //Pega o alvo
         Personagem* alvo = alvos.at(i);
 
+        if(alvo->GetVida() <= 0)
+            continue;
+
         //Testa se o herói desvia do ataque
         //Se estiver ativamente esquivando aumenta a chance de desviar
         int dado = rand()%20;
@@ -78,7 +81,7 @@ Grifo::Grifo(std::string id)
     this->_sorte = 2;
     this->_arma = 6;
 
-    this->_ferramenta = 10; //Cauda
+    this->_ferramenta = 11; //Cauda
     this->_armaduraMagica = 8; //Resistência mágica
 
     this->_buffVida = 0;

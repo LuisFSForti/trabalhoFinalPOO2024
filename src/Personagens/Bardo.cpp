@@ -29,7 +29,7 @@ void Bardo::CausarDano(Personagem* alvo)
 
     //Calcula o dano
     //(1 + critico) = 1 ou 2
-    int dano = (rand()%6 + this->_arma + this->_buffArma) * (1 + critico); //Dano psicológico, não tem resistência
+    int dano = (rand()%8 + this->_arma + this->_buffArma) * (1 + critico); //Dano psicológico, não tem resistência
 
     if(critico)
         std::cout << "Crítico!!!!" << std::endl;
@@ -88,7 +88,11 @@ void Bardo::ImprimirDados(std::ostream& out) const
     }
     else //Se estiver sob controle do inimigo
     {
-        out << "||  1, 3, 4. Aceitar seu estado        2. Canção de restauração                                           ||\n";
+        if(this->_mana)
+            out << "||  1, 3, 4. Aceitar seu estado        2. Canção de restauração                                           ||\n";
+        else
+            out << "||  1, 3, 4. Aceitar seu estado        \033[31m2. Canção de restauração\033[0m                                           ||\n";
+
         out << "============================================================================================================\n";
     }
 }
@@ -98,10 +102,10 @@ Bardo::Bardo()
     //Inicializa o aleatorizador
     srand(time(NULL));
 
-    this->_vidaMaxima = 35; 
+    this->_vidaMaxima = 40; 
     this->_vida = this->_vidaMaxima;
     this->_armadura = 2;
-    this->_esquiva = 4;
+    this->_esquiva = 6;
 
     this->_precisao = 8;
     this->_sorte = 5;
