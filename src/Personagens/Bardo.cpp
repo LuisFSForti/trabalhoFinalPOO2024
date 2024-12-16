@@ -68,14 +68,14 @@ void Bardo::ImprimirDados(std::ostream& out) const
     if(this->_status == estavel || this->_status == amedrontado) //Se o bardo puder agir normalmente
     {
         if(this->_hasItem)
-            out << "||  1. Zombar                     3. Consumir item  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva << "\n";
+            out << "||  1. Zombar                     3. Consumir item  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva + this->_buffEsquiva << "\n";
         else
-            out << "||  1. Zombar                     \033[31m3. Consumir item\033[0m  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva << "\n";
+            out << "||  1. Zombar                     \033[31m3. Consumir item\033[0m  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva + this->_buffEsquiva << "\n";
 
         if(this->_mana) //Se tiver mana, escreve normalmente
-            out << "||  2. Canção de restauração      4. Esquivar       ||  Arma: " << this->_arma << "                       Armadura: " << this->_armadura << "\n";
+            out << "||  2. Canção de restauração      4. Esquivar       ||  Arma: " << this->_arma + this->_buffArma << "                       Armadura: " << this->_armadura + this->_buffArmadura + this->_modificadorDefesa << "\n";
         else //Se não tiver, escreve em vermelho
-            out << "||  \033[31m2. Canção de restauração\033[0m      4. Esquivar       ||  Arma: " << this->_arma << "                       Armadura: " << this->_armadura << "\n";
+            out << "||  \033[31m2. Canção de restauração\033[0m      4. Esquivar       ||  Arma: " << this->_arma + this->_buffArma << "                       Armadura: " << this->_armadura + this->_buffArmadura + this->_modificadorDefesa << "\n";
         out << "============================================================================================================\n";
 
         if(this->_hasItem)

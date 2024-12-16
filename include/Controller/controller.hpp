@@ -150,7 +150,7 @@ class Controller
                 return;
             }
 
-            int randIndex = rand() % 6;                             // Sorteia algum dos inimigos
+            int randIndex = 4;                             // Sorteia algum dos inimigos
 
             switch (randIndex)
             {
@@ -204,13 +204,15 @@ class Controller
                     {
                         if(!(currentPartyMember == 2 && _party[currentPartyMember]->GetMana())) //Se não for o bardo com mana
                         {
-                            _party[currentPartyMember]->Comando(0, _party); //Comando aleatório pra chamar as funções de controle de estado
                             ReloadScreen();
 
                             //Converte o estado para uma string
                             std::string estadoS = _party[currentPartyMember]->Status();
                             std::transform(estadoS.begin(), estadoS.end(), estadoS.begin(), [](unsigned char c) {return std::tolower(c);}); //https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
                             std::cout << "Esse membro está " << estadoS << " entao nao pode escolher o que fazer...\n";
+
+                            _party[currentPartyMember]->Comando(0, _party); //Comando aleatório pra chamar as funções de controle de estado
+
                             Cooldown(3);
                             continue;
                         }

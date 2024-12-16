@@ -59,14 +59,14 @@ void Mago::ImprimirDados(std::ostream& out) const
     out << "============================================================================================================\n";
 
     if(this->_hasItem)
-        out << "||  1. Bola de Fogo               3. Consumir item  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva << "\n";
+        out << "||  1. Bola de Fogo               3. Consumir item  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva + this->_buffEsquiva << "\n";
     else
-        out << "||  1. Bola de Fogo               \033[31m3. Consumir item\033[0m  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva << "\n";
+        out << "||  1. Bola de Fogo               \033[31m3. Consumir item\033[0m  ||  Mana: " << this->_mana << "                       Esquiva: " << this->_esquiva + this->_buffEsquiva << "\n";
 
     if(this->_mana) //Se tiver mana, escreve normalmente
-        out << "||  2. Paralisar                  4. Esquivar       ||  Arma: " << this->_arma << "                       Armadura: " << this->_armadura << "\n";
+        out << "||  2. Paralisar                  4. Esquivar       ||  Arma: " << this->_arma + this->_buffArma + this->_ferramenta + this->_buffFerramenta << "                       Armadura: " << this->_armadura + this->_buffArmadura + this->_modificadorDefesa << "\n";
     else //Se não tiver, escreve em vermelho
-        out << "||  \033[31m2. Paralisar\033[0m                  4. Esquivar       ||  Arma: " << this->_arma << "                       Armadura: " << this->_armadura << "\n";
+        out << "||  \033[31m2. Paralisar\033[0m                  4. Esquivar       ||  Arma: " << this->_arma + this->_buffArma + this->_ferramenta + this->_buffFerramenta << "                       Armadura: " << this->_armadura + this->_buffArmadura + this->_modificadorDefesa << "\n";
     out << "============================================================================================================\n";
     
     if(this->_hasItem)
