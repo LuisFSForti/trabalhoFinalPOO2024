@@ -70,13 +70,7 @@ void Mago::ImprimirDados(std::ostream& out) const
     out << "============================================================================================================\n";
     
     if(this->_hasItem)
-    {
         out << consumivel;
-       /*  out << "    Item Disponível: " << consumivel.GetNome() << "\n" ;
-        out << "    Descricao: " << consumivel.GetDesc() << "\n";
-        out << "============================================================================================================";
- */
-    }  
 }
 
 Mago::Mago()

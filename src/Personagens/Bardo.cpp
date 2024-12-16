@@ -79,13 +79,7 @@ void Bardo::ImprimirDados(std::ostream& out) const
         out << "============================================================================================================\n";
 
         if(this->_hasItem)
-        {
             out << consumivel;
-           /*  out << "    Item Disponível: " << consumivel.GetNome() << "\n" ;
-            out << "    Descricao: " << consumivel.GetDesc() << "\n";
-            out << "============================================================================================================";
- */
-        }
     }
     else //Se estiver sob controle do inimigo
     {
