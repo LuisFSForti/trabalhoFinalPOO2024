@@ -23,6 +23,8 @@ class Item
         int buffFerramenta=0, int buffEsquiva=0, int buffArmadura=0, 
         std::string nome="default", std::string desc = "nada");
 
+        friend std::ostream& operator<<(std::ostream& out, const Item& p); //Para imprimir os dados do item
+
         //Getters da classe
         int GetCura();
         bool GetMana();
@@ -33,7 +35,5 @@ class Item
         int GetBuffFerramenta();
         std::string GetNome();
         std::string GetDesc();
-
-        friend std::ostream& operator<<(std::ostream& out, const Item& p); //Para imprimir os dados do item
 };
 #endif  

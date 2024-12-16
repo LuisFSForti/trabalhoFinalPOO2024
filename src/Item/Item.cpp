@@ -15,6 +15,15 @@ int buffEsquiva, int buffArmadura, std::string nome, std::string desc)
     _desc = desc;
 }
 
+std::ostream& operator<<(std::ostream& out, const Item& i)
+{
+    out << "  Item Encontrado: " << i._nome << "\n";
+    out << "  Descricao: " << i._desc  << "\n";
+    out << "============================================================================================================" << std::endl;
+
+    return out;
+}
+
 //Getters da classe
 int Item::GetCura()
 {
@@ -52,13 +61,4 @@ std::string Item::GetNome()
 std::string Item::GetDesc() 
 {
     return _desc;
-}
-
-std::ostream& operator<<(std::ostream& out, const Item& i)
-{
-    out << "  Item Encontrado: " << i._nome << "\n";
-    out << "  Descricao: " << i._desc  << "\n";
-    out << "============================================================================================================" << std::endl;
-
-    return out;
 }

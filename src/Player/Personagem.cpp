@@ -38,6 +38,8 @@ bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
     switch (this->_status)
     {
     case estavel:
+        //Reinicia o modificador de velocidade de ataque
+        this->_modificadorQuantidadeAtaques = 0;
         return true; //Retorna que ele pode agir
         break;
 
@@ -75,11 +77,6 @@ bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
 
     if(rand() % 20 + this->_sorte + this->_buffSorte >= 14) //Tenta reestabilizar
     {
-        //Se ele estava amedrontado
-        if(this->_status == amedrontado)
-            //Atualiza o modificador de quantidade de ataques
-            this->_modificadorQuantidadeAtaques = 0;
-
         //Estabiliza
         this->_status = estavel;
     }
