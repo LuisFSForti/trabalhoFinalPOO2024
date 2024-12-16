@@ -17,31 +17,34 @@
 //3 = mago
 //4 = monstro
 
-enum Estados {estavel, paralizado, encantado, provocado, amedrontado, statusInvalido};
+enum Estados {estavel, paralisado, encantado, provocado, amedrontado, statusInvalido};
 
 class Personagem
 {
     protected:
+        std::string Nomes[4] = {"Bárbaro", "Paladino", "Bardo", "Mago"};
+
         std::string _idFile;
 
         bool _mana, _hasItem; //Para definir se pode usar a habilidade auxiliar
         int _vida, _vidaMaxima, _armadura, _armaduraMagica, _esquiva, _precisao, _sorte, _arma, _ferramenta, _qtdAtaques; //Valores base
         int _buffVida, _buffArmadura, _buffArmaduraMagica, _buffEsquiva, _buffPrecisao, _buffSorte, _buffArma, _buffFerramenta; //Buffs permanentes
         int _modificadorEsquiva, _modificadorDefesa, _modificadorQuantidadeAtaques; //Modificadores temporários
-        Estados _status; //Para definir se está paralizado, encantado, provocado ou amedrontado
+        Estados _status; //Para definir se está paralisado, encantado, provocado ou amedrontado
         Item _consumivel;
         std::string _enderecoFoto;
 
-        virtual void Atacar(std::vector<Personagem*> alvos) { std::cout << "AQUI!\n";}; //Virtual pois cada classe usa valores diferentes e alvos diferentes
+        virtual void Atacar(std::vector<Personagem*> alvos) {}; //Virtual pois cada classe usa valores diferentes e alvos diferentes
         virtual void CausarDano(Personagem *alvo) {}; //Virtual pois cada classe usa valores e tipos diferentes
         virtual void EfeitoAuxiliar(std::vector<Personagem*> alvos) {}; //Virtual pois toda classe tem um efeito diferente
         void UsarConsumivel(); //Aplica um item ao personagem
         void Esquivar(); //Dobra a esquiva até a próxima ação
 
+        bool CheckStatus(std::vector<Personagem*> alvos); //Retorna se o usuário pode realizar ações
+
         virtual void ImprimirDados(std::ostream& out) const {};
 
     public:
-        bool CheckStatus(std::vector<Personagem*> alvos); //Retorna se o usuário pode realizar ações
         void ReceberDanoFisico(int dano); //Diminui o dano usando armadura
         void ReceberDanoMagico(int dano); //Diminui o dano usando armadura mágica
         void ReceberDanoPsicologico(int dano); //Recebe o dano todo
@@ -54,6 +57,7 @@ class Personagem
         friend std::ostream& operator<<(std::ostream& out, const Personagem& p); //Para imprimir os dados do personagem
 
         //Para acessar os valores
+        bool GetMana();
         int GetVida();
         int GetVidaMaxima();
         int GetArmadura();
@@ -79,6 +83,7 @@ class Personagem
         int GetModificadorQuantidadeAtaques();
 
         Estados GetStatus();
+        std::string Status() const; //Para escrever o estado
 
         Item GetItem();
         void SetItem(Item consumivel);
@@ -86,7 +91,7 @@ class Personagem
 
         std::string GetFileId() { return _idFile; }
 
-        //Não há setters pois os valores devem serem alterados pelas funções
+        //Não há setters fora o do item pois os valores devem serem alterados pelas funções
 };
 
 

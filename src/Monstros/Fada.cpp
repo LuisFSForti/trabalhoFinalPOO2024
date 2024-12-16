@@ -17,9 +17,18 @@ void Fada::Atacar(std::vector<Personagem*> alvos)
         Personagem* alvo = alvos.at(posAlvo);
 
         //Verifica se o ataque acerta
-        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
-            //Calcula o dano
+        int dado = rand()%20;
+        int ataque = dado + this->_precisao + this->_buffPrecisao;
+        int esquiva = (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10;
+
+        std::cout << "Ataque: " << dado << " + " << this->_precisao << " + " << this->_buffPrecisao << " = " << ataque << std::endl;
+        std::cout << "Esquiva ("<< Nomes[posAlvo] << "): (" << alvo->GetEsquiva() << " + " << alvo->GetBuffEsquiva() << ") *" << alvo->GetModificadorEsquiva() << " + 10 = " << esquiva << std::endl;
+
+        if(ataque >= esquiva)
+        {
+            //Se sim, calcula o dano
             this->CausarDano(alvo);
+        }
     }
 }
     
@@ -33,11 +42,15 @@ void Fada::CausarDano(Personagem* alvo)
     //(1 + critico) = 1 ou 2
     int dano = (rand() % 6 + this->_arma + this->_buffArma) * (1 + critico);
 
+    if(critico)
+        std::cout << "Crítico!!!!" << std::endl;
+    std::cout << "Acertou por " << dano << " de dano mágico!" << std::endl << std::endl;
+
     //Alerta o alvo que ele recebeu dano mágico e quanto
     alvo->ReceberDanoMagico(dano);
 }
     
-//Paraliza um inimigo
+//Paralisa um inimigo
 void Fada::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou sua habilidade auxiliar
@@ -50,13 +63,13 @@ void Fada::EfeitoAuxiliar(std::vector<Personagem*> alvos)
         posAlvo = rand() % 4;
     } while (alvos.at(posAlvo)->GetVida() <= 0); //Até achar um alvo válido
 
-    //Paraliza o alvo
-    alvos.at(posAlvo)->AplicarStatus(paralizado);
+    //Paralisa o alvo
+    alvos.at(posAlvo)->AplicarStatus(paralisado);
 }
 
 void Fada::ImprimirDados(std::ostream& out) const
 {
-    out << "A fada docemente sorri enquanto te ataca,\num forte dano mágico pode ter te atingido.\n";
+    out << "A fada docemente sorri enquanto te ataca,\nacho que um de vocês caiu desacordado.\n";
     out << "==============================================\n";
 }
 
@@ -70,7 +83,7 @@ Fada::Fada(std::string id)
     this->_armadura = 0;
     this->_esquiva = 6;
 
-    this->_precisao = 6;
+    this->_precisao = 10;
     this->_sorte = 4;
     this->_arma = 2;
     this->_qtdAtaques = 3;
@@ -79,7 +92,7 @@ Fada::Fada(std::string id)
     this->_armaduraMagica = 10; //Resistência mágica
 
     this->_buffVida = 0;
-    this->_buffArma = 0;
+    this->_buffArmadura = 0;
     this->_buffArmaduraMagica = 0;
     this->_buffEsquiva = 0;
     this->_buffPrecisao = 0;

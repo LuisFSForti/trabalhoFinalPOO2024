@@ -5,6 +5,7 @@
 #include <iostream>
 #include <time.h>
 #include <vector>
+#include <algorithm>
 
 #include "Controller/printFile.hpp"
 #include "Item/Item.hpp"
@@ -74,40 +75,6 @@ class Controller
             std::cout << *_party[currentPartyMember] << std::endl;
         }
 
-        std::string Status(Personagem* target)
-        {
-            int r = target->GetStatus();
-            std::string status;
-
-            switch (r)
-            {
-                case 0:
-                    status = "estavel";
-                    break;
-
-                case 1:
-                    status = "paralisado";
-                    break;
-
-                case 2:
-                    status = "encantado";
-                    break;
-
-                case 3:
-                    status = "provocado";
-                    break;
-
-                case 4:
-                    status = "amedrontado";
-                    break;
-                
-                default:
-                    status = "whaaaat ??????????";
-                    break;
-            }
-
-            return status;
-        }
     public:
 
         // ============================
@@ -221,6 +188,7 @@ class Controller
             won = false;
             bool someOneAlive = false;
 
+            currentPartyMember = _party.size()-1;
             EnemyPlay(1);                                           // Inimigo usa efeito auxiliar
             Cooldown(3);
 
@@ -228,13 +196,24 @@ class Controller
             {
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
                 {
-                    if(_party[currentPartyMember]->GetVida() <= 0) continue;
-                    if(!_party[currentPartyMember]->CheckStatus(_party))
-                    {
-                        ReloadScreen();
-                        std::cout << "Esse membro está " << Status(_party[currentPartyMember]) << " entao nao pode atacar...\n";
-                        Cooldown(3);
+                    if(_party[currentPartyMember]->GetVida() <= 0) //Se morreu
                         continue;
+
+                    Estados estado = _party[currentPartyMember]->GetStatus();
+                    if(estado != estavel && estado != amedrontado) //Se estiver sob controle
+                    {
+                        if(!(currentPartyMember == 2 && _party[currentPartyMember]->GetMana())) //Se não for o bardo com mana
+                        {
+                            _party[currentPartyMember]->Comando(0, _party); //Comando aleatório pra chamar as funções de controle de estado
+                            ReloadScreen();
+
+                            //Converte o estado para uma string
+                            std::string estadoS = _party[currentPartyMember]->Status();
+                            std::transform(estadoS.begin(), estadoS.end(), estadoS.begin(), [](unsigned char c) {return std::tolower(c);}); //https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
+                            std::cout << "Esse membro está " << estadoS << " entao nao pode escolher o que fazer...\n";
+                            Cooldown(3);
+                            continue;
+                        }
                     }
 
                     ReloadScreen();                                 // Carrega a tela para novo membro
@@ -243,48 +222,68 @@ class Controller
 
                     _party[currentPartyMember]->Comando(op-1, _party);
 
-                    if(_party[_party.size()-1]->GetVida() <= 0) break;
-                    Cooldown(2);
+                    if(_party[_party.size()-1]->GetVida() <= 0) //Se o inimigo morreu
+                        break;
+                    Cooldown(8);
                 }
 
-                EnemyPlay(1);                                       // Inimigo ataca
-                Cooldown(3);
+                if(_party[_party.size()-1]->GetVida() > 0) //Se o inimigo não morreu
+                {
+                    EnemyPlay(0);                                       // Inimigo ataca
+                    Cooldown(3);
+                }
 
                 for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
-                    if(_party[currentPartyMember]->GetVida() > 0)   someOneAlive = true;
+                {
+                    if(_party[currentPartyMember]->GetVida() > 0)
+                    {
+                        someOneAlive = true;
+                        break;
+                    }
+                }
 
-                if(!someOneAlive) break;
+                if(!someOneAlive)
+                    break;
+
                 Cooldown(5);
             }
 
-            if(someOneAlive) won = true;                            // Se terminou e nao morreram todos os membros
+            if(someOneAlive)
+                won = true;                            // Se terminou e nao morreram todos os membros
             EndBattle();                                            // Acabar batalha
 
         }
 
         void EnemyPlay(int op)
         {
-            if(_party[currentPartyMember]->CheckStatus(_party))     // Se o inimigo pode atacar
+            Estados estado = _party[_party.size()-1]->GetStatus();
+            if(estado == estavel || estado == amedrontado)     // Se o inimigo pode atacar
             {
-                _party[currentPartyMember]->Comando(op, _party);
                 Print(_party[_party.size()-1]->GetFileId(), true);
-                PrintEnemyLife();       
+                PrintEnemyLife();
 
                 std::cout << "==============================================" << std::endl;
                 std::cout << "                ATAQUE INIMIGO                " << std::endl;
                 std::cout << "==============================================" << std::endl;
 
                 std::cout << *_party[_party.size()-1] << std::endl;
+
+                _party[_party.size()-1]->Comando(op, _party);
             }
             else
             {
                 Print(_party[_party.size()-1]->GetFileId(), true);
-                PrintEnemyLife();       
+                PrintEnemyLife();
+
+                //Converte o estado para uma string
+                std::string estadoS = _party[_party.size()-1]->Status();
+                std::transform(estadoS.begin(), estadoS.end(), estadoS.begin(), [](unsigned char c) {return std::tolower(c);}); //https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
 
                 std::cout << "=============================================================================" << std::endl;
-                std::cout << " O inimigo está " << Status(_party[_party.size()-1]) << ", por isso não pode atacar..." << std::endl;
+                std::cout << " O inimigo está " << estadoS << ", por isso não pode escolher o que vai fazer..." << std::endl;
                 std::cout << "=============================================================================" << std::endl;
 
+                _party[_party.size()-1]->Comando(0, _party); //Comando aleatório para ativar as funções de controle de estado
             }
         }
 
@@ -302,7 +301,6 @@ class Controller
             Item prize = _items[randIndex]; 
 
             LoadPrizeScreen(prize);
-            
         }
 
         void LoadPrizeScreen(Item prize)

@@ -31,9 +31,18 @@ void Dragao::Atacar(std::vector<Personagem*> alvos)
     Personagem* alvo = alvos.at(posAlvo);
 
     //Verifica se o ataque acerta
-    if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
+    int dado = rand()%20;
+    int ataque = dado + this->_precisao + this->_buffPrecisao;
+    int esquiva = (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10;
+
+    std::cout << "Ataque: " << dado << " + " << this->_precisao << " + " << this->_buffPrecisao << " = " << ataque << std::endl;
+    std::cout << "Esquiva ("<< Nomes[posAlvo] << "): (" << alvo->GetEsquiva() << " + " << alvo->GetBuffEsquiva() << ") *" << alvo->GetModificadorEsquiva() << " + 10 = " << esquiva << std::endl;
+
+    if(ataque >= esquiva)
+    {
         //Se sim, calcula o dano
         this->CausarDano(alvo);
+    }
 }
     
 //Dano físico alto
@@ -45,6 +54,10 @@ void Dragao::CausarDano(Personagem* alvo)
     //Calcula o dano
     //(1 + critico) = 1 ou 2
     int dano = (rand() % 10 + this->_arma + this->_buffArma) * (1 + critico);
+
+    if(critico)
+        std::cout << "Crítico!!!!" << std::endl;
+    std::cout << "Acertou por " << dano << " de dano físico!" << std::endl << std::endl;
 
     //Alerta o alvo que ele recebeu dano físico e quanto
     alvo->ReceberDanoFisico(dano);
@@ -69,7 +82,7 @@ void Dragao::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Dragao::ImprimirDados(std::ostream& out) const
 {
-    out << "O dragao cospe um fogo alarmante!\nAlgum de vocês pode ter sido atingido...\n";
+    out << "O dragao cospe um fogo alarmante!\nCuidado com as brasas...\n";
     out << "==============================================\n";
 }
 
@@ -83,7 +96,7 @@ Dragao::Dragao(std::string id)
     this->_armadura = 5;
     this->_esquiva = 0;
 
-    this->_precisao = 4;
+    this->_precisao = 8;
     this->_sorte = 1;
     this->_arma = 8;
 
@@ -91,7 +104,7 @@ Dragao::Dragao(std::string id)
     this->_armaduraMagica = this->_ferramenta; //Resistência mágica
 
     this->_buffVida = 0;
-    this->_buffArma = 0;
+    this->_buffArmadura = 0;
     this->_buffArmaduraMagica = 0;
     this->_buffEsquiva = 0;
     this->_buffPrecisao = 0;

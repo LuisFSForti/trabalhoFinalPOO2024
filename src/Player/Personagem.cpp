@@ -11,9 +11,11 @@ void Personagem::UsarConsumivel()
     }
 
     this->_vida+= item.GetCura();
-    if(this->_vida > this->_vidaMaxima) this->_vida = this->_vidaMaxima;
+    if(this->_vida > this->_vidaMaxima) 
+        this->_vida = this->_vidaMaxima;
 
-    if(!this->_mana && item.GetMana()) this->_mana = true;
+    if(!this->_mana && item.GetMana()) 
+        this->_mana = true;
 
     this->_buffArma+= item.GetBuffAtaque();
     this->_buffArmadura += item.GetBuffArmadura();
@@ -23,7 +25,8 @@ void Personagem::UsarConsumivel()
 
     this->_esquiva += item.GetBuffEsquiva();
 
-    if(this->_vida == 0 && item.Revive()) this->_vida = this->_vidaMaxima;
+    if(this->_vida == 0 && item.Revive()) 
+        this->_vida = this->_vidaMaxima;
 
     this->_hasItem = false;
 }
@@ -44,7 +47,7 @@ bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
         return true; //Retorna que ele pode agir
         break;
 
-    case paralizado:
+    case paralisado:
         break;
 
     case encantado: //atinge um aliado
@@ -94,6 +97,7 @@ bool Personagem::CheckStatus(std::vector<Personagem*> alvos)
 //Diminui o dano usando armadura
 void Personagem::ReceberDanoFisico(int dano)
 {
+
     //Diminui o dano
     dano -= this->_armadura + this->_buffArmadura + this->_modificadorDefesa;
 
@@ -104,6 +108,7 @@ void Personagem::ReceberDanoFisico(int dano)
 
     //Diminui a vida
     this->_vida -= dano;
+
     //Se ficou abaixo de 0, corrige
     if(this->_vida < 0)
         this->_vida = 0;
@@ -160,6 +165,30 @@ void Personagem::AplicarStatus(Estados status)
 
     //Aplica o status
     this->_status = status;
+}
+
+std::string Personagem::Status() const
+{
+    switch (this->_status)
+    {
+        case estavel:
+            return "ESTAVEL";
+
+        case paralisado:
+            return "PARALISADO";
+
+        case encantado:
+            return "ENCANTADO";
+
+        case provocado:
+            return "PROVOCADO";
+
+        case amedrontado:
+            return "AMEDRONTADO";
+        
+        default:
+            return "ERRO";
+    }
 }
 
 //Recebe uma instrução e os possíveis alvos
@@ -219,6 +248,10 @@ void Personagem::BatalhaEncerrada()
 }
 
 //Para imprimir os dados do personagem
+bool Personagem::GetMana()
+{
+    return this->_mana;
+}
 std::ostream& operator<<(std::ostream& out, const Personagem& p)
 {
     p.ImprimirDados(out);
@@ -350,4 +383,7 @@ void Personagem::SetItem(Item consumivel)
     this->_hasItem = true;
 }
 
-bool Personagem::HasItem() { return this->_hasItem;}
+bool Personagem::HasItem() 
+{ 
+    return this->_hasItem;
+}

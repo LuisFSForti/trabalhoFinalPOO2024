@@ -10,9 +10,18 @@ void Sereia::Atacar(std::vector<Personagem*> alvos)
         Personagem* alvo = alvos.at(i);
 
         //Verifica se o ataque acerta
-        if(rand()%20 + this->_precisao + this->_buffPrecisao >= (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10)
+        int dado = rand()%20;
+        int ataque = dado + this->_precisao + this->_buffPrecisao;
+        int esquiva = (alvo->GetEsquiva() + alvo->GetBuffEsquiva()) * alvo->GetModificadorEsquiva() + 10;
+
+        std::cout << "Ataque: " << dado << " + " << this->_precisao << " + " << this->_buffPrecisao << " = " << ataque << std::endl;
+        std::cout << "Esquiva ("<< Nomes[i] << "): (" << alvo->GetEsquiva() << " + " << alvo->GetBuffEsquiva() << ") *" << alvo->GetModificadorEsquiva() << " + 10 = " << esquiva << std::endl;
+
+        if(ataque >= esquiva)
+        {
             //Se sim, calcula o dano
             this->CausarDano(alvo);
+        }
     }
 }
     
@@ -25,6 +34,10 @@ void Sereia::CausarDano(Personagem* alvo)
     //Calcula o dano
     //(1 + critico) = 1 ou 2
     int dano = (rand() % 4 + this->_arma + this->_buffArma) * (1 + critico);
+
+    if(critico)
+        std::cout << "Crítico!!!!" << std::endl;
+    std::cout << "Acertou por " << dano << " de dano psicológico!" << std::endl << std::endl;
 
     //Avisa o alvo que recebeu dano psicológico
     alvo->ReceberDanoPsicologico(dano);
@@ -48,7 +61,7 @@ void Sereia::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 
 void Sereia::ImprimirDados(std::ostream& out) const
 {
-    out << "Quem poderia resistir aos encantos da Sereia?\nO psicológico de seus membros foi atacado\n";
+    out << "Quem poderia resistir aos encantos da Sereia?\nPor que o seu colega ta te olhando estranho?\n";
     out << "==============================================\n";
 
 }
@@ -61,9 +74,9 @@ Sereia::Sereia(std::string id)
     this->_vidaMaxima = 70;
     this->_vida = this->_vidaMaxima;
     this->_armadura = 2;
-    this->_esquiva = 3;
+    this->_esquiva = 2;
 
-    this->_precisao = 4;
+    this->_precisao = 6;
     this->_sorte = 2;
     this->_arma = 3; //Dano baixo pois é psicológico
 
@@ -71,7 +84,7 @@ Sereia::Sereia(std::string id)
     this->_armaduraMagica = 6; //Resistência mágica
 
     this->_buffVida = 0;
-    this->_buffArma = 0;
+    this->_buffArmadura = 0;
     this->_buffArmaduraMagica = 0;
     this->_buffEsquiva = 0;
     this->_buffPrecisao = 0;

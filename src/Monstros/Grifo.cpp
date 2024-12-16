@@ -6,11 +6,23 @@ void Grifo::Atacar(std::vector<Personagem*> alvos)
     //Para cada herói
     for(int i = 0; i < alvos.size()-1; i++)
     {
+        //Pega o alvo
+        Personagem* alvo = alvos.at(i);
+
         //Testa se o herói desvia do ataque
         //Se estiver ativamente esquivando aumenta a chance de desviar
-        if(rand()%20 + (alvos.at(i)->GetSorte()) * alvos.at(i)->GetModificadorEsquiva() < this->_ferramenta + this->_buffFerramenta)
+        int dado = rand()%20;
+        int ataque = this->_ferramenta + this->_buffFerramenta;
+        int erro = dado + (alvo->GetSorte()) * alvo->GetModificadorEsquiva();
+
+        std::cout << "Ataque: " << this->_ferramenta << " + " << this->_buffFerramenta << " = " << ataque << std::endl;
+        std::cout << "Erro do ataque ("<< Nomes[i] << "): " << dado << " + " << alvo->GetSorte() << " * " << alvo->GetModificadorEsquiva() << " = " << erro << std::endl;
+
+        if(erro < ataque)
+        {
             //Se não desviou, calcula o dano
-            this->CausarDano(alvos.at(i));
+            this->CausarDano(alvo);
+        }
     }
 }
     
@@ -24,11 +36,15 @@ void Grifo::CausarDano(Personagem* alvo)
     //(1 + critico) = 1 ou 2
     int dano = (rand() % 8 + this->_arma + this->_buffArma) * (1 + critico);
 
+    if(critico)
+        std::cout << "Crítico!!!!" << std::endl;
+    std::cout << "Acertou por " << dano << " de dano físico!" << std::endl << std::endl;
+
     //Avisa o alvo que ele recebeu dano físico e quanto
     alvo->ReceberDanoFisico(dano);
 }
     
-//Paraliza todos os inimigos
+//Paralisa todos os inimigos
 void Grifo::EfeitoAuxiliar(std::vector<Personagem*> alvos)
 {
     //Define que já usou sua habilidade auxiliar
@@ -37,14 +53,14 @@ void Grifo::EfeitoAuxiliar(std::vector<Personagem*> alvos)
     //Para cada herói
     for(int i = 0; i < alvos.size()-1; i++)
     {
-        //Paraliza o alvo atual
-        alvos.at(i)->AplicarStatus(paralizado);
+        //Paralisa o alvo atual
+        alvos.at(i)->AplicarStatus(paralisado);
     }
 }
 
 void Grifo::ImprimirDados(std::ostream& out) const
 {
-    out << "O Grifo balança sua cauda fortemente\n Seus amigos podem ter sido atingidos\n";
+    out << "O grifo dá um gincho ensurdecedor\n Parece que voces perderam o controle do corpo\n";
     out << "==============================================\n";
 }
 
@@ -58,7 +74,7 @@ Grifo::Grifo(std::string id)
     this->_armadura = 4;
     this->_esquiva = 3;
 
-    this->_precisao = 4;
+    this->_precisao = 9;
     this->_sorte = 2;
     this->_arma = 6;
 
@@ -66,7 +82,7 @@ Grifo::Grifo(std::string id)
     this->_armaduraMagica = 8; //Resistência mágica
 
     this->_buffVida = 0;
-    this->_buffArma = 0;
+    this->_buffArmadura = 0;
     this->_buffArmaduraMagica = 0;
     this->_buffEsquiva = 0;
     this->_buffPrecisao = 0;
