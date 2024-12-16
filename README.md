@@ -2,17 +2,19 @@
 
 <a href="https://www.asciiart.eu/mythology">Link para as artes em ASCII</a>
 ## Ideia Principal
-Construir um rpg simples. O player poderá escolher entre diversas classes com diferentes atributos para avançar na briga contra alguns inimigos mágicos com suas próprias características. O tipo de batalha ocorrerá por turnos.
+Sendo um rpg simples a ideia se baseia em uma party (equipe) de quatro membros controlados pelo jogador de maneira a lutarem contra diversos monstros, recebendo recompensas no final de cada batalha até vencer todos e terminar o jogo.
 
-### Player
-O jogador poderá escolher entre 4 classes principais de jogabilidade:
+### Party
 
-- Mago
+Os quatro membros disponíveis para o jogo são:
+
 - Barbáro
-- Bardo
 - Paladino
+- Bardo
+- Mago
 
 ### Inimigos
+
 Os inimigos são dividos em seu tipo de ataque e outras características como:
 
 - Dano Físico (centauro, dragão,grifo)
@@ -21,24 +23,28 @@ Os inimigos são dividos em seu tipo de ataque e outras características como:
 
 ### Batalha
 
-Será dada por turnos, com "dados" para decidir a sorte nos ataques ou defesas tanto do player quanto dos inimigos. Como o jogo é apenas um "demo" curto seriam feitas batalhas em sequência enquanto o player se mantivesse vivo, como em uma dungeon, tentando chegar até o final. Os inimigos aparecem de forma aleatória.
+Será dada por turnos, com "dados" para decidir a sorte nos ataques ou defesas tanto do player quanto dos inimigos. Além de ataques básicos existem efeitos auxiliares e itens que podem ser usados no decorrer da batalha, assim sendo possível utilizar de várias estratégias.
+
+### Itens
+
+Os itens para ajuda podem tanto auxiliar com o buff de algumas propriedades como armadura, sorte, ferramenta, agilidade, entre outros, assim como curar personagens machucados.
 
 ## Organização das Classes
 
-### Player Principal
-Classe principal do jogador com as propriedades e métodos relevantes tais quais:
+### Personagem
 
-- Propriedades:
-  - Sorte;
-  - Vida total;
-  - Vida atual;
-  - Velocidade;
-  - Defesa física;
-  - Defesa mágica;
-  - Defesa Psicológica;
+Classe "mãe" que comanda os tipos especificos dos membros da equipe. Reúne métodos virtuais que são sobrecarregados nas classes Bárbaro, Paladino, Bardo e Mago.
 
-- Métodos:
-  - Atacar;
-  - Rolar Sorte;
-  - Receber Ataque;
+Também dessa classe derivam os monstros por terem métodos e funções parecidos com os dos membros da equipe.
 
+### Itens
+
+Os itens são feitos de uma maneira "universal", isto é, suas propriedades de cura ou buffs são definidos através de propriedades da classe de forma a não ser necessário diversas classe como nos personagens, mantendo uma estrutura mais flexível.
+
+### Controller
+
+Essa classse une as demais e monta a estrutura de batalha, coordenando o inicial e final do jogo, além de distribuir os itens recebidos após vencer algum monstro.
+
+### Print File
+
+Responsável por ler e imprimir arquivos .txt que estão tanto com as imagens dos monstros assim como textos de introdução ou de vitória/derrota.
