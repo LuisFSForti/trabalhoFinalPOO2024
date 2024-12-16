@@ -30,312 +30,54 @@
 class Controller
 {
     private:
-        std::vector<Personagem*> _party;                 // Membros da equipe do jogador  
-        std::vector<Personagem*> _enemies;               // Possíveis inimigos
+        std::vector<Personagem*> _party;                // Membros da equipe do jogador e inimigo atual  
+        std::vector<Personagem*> _enemies;              // Possíveis inimigos
         std::vector<Item> _items;
 
-        bool won = false;                               // Se o player ganhou ou não
-        int  round = 0;                                 // Qual a rodada presente
-        int  currentPartyMember = 0;                    // Qual membro da equipe esta atualmente jogando
-        std::string filesPath = "Text/";                // Pasta de texto para arquivos em ascii
-        std::string enemyPath = "Inimigos/";
+        bool won = false;                               // Se o jogador ganhou ou não
+        int  currentPartyMember = 0;                    // Qual membro da equipe ativo no momento
+        std::string filesPath = "Text/";                // Pasta de arquivos em ascii com textos da UI
+        std::string enemyPath = "Inimigos/";            // Pasta de arquivos ascii dos inimigos 
 
         // ============================
         // ========= HELPERS ==========
         // ============================
 
-        void Cooldown(int seconds)                      // Tempo para carregar textos
-        {
-            clock_t start = clock();
-            clock_t period = seconds * CLOCKS_PER_SEC;
-            clock_t elapsed;
+        void Cooldown(int seconds);                      // Tempo para carregar textos
+        void Esperar();                                  // Espera o jogador apertar [Enter]
 
-            do {
-                elapsed = clock() - start;
-            } while(elapsed < period);
-        }
-
-        void Esperar()
-        {
-            std::cout << "\n\nPressione [Enter] para continuar\n";
-
-            std::cin.clear();
-            std::cin.ignore(1000000, '\n'); //Limpa o buffer de entrada
-        }
-
-        void Print(std::string file, bool erase)        // Escrever algum arquivo .txt na tela
-        {
-            PrintFile p(filesPath + file);
-            p.PrintText(erase);
-        }
-
-        void PrintEnemyLife()                           // Escrever a vida atual do inimigo
-        {
-            std::cout << "      ==============================" << std::endl;
-            std::cout << "                " << _party[_party.size()-1]->GetVida() << "/" << _party[_party.size()-1]->GetVidaMaxima() << std::endl; 
-            std::cout << "      ==============================" << std::endl;
-        }
-
-        void ReloadScreen()                             // Recarregar a tela com novas informacoes
-        {
-            Print(_party[_party.size()-1]->GetFileId(), true);
-            PrintEnemyLife();        
-            std::cout << *_party[currentPartyMember] << std::endl;
-        }
-
+        void Print(std::string file, bool erase);        // Escreve algum arquivo .txt na tela
+        void PrintEnemyLife();                           // Escreve a vida atual do inimigo
+        void ReloadScreen();                             // Recarrega a tela com novas informações
+        
     public:
 
         // ============================
         // ======== GAME STATE ========
         // ============================
 
-        void StartGame()                                // Inicializar jogo
-        {   
-            Print("gameIcon.txt", true);
-            Cooldown(2);
-            Print("epilogue.txt", false);
-            Cooldown(4);
-            Esperar();
-            SetPlayer();
-        }
-
-        void EndGame()                                  // Terminar jogo
-        {
-            Print("endGame.txt", false);
-            char op;
-            std::cin >> op;
-            std::cin.ignore(1000000, '\n'); //Limpa o buffer de entrada
-
-            if(op == 's')
-                StartGame();
-            else
-                exit(0);
-        }
+        void StartGame();                                // Inicializa o jogo
+        void EndGame();                                  // Termina o jogo
 
         // ============================
         // ======= INITAL SETUP =======
         // ============================
 
-        void SetPlayer()                                // Setando os membros da equipe e inimigos
-        {
-            _party.resize(5);
-            _party[0] = new Barbaro();
-            _party[1] = new Paladino();
-            _party[2] = new Bardo();
-            _party[3] = new Mago();
-
-            _enemies.push_back(new Centauro(enemyPath + "centauroBasico.txt"));
-            _enemies.push_back(new Dragao(enemyPath +  "dragaoBasico.txt"));
-            _enemies.push_back(new Fada(enemyPath +  "fadaBasico.txt"));
-            _enemies.push_back(new Fantasma(enemyPath +  "fantasmaBasico.txt"));
-            _enemies.push_back(new Grifo(enemyPath +  "grifoBasico.txt"));
-            _enemies.push_back(new Sereia(enemyPath +  "sereiaBasico.txt"));
-
-            _items.push_back(Item(20,false,0,0,0,0,0, "Hidromel", "Cura a vida do alvo em 20 pontos."));
-            _items.push_back(Item(9999,false,0,0,0,0,0, "Ambrosia", "Restaura a vida maxima do alvo."));
-            _items.push_back(Item(0,true,0,0,0,0,0, "Licor", "Restaura a mana do alvo."));
-            _items.push_back(Item(0,false,1+rand()%5,0,0,0,0, "Pocao de Furia", "Aumenta o dano de arma."));
-            _items.push_back(Item(0,false,0,0,0,0,1+rand()%4, "Terco", "Aumenta a protecao por meios divinos."));
-            _items.push_back(Item(0,false,1+rand()%5,0,0,0,1+rand()%4, "Biblia", "Aumenta dano de arma e armadura pelo poder da palavra."));
-            _items.push_back(Item(0,false,1+rand()%5,0,1+rand()%3,0,1+rand()%4, "Alcool", "Aumenta dano de arma e armadura totalmente."));
-            _items.push_back(Item(0,false,0,1+rand()%3,0,0,0, "Ferradura", "Aumenta a sorte do alvo."));
-            _items.push_back(Item(0,false,0,0,0,1+rand()%3,0, "Pocao de Agilidade", "Aumenta a agilidade do alvo."));
-            _items.push_back(Item(0,false,0,0,1+rand()%3,0,0, "Bigorna", "Aumenta o buff de ferramenta."));
-            StartBattle();
-        }
+        void SetPlayer();                                // Seta os membros da equipe e inimigos
 
         // ============================
         // ========== BATTLE ==========
         // ============================
 
-        void StartBattle()                                          // Iniciar Batalha
-        {
-            int op;
+        void StartBattle();                              // Inicia a Batalha
+        void EnemyPlay(int op);                          // Manipula a jogada do inimigo
+        void EndBattle();                                // Termina a batalha
 
-            if(_enemies.empty())                                    // Se nao tiver mais inimigos -> jogador ganhou
-            {
-                Won();
-                return;
-            }
+        void GivePrize();                                // Escolhe um item para entregar
+        void LoadPrizeScreen(Item prize);                // Carrega a tela de item e manipula a entrega
 
-            int randIndex = rand() % _enemies.size();                             // Sorteia algum dos inimigos
-            _party[4] = _enemies[randIndex];
-            _enemies.erase(std::next(_enemies.begin(), randIndex)); // Apaga da lista de inimigos
-
-            round++;
-            won = false;
-            bool someOneAlive = false;
-
-            currentPartyMember = _party.size()-1;
-            EnemyPlay(1);                                           // Inimigo usa efeito auxiliar
-            //Cooldown(3);
-            Esperar();
-
-            while(_party[_party.size()-1]->GetVida() > 0)           // Enquanto o inimigo ou o jogador nao morrem
-            {
-                for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
-                {
-                    if(_party[currentPartyMember]->GetVida() <= 0) //Se morreu
-                        continue;
-
-                    Estados estado = _party[currentPartyMember]->GetStatus();
-                    if(estado != estavel && estado != amedrontado) //Se estiver sob controle
-                    {
-                        if(!(currentPartyMember == 2 && _party[currentPartyMember]->GetMana())) //Se não for o bardo com mana
-                        {
-                            ReloadScreen();
-
-                            //Converte o estado para uma string
-                            std::string estadoS = _party[currentPartyMember]->Status();
-                            std::transform(estadoS.begin(), estadoS.end(), estadoS.begin(), [](unsigned char c) {return std::tolower(c);}); //https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
-                            std::cout << "Esse membro está " << estadoS << " entao nao pode escolher o que fazer...\n";
-
-                            _party[currentPartyMember]->Comando(0, _party); //Comando aleatório pra chamar as funções de controle de estado
-                            
-                            //Cooldown(3);
-                            Esperar();
-                            continue;
-                        }
-                    }
-
-                    ReloadScreen();                                 // Carrega a tela para novo membro
-                    std::cout << "Escolha uma das opcoes: ";        // Espera a escolha de alguma das opcoes
-                    std::cin  >> op;
-                    std::cin.ignore(1000000, '\n'); //Limpa o buffer de entrada
-
-                    _party[currentPartyMember]->Comando(op-1, _party);
-
-                    if(_party[_party.size()-1]->GetVida() <= 0) //Se o inimigo morreu
-                        break;
-                    //Cooldown(8);
-                    Esperar();
-                }
-
-                if(_party[_party.size()-1]->GetVida() > 0) //Se o inimigo não morreu
-                {
-                    EnemyPlay(0);                                       // Inimigo ataca
-                    //Cooldown(1);
-                }
-
-                someOneAlive = false;
-                for(currentPartyMember = 0; currentPartyMember < _party.size()-1; currentPartyMember++)
-                {
-                    if(_party[currentPartyMember]->GetVida() > 0)
-                    {
-                        someOneAlive = true;
-                        break;
-                    }
-                }
-
-                if(!someOneAlive)
-                    break;
-
-                //Cooldown(5);
-                Esperar();
-            }
-
-            if(someOneAlive)
-                won = true;                            // Se terminou e nao morreram todos os membros
-            EndBattle();                                            // Acabar batalha
-
-        }
-
-        void EnemyPlay(int op)
-        {
-            Estados estado = _party[_party.size()-1]->GetStatus();
-            if(estado == estavel || estado == amedrontado)     // Se o inimigo pode atacar
-            {
-                Print(_party[_party.size()-1]->GetFileId(), true);
-                PrintEnemyLife();
-
-                std::cout << "==============================================" << std::endl;
-                std::cout << "                ATAQUE INIMIGO                " << std::endl;
-                std::cout << "==============================================" << std::endl;
-
-                std::cout << *_party[_party.size()-1] << std::endl;
-
-                _party[_party.size()-1]->Comando(op, _party);
-            }
-            else
-            {
-                Print(_party[_party.size()-1]->GetFileId(), true);
-                PrintEnemyLife();
-
-                //Converte o estado para uma string
-                std::string estadoS = _party[_party.size()-1]->Status();
-                std::transform(estadoS.begin(), estadoS.end(), estadoS.begin(), [](unsigned char c) {return std::tolower(c);}); //https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
-
-                std::cout << "=============================================================================" << std::endl;
-                std::cout << " O inimigo está " << estadoS << ", por isso não pode escolher o que vai fazer..." << std::endl;
-                std::cout << "=============================================================================" << std::endl;
-
-                _party[_party.size()-1]->Comando(0, _party); //Comando aleatório para ativar as funções de controle de estado
-            }
-        }
-
-        void EndBattle()
-        {
-            for(int i = 0; i < _party.size() - 1; i++) //Avisa os heróis que a batalha acabou
-                _party[i]->BatalhaEncerrada();
-
-            if(won)
-                GivePrize();                                        // Recebe um item
-            else
-                Lose();                                             // Perde
-        }
-
-        void GivePrize()
-        {
-            int randIndex = rand() % _items.size(); //Seleciona um item aleatório
-            Item prize = _items[randIndex]; 
-            _items.erase(_items.begin() + randIndex); //Remove o item
-
-            LoadPrizeScreen(prize);
-        }
-
-        void LoadPrizeScreen(Item prize)
-        {
-            int op;
-            Print("grantPrize.txt", true);
-
-            std::cout << "  Item Encontrado: " << prize.GetNome() << std::endl;
-            std::cout << "  Descricao: " << prize.GetDesc() << std::endl;
-            std::cout << "======================================================" << std::endl;
-
-            std::cin >> op;
-            std::cin.ignore(1000000, '\n'); //Limpa o buffer de entrada
-
-            if(op == 5)
-            {
-                StartBattle();
-                return;
-            }
-
-            if(_party[op-1]->HasItem())
-            {
-                std::cout << "Parece que esse membro ja tem um item... Escolha outro." << std::endl;
-                //Cooldown(2);
-                Esperar();
-                LoadPrizeScreen(prize);
-            }
-            else
-                _party[op-1]->SetItem(prize);
-
-            StartBattle();                                      // Inicia proxima batalha
-        }
-
-        void Won()
-        {
-            Print("wonScreen.txt", true);
-            EndGame();
-        }
-
-        void Lose()
-        {
-            Print("loseScreen.txt", true);
-            EndGame();
-        }
-
+        void Won();                                      // Tela de vitória
+        void Lose();                                     // Tela de derrota
 };
 
 #endif
